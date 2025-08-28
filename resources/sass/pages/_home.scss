@@ -4,7 +4,6 @@
 .process-search {
     border: 2px solid $primary-color;
     border-radius: 8px;
-    margin-bottom: $spacing-lg;
     position: relative;
 
     &__title {
@@ -124,7 +123,6 @@
 .system-process {
     border: 2px solid $primary-color;
     border-radius: 8px;
-    margin-bottom: $spacing-lg;
     position: relative;
 
     &__title {
@@ -248,7 +246,6 @@
 .internal-process {
     border: 2px solid $primary-color;
     border-radius: 8px;
-    margin-bottom: $spacing-lg;
     position: relative;
 
     &__title {
@@ -283,7 +280,6 @@
 .operational-process {
     border: 2px solid $primary-color;
     border-radius: 8px;
-    margin-bottom: $spacing-lg;
     position: relative;
 
     &__title {
@@ -310,6 +306,198 @@
 
         @include mobile {
             padding: $spacing-md;
+        }
+    }
+}
+
+// Home Layout - 2 Column Structure
+.home-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: $spacing-lg;
+    align-items: start;
+
+    @include mobile {
+        grid-template-columns: 1fr;
+        gap: $spacing-md;
+    }
+
+    @include tablet {
+        grid-template-columns: 1fr;
+        gap: $spacing-md;
+    }
+
+    &__left {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-lg;
+
+        @include mobile {
+            gap: $spacing-md;
+        }
+    }
+
+    &__right {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-lg;
+
+        @include mobile {
+            gap: $spacing-md;
+        }
+    }
+}
+
+// New Process Section (Sidebar)
+.new-process {
+    border: 2px solid $primary-color;
+    border-radius: 8px;
+    background-color: $white;
+
+    &__title {
+        background-color: $primary-color;
+        color: $white;
+        font-size: 13px;
+        font-weight: $font-weight-bold;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 8px 12px;
+        margin: 0;
+        border-radius: 6px 6px 0 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+        @include mobile {
+            font-size: 11px;
+            padding: 6px 10px;
+        }
+    }
+
+    &__content {
+        padding: $spacing-md;
+
+        @include mobile {
+            padding: $spacing-sm;
+        }
+    }
+
+    &__footer {
+        text-align: center;
+    }
+
+    &__more {
+        color: $primary-color;
+        font-size: 12px;
+        font-weight: $font-weight-bold;
+        text-decoration: none;
+        transition: color 0.3s ease;
+
+        &:hover {
+            color: $primary-dark;
+            text-decoration: underline;
+        }
+
+        @include mobile {
+            font-size: 10px;
+        }
+    }
+}
+
+// Notifications Section (Sidebar)
+.notifications {
+    border: 2px solid $primary-color;
+    border-radius: 8px;
+    background-color: $white;
+
+    &__title {
+        background-color: $primary-color;
+        color: $white;
+        font-size: 13px;
+        font-weight: $font-weight-bold;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 8px 12px;
+        margin: 0;
+        border-radius: 6px 6px 0 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+        @include mobile {
+            font-size: 11px;
+            padding: 6px 10px;
+        }
+    }
+
+    &__content {
+        padding: $spacing-md;
+
+        @include mobile {
+            padding: $spacing-sm;
+        }
+    }
+
+    &__footer {
+        text-align: center;
+    }
+
+    &__more {
+        color: $primary-color;
+        font-size: 12px;
+        font-weight: $font-weight-bold;
+        text-decoration: none;
+        transition: color 0.3s ease;
+
+        &:hover {
+            color: $primary-dark;
+            text-decoration: underline;
+        }
+
+        @include mobile {
+            font-size: 10px;
+        }
+    }
+}
+
+// News List Component (Shared by both sidebar sections)
+.news-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.news-item {
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 8px;
+
+    &:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    &__date {
+        font-size: 11px;
+        color: #888;
+        font-weight: $font-weight-bold;
+        margin-bottom: 4px;
+
+        @include mobile {
+            font-size: 10px;
+        }
+    }
+
+    &__title {
+        color: $gray;
+        font-size: 12px;
+        line-height: 1.4;
+        text-decoration: none;
+        transition: color 0.3s ease;
+        display: block;
+
+        &:hover {
+            color: $primary-color;
+            text-decoration: underline;
+        }
+
+        @include mobile {
+            font-size: 11px;
         }
     }
 }
