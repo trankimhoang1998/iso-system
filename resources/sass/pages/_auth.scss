@@ -1,0 +1,276 @@
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+
+// Auth Body
+.auth-body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-md;
+    font-family: $font-family;
+}
+
+// Auth Container
+.auth-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+// Auth Header
+.auth-header {
+    text-align: center;
+    margin-bottom: $spacing-lg;
+
+    &__title {
+        color: $primary-color;
+        font-size: 24px;
+        font-weight: $font-weight-bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin: 0 0 8px 0;
+
+        @include mobile {
+            font-size: 20px;
+        }
+    }
+
+    &__subtitle {
+        color: $gray;
+        font-size: 16px;
+        font-weight: $font-weight-bold;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin: 0;
+
+        @include mobile {
+            font-size: 14px;
+        }
+    }
+}
+
+// Auth Card
+.auth-card {
+    background: $white;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: $spacing-lg;
+
+    &__header {
+        background: $primary-color;
+        padding: $spacing-md;
+        text-align: center;
+        position: relative;
+    }
+
+    &__title {
+        color: $white;
+        font-size: 18px;
+        font-weight: $font-weight-bold;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin: 0 0 8px 0;
+
+        @include mobile {
+            font-size: 16px;
+        }
+    }
+
+    &__role-badge {
+        background: rgba(255, 255, 255, 0.2);
+        color: $white;
+        padding: 4px 12px;
+        border-radius: 15px;
+        font-size: 12px;
+        font-weight: $font-weight-bold;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        display: inline-block;
+
+        @include mobile {
+            font-size: 11px;
+            padding: 3px 10px;
+        }
+    }
+
+    &__body {
+        padding: $spacing-lg;
+
+        @include mobile {
+            padding: $spacing-md;
+        }
+    }
+}
+
+// Auth Alert
+.auth-alert {
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin-bottom: $spacing-md;
+    font-size: 13px;
+
+    &--error {
+        background-color: #fee;
+        border: 1px solid #fcc;
+        color: #c33;
+    }
+
+    &__list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+            margin: 0;
+            padding: 0;
+        }
+
+        li:not(:last-child) {
+            margin-bottom: 4px;
+        }
+    }
+}
+
+// Auth Form
+.auth-form {
+    &__group {
+        margin-bottom: $spacing-md;
+
+        &--checkbox {
+            margin-bottom: $spacing-lg;
+        }
+    }
+
+    &__label {
+        display: block;
+        color: $gray;
+        font-size: 13px;
+        font-weight: $font-weight-bold;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+    }
+
+    &__input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 14px;
+        color: $gray;
+        background: $white;
+        transition: all 0.3s ease;
+
+        &:focus {
+            outline: none;
+            border-color: $primary-color;
+            box-shadow: 0 0 0 3px rgba(70, 130, 180, 0.1);
+        }
+
+        &:hover {
+            border-color: $primary-light;
+        }
+    }
+
+    &__checkbox-label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    &__checkbox {
+        margin-right: 8px;
+        transform: scale(1.1);
+    }
+
+    &__checkbox-text {
+        color: $gray;
+        font-size: 13px;
+    }
+
+    &__button {
+        width: 100%;
+        padding: 15px 20px;
+        background: $primary-color;
+        color: $white;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: $font-weight-bold;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &:hover {
+            background: $primary-dark;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(70, 130, 180, 0.3);
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+    }
+}
+
+// Auth Footer
+.auth-footer {
+    text-align: center;
+}
+
+.auth-links {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: $spacing-md;
+    flex-wrap: wrap;
+}
+
+.auth-link {
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 11px;
+    font-weight: $font-weight-bold;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: $gray;
+    background: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s ease;
+    letter-spacing: 0.3px;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.9);
+        color: $primary-color;
+    }
+
+    &--active {
+        background: $primary-color;
+        color: $white;
+
+        &:hover {
+            background: $primary-dark;
+            color: $white;
+        }
+    }
+
+    @include mobile {
+        font-size: 10px;
+        padding: 5px 10px;
+    }
+}
+
+.auth-back-link {
+    color: $gray;
+    font-size: 12px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+
+    &:hover {
+        color: $primary-color;
+    }
+}

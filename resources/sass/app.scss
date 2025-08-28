@@ -12,9 +12,13 @@
 @use 'layout/main';
 @use 'layout/container';
 
-// Components (when needed)
+// Components
+@use 'components/mobile-overlay';
 // @use 'components/buttons';
 // @use 'components/forms';
 
 // Pages
 @use 'pages/home';
+@use 'pages/auth';
+@use 'pages/admin';
+@use 'pages/levels';

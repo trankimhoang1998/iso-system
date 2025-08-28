@@ -1,6 +1,77 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Level1\Level1Controller;
+use App\Http\Controllers\Level2\Level2Controller;
+use App\Http\Controllers\Level3\Level3Controller;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
-Route::get('/', [HomeController::class, 'index']);
+// Public routes
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Authentication routes
+Route::controller(AuthController::class)->group(function () {
+    // General login route (smart redirect based on intended URL)
+    Route::get('/login', function () {
+        // Redirect to dashboard if already logged in
+        if (Auth::check()) {
+            return redirect()->route(Auth::user()->getDashboardRoute());
+        }
+        
+        $intended = session('url.intended');
+        
+        // Redirect to appropriate login based on intended URL
+        if (str_contains($intended, '/level1')) {
+            return redirect()->route('level1.login');
+        } elseif (str_contains($intended, '/level2')) {
+            return redirect()->route('level2.login');
+        } elseif (str_contains($intended, '/level3')) {
+            return redirect()->route('level3.login');
+        } elseif (str_contains($intended, '/admin')) {
+            return redirect()->route('admin.login');
+        }
+        
+        // Default to admin login
+        return redirect()->route('admin.login');
+    })->name('login');
+    
+    // Login routes for different roles
+    Route::get('/admin/login', 'showAdminLogin')->name('admin.login');
+    Route::get('/level1/login', 'showLevel1Login')->name('level1.login');
+    Route::get('/level2/login', 'showLevel2Login')->name('level2.login');
+    Route::get('/level3/login', 'showLevel3Login')->name('level3.login');
+    
+    // Process login
+    Route::post('/login', 'login')->name('auth.login');
+    Route::post('/logout', 'logout')->name('auth.logout');
+});
+
+// Admin routes
+Route::middleware(['auth', 'role:0'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/users', [AdminController::class, 'users'])->name('users');
+    Route::post('/users', [AdminController::class, 'createUser'])->name('users.create');
+});
+
+// Level 1 (Ban ISO) routes
+Route::middleware(['auth', 'role:1'])->prefix('level1')->name('level1.')->group(function () {
+    Route::get('/dashboard', [Level1Controller::class, 'dashboard'])->name('dashboard');
+    Route::get('/documents', [Level1Controller::class, 'documents'])->name('documents');
+});
+
+// Level 2 (Cơ quan/Phân xưởng) routes
+Route::middleware(['auth', 'role:2'])->prefix('level2')->name('level2.')->group(function () {
+    Route::get('/dashboard', [Level2Controller::class, 'dashboard'])->name('dashboard');
+    Route::get('/documents', [Level2Controller::class, 'documents'])->name('documents');
+    Route::get('/proposals', [Level2Controller::class, 'proposals'])->name('proposals');
+});
+
+// Level 3 (Người sử dụng) routes
+Route::middleware(['auth', 'role:3'])->prefix('level3')->name('level3.')->group(function () {
+    Route::get('/dashboard', [Level3Controller::class, 'dashboard'])->name('dashboard');
+    Route::get('/documents', [Level3Controller::class, 'documents'])->name('documents');
+    Route::get('/proposals', [Level3Controller::class, 'proposals'])->name('proposals');
+});

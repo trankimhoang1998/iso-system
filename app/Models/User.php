@@ -21,6 +21,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'department',
+        'parent_id',
+        'is_active',
     ];
 
     /**
@@ -43,6 +47,89 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
         ];
+    }
+
+    // Role constants
+    const ROLE_ADMIN = 0;
+    const ROLE_LEVEL1 = 1; // Ban ISO
+    const ROLE_LEVEL2 = 2; // Cơ quan/Phân xưởng
+    const ROLE_LEVEL3 = 3; // Người sử dụng
+
+    /**
+     * Get role name
+     */
+    public function getRoleName()
+    {
+        return match ($this->role) {
+            self::ROLE_ADMIN => 'Admin',
+            self::ROLE_LEVEL1 => 'Ban ISO',
+            self::ROLE_LEVEL2 => 'Cơ quan/Phân xưởng',
+            self::ROLE_LEVEL3 => 'Người sử dụng',
+            default => 'Unknown',
+        };
+    }
+
+    /**
+     * Check if user is admin
+     */
+    public function isAdmin()
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    /**
+     * Check if user is Ban ISO
+     */
+    public function isLevel1()
+    {
+        return $this->role === self::ROLE_LEVEL1;
+    }
+
+    /**
+     * Check if user is Cơ quan/Phân xưởng
+     */
+    public function isLevel2()
+    {
+        return $this->role === self::ROLE_LEVEL2;
+    }
+
+    /**
+     * Check if user is Người sử dụng
+     */
+    public function isLevel3()
+    {
+        return $this->role === self::ROLE_LEVEL3;
+    }
+
+    /**
+     * Parent user relationship
+     */
+    public function parent()
+    {
+        return $this->belongsTo(User::class, 'parent_id');
+    }
+
+    /**
+     * Children users relationship
+     */
+    public function children()
+    {
+        return $this->hasMany(User::class, 'parent_id');
+    }
+
+    /**
+     * Get dashboard route based on user role
+     */
+    public function getDashboardRoute()
+    {
+        return match ($this->role) {
+            self::ROLE_ADMIN => 'admin.dashboard',
+            self::ROLE_LEVEL1 => 'level1.dashboard',
+            self::ROLE_LEVEL2 => 'level2.dashboard',
+            self::ROLE_LEVEL3 => 'level3.dashboard',
+            default => 'home',
+        };
     }
 }
