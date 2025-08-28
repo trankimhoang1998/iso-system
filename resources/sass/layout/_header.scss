@@ -1,0 +1,251 @@
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+
+.header {
+    background-color: $primary-color;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    &__container {
+        @include container;
+        height: $header-height;
+        @include center-content;
+        position: relative;
+
+        @include mobile {
+            justify-content: space-between;
+            align-items: center;
+        }
+    }
+
+    &__mobile-toggle {
+        display: none;
+        background: none;
+        border: none;
+        flex-direction: column;
+        cursor: pointer;
+        padding: 5px;
+        
+        @include mobile {
+            display: flex;
+        }
+
+        .hamburger {
+            width: 25px;
+            height: 3px;
+            background-color: $white;
+            margin: 2px 0;
+            transition: 0.3s;
+        }
+
+        &.active {
+            .hamburger:nth-child(1) {
+                transform: rotate(-45deg) translate(-6px, 6px);
+            }
+            .hamburger:nth-child(2) {
+                opacity: 0;
+            }
+            .hamburger:nth-child(3) {
+                transform: rotate(45deg) translate(-6px, -6px);
+            }
+        }
+    }
+
+    &__nav {
+        width: 100%;
+
+        @include mobile {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: $primary-color;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            display: none;
+            
+            &.active {
+                display: block;
+            }
+        }
+    }
+
+    .nav {
+        &__list {
+            @include reset-list;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            @include mobile {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            @include tablet {
+                flex-wrap: wrap;
+            }
+        }
+
+        &__item {
+            height: $header-height;
+            display: flex;
+            align-items: center;
+            position: relative;
+
+            @include mobile {
+                width: 100%;
+                height: auto;
+                align-items: stretch;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                flex-direction: column;
+
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+
+            &--dropdown {
+                @include desktop {
+                    &:hover {
+                        .nav__dropdown {
+                            display: block;
+                        }
+                    }
+                }
+            }
+        }
+
+        &__arrow {
+            margin-left: 5px;
+            font-size: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        &__dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: $white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            border-radius: 4px;
+            min-width: 350px;
+            z-index: 1000;
+            @include reset-list;
+
+            @include mobile {
+                position: relative;
+                top: 0;
+                left: 0;
+                box-shadow: none;
+                border-radius: 0;
+                min-width: auto;
+                width: 100%;
+                background-color: rgba(0, 0, 0, 0.15);
+                margin-top: 0;
+
+                &.active {
+                    display: block;
+                }
+            }
+        }
+
+        &__dropdown-item {
+            border-bottom: 1px solid #f0f0f0;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            @include mobile {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+        }
+
+        &__dropdown-link {
+            @include reset-link;
+            display: block;
+            padding: $spacing-sm $spacing-md;
+            color: $gray;
+            font-size: 12px;
+            font-weight: $font-weight-normal;
+            text-transform: none;
+            letter-spacing: 0;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            line-height: 1.4;
+
+            &:hover {
+                background-color: $primary-dark;
+                color: $white;
+            }
+
+            @include mobile {
+                color: $white;
+                padding: 12px $spacing-lg;
+                font-size: 11px;
+                white-space: normal;
+
+                &:hover {
+                    background-color: rgba(0, 0, 0, 0.2);
+                }
+            }
+        }
+
+        &__link {
+            @include reset-link;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            padding: 0 $spacing-sm;
+            font-weight: $font-weight-bold;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: $white;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+
+            &:hover {
+                background-color: $primary-dark;
+
+                @include desktop {
+                    .nav__arrow {
+                        transform: rotate(180deg);
+                    }
+                }
+            }
+
+            &--active {
+                background-color: $primary-dark;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            }
+
+            @include mobile {
+                font-size: 12px;
+                padding: 15px $spacing-md;
+                width: 100%;
+                justify-content: space-between;
+                height: auto;
+
+                &:hover {
+                    background-color: rgba(0, 0, 0, 0.1);
+                }
+
+                .nav__arrow {
+                    transform: rotate(0deg) !important;
+                }
+            }
+
+            @include tablet {
+                font-size: 12px;
+            }
+        }
+    }
+}

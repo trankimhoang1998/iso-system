@@ -1,0 +1,20 @@
+// Utils
+@use 'utils/variables' as *;
+@use 'utils/mixins' as *;
+
+// Base
+@use 'base/reset';
+
+// Layout
+@use 'layout/banner';
+@use 'layout/header';
+@use 'layout/footer';
+@use 'layout/main';
+@use 'layout/container';
+
+// Components (when needed)
+// @use 'components/buttons';
+// @use 'components/forms';
+
+// Pages
+@use 'pages/home';

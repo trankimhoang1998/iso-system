@@ -1,0 +1,22 @@
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+
+.footer {
+    background-color: $primary-color;
+    color: $white;
+    margin-top: auto;
+
+    &__container {
+        @include container;
+        padding: $spacing-md 0;
+    }
+
+    &__content {
+        text-align: center;
+    }
+
+    &__text {
+        font-size: 14px;
+        opacity: 0.9;
+    }
+}

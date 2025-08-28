@@ -1,0 +1,11 @@
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+
+.main-content {
+    min-height: calc(100vh - $banner-height - $header-height - 80px); // Adjust for banner, header and footer height
+    padding: $spacing-lg 0;
+    
+    @include mobile {
+        padding: $spacing-md 0;
+    }
+}

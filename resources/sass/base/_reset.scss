@@ -1,0 +1,38 @@
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: $font-size-base;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: $font-family-base;
+    font-weight: $font-weight-normal;
+    line-height: 1.6;
+    color: $black;
+    background-color: $white;
+}
+
+a {
+    @include reset-link;
+}
+
+ul, ol {
+    @include reset-list;
+}
+
+button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
+}
