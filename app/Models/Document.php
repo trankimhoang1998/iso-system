@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Document extends Model
 {
@@ -105,5 +106,69 @@ class Document extends Model
         } else {
             return $bytes . ' bytes';
         }
+    }
+
+    /**
+     * Get document permissions
+     */
+    public function permissions(): HasMany
+    {
+        return $this->hasMany(DocumentPermission::class);
+    }
+
+    /**
+     * Check if user has permission to view document
+     */
+    public function canUserView(User $user): bool
+    {
+        // Admin can view all documents
+        if ($user->role == User::ROLE_ADMIN) {
+            return true;
+        }
+
+        // Level 1 (Ban ISO) can view all documents they uploaded or all documents if is_public
+        if ($user->role == User::ROLE_LEVEL1) {
+            return $this->uploaded_by == $user->id || $this->is_public;
+        }
+
+        // Level 2 (Cơ quan/Phân xưởng) can only view if they have permission or document is public
+        if ($user->role == User::ROLE_LEVEL2) {
+            return $this->is_public || $this->permissions()->where('user_id', $user->id)->where('can_view', true)->exists();
+        }
+
+        // Level 3 (Người sử dụng) can only view public documents
+        if ($user->role == User::ROLE_LEVEL3) {
+            return $this->is_public;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if user has permission to download document
+     */
+    public function canUserDownload(User $user): bool
+    {
+        // Admin can download all documents
+        if ($user->role == User::ROLE_ADMIN) {
+            return true;
+        }
+
+        // Level 1 (Ban ISO) can download all documents they uploaded or all documents if is_public
+        if ($user->role == User::ROLE_LEVEL1) {
+            return $this->uploaded_by == $user->id || $this->is_public;
+        }
+
+        // Level 2 (Cơ quan/Phân xưởng) can only download if they have permission or document is public
+        if ($user->role == User::ROLE_LEVEL2) {
+            return $this->is_public || $this->permissions()->where('user_id', $user->id)->where('can_download', true)->exists();
+        }
+
+        // Level 3 (Người sử dụng) can only download public documents
+        if ($user->role == User::ROLE_LEVEL3) {
+            return $this->is_public;
+        }
+
+        return false;
     }
 }

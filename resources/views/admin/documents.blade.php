@@ -221,8 +221,16 @@
 
                 <div class="admin-form__group">
                     <label class="admin-form__label admin-form__label--required">File tài liệu</label>
-                    <input type="file" name="file" required accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt"
-                           class="admin-form__input @error('file') admin-form__input--error @enderror">
+                    <div class="admin-file-upload">
+                        <input type="file" name="file" required accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt"
+                               class="admin-file-upload__input @error('file') admin-form__input--error @enderror" id="adminFileInput">
+                        <label for="adminFileInput" class="admin-file-upload__label">
+                            <svg class="admin-file-upload__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                            </svg>
+                            <span>Chọn file hoặc kéo thả vào đây</span>
+                        </label>
+                    </div>
                     <small class="admin-form__help">Định dạng hỗ trợ: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT. Kích thước tối đa: 50MB</small>
                     @error('file')
                     <div class="admin-form__error">{{ $message }}</div>
@@ -558,6 +566,16 @@ function revokeApproval(documentId, documentTitle) {
     // Show modal
     showRevokeModal();
 }
+
+// File upload preview
+document.getElementById('adminFileInput').addEventListener('change', function(e) {
+    const label = document.querySelector('.admin-file-upload__label span');
+    if (e.target.files.length > 0) {
+        label.textContent = e.target.files[0].name;
+    } else {
+        label.textContent = 'Chọn file hoặc kéo thả vào đây';
+    }
+});
 
 // Show modal if there are validation errors
 @if($errors->any())

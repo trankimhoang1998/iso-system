@@ -1204,3 +1204,42 @@
         }
     }
 }
+
+// Admin File Upload
+.admin-file-upload {
+    &__input {
+        display: none;
+    }
+
+    &__label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: $spacing-lg;
+        border: 2px dashed #e9ecef;
+        border-radius: 8px;
+        background: #f8f9fa;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+
+        &:hover {
+            border-color: $primary-color;
+            background: rgba(70, 130, 180, 0.05);
+        }
+    }
+
+    &__icon {
+        width: 32px;
+        height: 32px;
+        color: #6c757d;
+        margin-bottom: 8px;
+    }
+
+    span {
+        font-size: 14px;
+        color: $gray;
+        font-weight: 500;
+    }
+}

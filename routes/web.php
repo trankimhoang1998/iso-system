@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\DocumentController;
 use App\Http\Controllers\Level1\Level1Controller;
+use App\Http\Controllers\Level1\DocumentController as Level1DocumentController;
 use App\Http\Controllers\Level2\Level2Controller;
 use App\Http\Controllers\Level3\Level3Controller;
 use Illuminate\Support\Facades\Route;
@@ -73,7 +74,16 @@ Route::middleware(['auth', 'role:0'])->prefix('admin')->name('admin.')->group(fu
 // Level 1 (Ban ISO) routes
 Route::middleware(['auth', 'role:1'])->prefix('level1')->name('level1.')->group(function () {
     Route::get('/dashboard', [Level1Controller::class, 'dashboard'])->name('dashboard');
-    Route::get('/documents', [Level1Controller::class, 'documents'])->name('documents');
+    
+    // Documents management
+    Route::get('/documents', [Level1DocumentController::class, 'index'])->name('documents');
+    Route::post('/documents', [Level1DocumentController::class, 'store'])->name('documents.store');
+    Route::get('/documents/{document}/download', [Level1DocumentController::class, 'download'])->name('documents.download');
+    
+    // Document permissions management
+    Route::get('/documents/permissions', [Level1DocumentController::class, 'permissions'])->name('documents.permissions');
+    Route::post('/documents/{document}/grant-permission', [Level1DocumentController::class, 'grantPermission'])->name('documents.grant-permission');
+    Route::delete('/documents/{document}/revoke-permission/{user}', [Level1DocumentController::class, 'revokePermission'])->name('documents.revoke-permission');
 });
 
 // Level 2 (Cơ quan/Phân xưởng) routes
