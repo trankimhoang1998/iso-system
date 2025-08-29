@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\DocumentController;
 use App\Http\Controllers\Level1\Level1Controller;
 use App\Http\Controllers\Level2\Level2Controller;
 use App\Http\Controllers\Level3\Level3Controller;
@@ -54,6 +55,19 @@ Route::middleware(['auth', 'role:0'])->prefix('admin')->name('admin.')->group(fu
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/users', [AdminController::class, 'users'])->name('users');
     Route::post('/users', [AdminController::class, 'createUser'])->name('users.create');
+    Route::get('/users/{user}/edit', [AdminController::class, 'editUser'])->name('users.edit');
+    Route::put('/users/{user}', [AdminController::class, 'updateUser'])->name('users.update');
+    Route::delete('/users/{user}', [AdminController::class, 'deleteUser'])->name('users.delete');
+    
+    // Documents management
+    Route::get('/documents', [DocumentController::class, 'index'])->name('documents');
+    Route::post('/documents', [DocumentController::class, 'store'])->name('documents.store');
+    Route::get('/documents/{document}/edit', [DocumentController::class, 'edit'])->name('documents.edit');
+    Route::put('/documents/{document}', [DocumentController::class, 'update'])->name('documents.update');
+    Route::delete('/documents/{document}', [DocumentController::class, 'destroy'])->name('documents.destroy');
+    Route::get('/documents/{document}/download', [DocumentController::class, 'download'])->name('documents.download');
+    Route::put('/documents/{document}/approve', [DocumentController::class, 'approve'])->name('documents.approve');
+    Route::put('/documents/{document}/revoke', [DocumentController::class, 'revokeApproval'])->name('documents.revoke');
 });
 
 // Level 1 (Ban ISO) routes

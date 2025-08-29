@@ -1472,3 +1472,285 @@
         }
     }
 }
+
+// Level 1 Pagination (Blue theme)
+.level1-pagination {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: $spacing-lg;
+    padding: $spacing-md 0;
+
+    nav {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .pagination {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        .page-item {
+            margin: 0;
+
+            .page-link {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 40px;
+                height: 40px;
+                padding: 8px 12px;
+                border: 1px solid #e9ecef;
+                background: $white;
+                color: $gray;
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: 500;
+                border-radius: 6px;
+                transition: all 0.3s ease;
+
+                &:hover {
+                    background: #f8f9fa;
+                    border-color: $primary-color;
+                    color: $primary-color;
+                }
+
+                @include mobile {
+                    min-width: 36px;
+                    height: 36px;
+                    padding: 6px 10px;
+                    font-size: 13px;
+                }
+            }
+
+            &.active .page-link {
+                background: $primary-color;
+                border-color: $primary-color;
+                color: $white;
+
+                &:hover {
+                    background: $primary-dark;
+                    border-color: $primary-dark;
+                }
+            }
+
+            &.disabled .page-link {
+                background: #f8f9fa;
+                border-color: #e9ecef;
+                color: #6c757d;
+                cursor: not-allowed;
+
+                &:hover {
+                    background: #f8f9fa;
+                    border-color: #e9ecef;
+                    color: #6c757d;
+                }
+            }
+        }
+    }
+
+    &__info {
+        color: #6c757d;
+        font-size: 14px;
+        margin-top: $spacing-sm;
+        text-align: center;
+
+        @include mobile {
+            font-size: 13px;
+        }
+    }
+}
+
+// Level 2 Pagination (Green theme)
+.level2-pagination {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: $spacing-lg;
+    padding: $spacing-md 0;
+
+    nav {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .pagination {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        .page-item {
+            margin: 0;
+
+            .page-link {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 40px;
+                height: 40px;
+                padding: 8px 12px;
+                border: 1px solid #e9ecef;
+                background: $white;
+                color: $gray;
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: 500;
+                border-radius: 6px;
+                transition: all 0.3s ease;
+
+                &:hover {
+                    background: #f8f9fa;
+                    border-color: #28a745;
+                    color: #28a745;
+                }
+
+                @include mobile {
+                    min-width: 36px;
+                    height: 36px;
+                    padding: 6px 10px;
+                    font-size: 13px;
+                }
+            }
+
+            &.active .page-link {
+                background: #28a745;
+                border-color: #28a745;
+                color: $white;
+
+                &:hover {
+                    background: #218838;
+                    border-color: #218838;
+                }
+            }
+
+            &.disabled .page-link {
+                background: #f8f9fa;
+                border-color: #e9ecef;
+                color: #6c757d;
+                cursor: not-allowed;
+
+                &:hover {
+                    background: #f8f9fa;
+                    border-color: #e9ecef;
+                    color: #6c757d;
+                }
+            }
+        }
+    }
+
+    &__info {
+        color: #6c757d;
+        font-size: 14px;
+        margin-top: $spacing-sm;
+        text-align: center;
+
+        @include mobile {
+            font-size: 13px;
+        }
+    }
+}
+
+// Level 3 Pagination (Orange theme)
+.level3-pagination {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: $spacing-lg;
+    padding: $spacing-md 0;
+
+    nav {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .pagination {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        .page-item {
+            margin: 0;
+
+            .page-link {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 40px;
+                height: 40px;
+                padding: 8px 12px;
+                border: 1px solid #e9ecef;
+                background: $white;
+                color: $gray;
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: 500;
+                border-radius: 6px;
+                transition: all 0.3s ease;
+
+                &:hover {
+                    background: #f8f9fa;
+                    border-color: #fd7e14;
+                    color: #fd7e14;
+                }
+
+                @include mobile {
+                    min-width: 36px;
+                    height: 36px;
+                    padding: 6px 10px;
+                    font-size: 13px;
+                }
+            }
+
+            &.active .page-link {
+                background: #fd7e14;
+                border-color: #fd7e14;
+                color: $white;
+
+                &:hover {
+                    background: #e8590c;
+                    border-color: #e8590c;
+                }
+            }
+
+            &.disabled .page-link {
+                background: #f8f9fa;
+                border-color: #e9ecef;
+                color: #6c757d;
+                cursor: not-allowed;
+
+                &:hover {
+                    background: #f8f9fa;
+                    border-color: #e9ecef;
+                    color: #6c757d;
+                }
+            }
+        }
+    }
+
+    &__info {
+        color: #6c757d;
+        font-size: 14px;
+        margin-top: $spacing-sm;
+        text-align: center;
+
+        @include mobile {
+            font-size: 13px;
+        }
+    }
+}
