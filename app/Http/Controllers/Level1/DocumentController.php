@@ -208,4 +208,99 @@ class DocumentController extends Controller
 
         return redirect()->route('level1.documents.permissions')->with('success', 'Đã thu hồi quyền thành công!');
     }
+
+    /**
+     * Show edit document form
+     */
+    public function edit(Document $document)
+    {
+        // Only allow editing own documents or approved documents
+        if ($document->uploaded_by !== auth()->id() && !$document->is_public) {
+            return redirect()->route('level1.documents')->with('error', 'Bạn không có quyền chỉnh sửa tài liệu này!');
+        }
+
+        return view('level1.document-edit', compact('document'));
+    }
+
+    /**
+     * Update document
+     */
+    public function update(Request $request, Document $document)
+    {
+        // Only allow updating own documents or approved documents
+        if ($document->uploaded_by !== auth()->id() && !$document->is_public) {
+            return redirect()->route('level1.documents')->with('error', 'Bạn không có quyền chỉnh sửa tài liệu này!');
+        }
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'document_type' => 'required|in:policy,procedure,form,manual,report,other',
+            'file' => 'nullable|file|max:51200|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt',
+            'version' => 'nullable|string|max:20',
+            'effective_date' => 'nullable|date',
+            'expiry_date' => 'nullable|date|after:effective_date',
+            'tags' => 'nullable|string',
+            'is_public' => 'boolean',
+        ], [
+            'title.required' => 'Vui lòng nhập tiêu đề tài liệu.',
+            'title.max' => 'Tiêu đề không được vượt quá 255 ký tự.',
+            'document_type.required' => 'Vui lòng chọn loại tài liệu.',
+            'document_type.in' => 'Loại tài liệu được chọn không hợp lệ.',
+            'file.max' => 'Kích thước file không được vượt quá 50MB.',
+            'file.mimes' => 'File phải có định dạng: pdf, doc, docx, xls, xlsx, ppt, pptx, txt.',
+            'version.max' => 'Phiên bản không được vượt quá 20 ký tự.',
+            'expiry_date.after' => 'Ngày hết hiệu lực phải sau ngày có hiệu lực.',
+        ]);
+
+        $updateData = [
+            'title' => $request->title,
+            'description' => $request->description,
+            'document_type' => $request->document_type,
+            'version' => $request->version ?: $document->version,
+            'effective_date' => $request->effective_date,
+            'expiry_date' => $request->expiry_date,
+            'is_public' => $request->boolean('is_public', false),
+            'updated_by' => auth()->id(),
+        ];
+
+        // Process tags
+        if ($request->filled('tags')) {
+            $updateData['tags'] = array_map('trim', explode(',', $request->tags));
+        } else {
+            $updateData['tags'] = null;
+        }
+
+        // Handle file upload if new file provided
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            
+            // Delete old file
+            if ($document->file_path && Storage::disk('public')->exists($document->file_path)) {
+                Storage::disk('public')->delete($document->file_path);
+            }
+            
+            // Store new file
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $filePath = $file->storeAs('documents', $fileName, 'public');
+            
+            $updateData['file_name'] = $file->getClientOriginalName();
+            $updateData['file_path'] = $filePath;
+            $updateData['file_type'] = $file->getClientOriginalExtension();
+            $updateData['file_size'] = $file->getSize();
+            
+            // Auto-increment version if file changed
+            $versionParts = explode('.', $document->version);
+            if (count($versionParts) >= 2) {
+                $versionParts[1] = (int)$versionParts[1] + 1;
+                $updateData['version'] = implode('.', $versionParts);
+            } else {
+                $updateData['version'] = $document->version . '.1';
+            }
+        }
+
+        $document->update($updateData);
+
+        return redirect()->route('level1.documents')->with('success', 'Cập nhật tài liệu thành công!');
+    }
 }

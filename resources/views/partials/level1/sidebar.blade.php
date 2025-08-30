@@ -31,6 +31,15 @@
                 </a>
             </li>
             <li class="level1-nav__item">
+                <a href="{{ route('level1.proposals') }}" 
+                   class="level1-nav__link @if(request()->routeIs('level1.proposals*')) level1-nav__link--active @endif">
+                    <svg class="level1-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                    </svg>
+                    Đề xuất sửa đổi
+                </a>
+            </li>
+            <li class="level1-nav__item">
                 <a href="#" class="level1-nav__link">
                     <svg class="level1-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 4v8a2 2 0 002 2h4a2 2 0 002-2v-8M8 11h8"></path>

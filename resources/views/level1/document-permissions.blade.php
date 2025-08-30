@@ -255,7 +255,7 @@
 <script>
 function showGrantModal(documentId, documentTitle) {
     document.getElementById('grantDocumentTitle').textContent = documentTitle;
-    document.getElementById('grantForm').action = `{{ route('level1.documents.grant-permission', '') }}/${documentId}`;
+    document.getElementById('grantForm').action = `/level1/documents/${documentId}/grant-permission`;
     document.getElementById('grantModal').style.display = 'flex';
 }
 
@@ -267,7 +267,7 @@ function hideGrantModal() {
 function showRevokeModal(documentId, userId, userName, documentTitle) {
     document.getElementById('revokeUserName').textContent = userName;
     document.getElementById('revokeDocumentTitle').textContent = documentTitle;
-    document.getElementById('revokeForm').action = `{{ route('level1.documents.revoke-permission', ['', '']) }}/${documentId}/${userId}`;
+    document.getElementById('revokeForm').action = `/level1/documents/${documentId}/revoke-permission/${userId}`;
     document.getElementById('revokeModal').style.display = 'flex';
 }
 
