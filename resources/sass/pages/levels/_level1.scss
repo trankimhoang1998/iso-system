@@ -2432,6 +2432,238 @@
     &__checkbox-text {
         font-weight: 500;
     }
+    
+    &__current-file {
+        margin-bottom: $spacing-md;
+        padding: $spacing-md;
+        background: #f8f9fa;
+        border-radius: 6px;
+        border: 1px solid #e9ecef;
+    }
+}
+
+// Level 1 Document Viewer (giống admin)
+.level1-document-viewer {
+    width: 100%;
+    
+    .level1-document-header {
+        background: $white;
+        border-radius: 8px;
+        padding: $spacing-lg;
+        margin-bottom: $spacing-md;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    // Phần Mô tả
+    .level1-document-description {
+        background: $white;
+        border-radius: 8px;
+        padding: $spacing-lg;
+        margin-bottom: $spacing-md;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        
+        &__title {
+            font-size: 16px;
+            font-weight: $font-weight-bold;
+            color: $gray;
+            margin: 0 0 $spacing-sm 0;
+        }
+        
+        &__content {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #495057;
+        }
+    }
+    
+    // Phần File đính kèm  
+    .level1-document-file {
+        background: $white;
+        border-radius: 8px;
+        padding: $spacing-lg;
+        margin-bottom: $spacing-md;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        
+        &__title {
+            font-size: 16px;
+            font-weight: $font-weight-bold;
+            color: $gray;
+            margin: 0 0 $spacing-sm 0;
+        }
+        
+        &__info {
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: $spacing-md;
+        }
+    }
+    
+    // Phần Thông tin tài liệu
+    .level1-document-info {
+        background: $white;
+        border-radius: 8px;
+        padding: $spacing-lg;
+        margin-bottom: $spacing-md;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        
+        &__title {
+            font-size: 16px;
+            font-weight: $font-weight-bold;
+            color: $gray;
+            margin: 0 0 $spacing-sm 0;
+        }
+        
+        &__grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: $spacing-md;
+            
+            @include mobile {
+                grid-template-columns: 1fr;
+                gap: $spacing-sm;
+            }
+        }
+    }
+    
+    // Phần Tags
+    .level1-document-tags {
+        background: $white;
+        border-radius: 8px;
+        padding: $spacing-lg;
+        margin-bottom: $spacing-md;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        
+        &__title {
+            font-size: 16px;
+            font-weight: $font-weight-bold;
+            color: $gray;
+            margin: 0 0 $spacing-sm 0;
+        }
+        
+        &__list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+    }
+    
+    // Phần Thời hạn hiệu lực
+    .level1-document-dates {
+        background: $white;
+        border-radius: 8px;
+        padding: $spacing-lg;
+        margin-bottom: $spacing-md;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        
+        &__title {
+            font-size: 16px;
+            font-weight: $font-weight-bold;
+            color: $gray;
+            margin: 0 0 $spacing-sm 0;
+        }
+        
+        &__content {
+            display: flex;
+            flex-direction: column;
+            gap: $spacing-sm;
+        }
+    }
+}
+
+// Document meta trong header
+.level1-document-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: $spacing-md;
+    margin-bottom: $spacing-lg;
+    
+    @include mobile {
+        grid-template-columns: 1fr;
+        gap: $spacing-sm;
+    }
+    
+    &__group {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-sm;
+    }
+    
+    &__item {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    &__label {
+        font-size: 12px;
+        font-weight: $font-weight-bold;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    &__value {
+        font-size: 14px;
+        font-weight: 500;
+        color: $gray;
+    }
+}
+
+// Xóa duplicate - đã có trong .level1-document-viewer
+
+.level1-tag {
+    display: inline-block;
+    padding: 4px 8px;
+    background: rgba(70, 130, 180, 0.1);
+    color: $primary-color;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 12px;
+}
+
+.level1-document-access {
+    margin-bottom: $spacing-lg;
+    
+    &__title {
+        font-size: 16px;
+        font-weight: $font-weight-bold;
+        color: $gray;
+        margin: 0 0 $spacing-sm 0;
+    }
+    
+    &__info {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-sm;
+    }
+    
+    &__status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: $spacing-sm;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        
+        &--public {
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+            border: 1px solid rgba(40, 167, 69, 0.2);
+        }
+        
+        &--private {
+            background: rgba(108, 117, 125, 0.1);
+            color: #6c757d;
+            border: 1px solid rgba(108, 117, 125, 0.2);
+        }
+    }
+    
+    &__icon {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+    }
 }
 
 // Level 1 Breadcrumb
@@ -2467,5 +2699,195 @@
         height: 16px;
         color: #6c757d;
         flex-shrink: 0;
+    }
+}
+
+// Level 1 Document Type Badges (giống admin)
+.level1-document-type-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: $font-weight-bold;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    width: fit-content;
+    white-space: nowrap;
+    
+    &--policy {
+        background: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+    }
+    
+    &--procedure {
+        background: rgba(70, 130, 180, 0.1);
+        color: $primary-color;
+    }
+    
+    &--form {
+        background: rgba(40, 167, 69, 0.1);
+        color: #28a745;
+    }
+    
+    &--manual {
+        background: rgba(255, 193, 7, 0.1);
+        color: #ffc107;
+    }
+    
+    &--report {
+        background: rgba(23, 162, 184, 0.1);
+        color: #17a2b8;
+    }
+    
+    &--other {
+        background: rgba(108, 117, 125, 0.1);
+        color: #6c757d;
+    }
+}
+
+// Level 1 Status Badges (giống admin)
+.level1-status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: $font-weight-bold;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    width: fit-content;
+    white-space: nowrap;
+    
+    &--active {
+        background: rgba(40, 167, 69, 0.1);
+        color: #28a745;
+    }
+    
+    &--inactive {
+        background: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+    }
+    
+    &--warning {
+        background: rgba(255, 193, 7, 0.1);
+        color: #ffc107;
+    }
+    
+    &--pending {
+        background: rgba(255, 193, 7, 0.1);
+        color: #ffc107;
+    }
+    
+    &--approved {
+        background: rgba(40, 167, 69, 0.1);
+        color: #28a745;
+    }
+    
+    &--draft {
+        background: rgba(108, 117, 125, 0.1);
+        color: #6c757d;
+    }
+}
+
+// Level 1 Document Date Items (riêng biệt cho từng date)
+
+.level1-document-date {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $spacing-sm;
+    background: #f8f9fa;
+    border-radius: 6px;
+    
+    @include mobile {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    
+    &__label {
+        font-size: 13px;
+        font-weight: $font-weight-bold;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    &__value {
+        font-size: 14px;
+        font-weight: 500;
+        color: $gray;
+    }
+}
+
+// Level 1 File Item
+.level1-file-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-sm;
+    
+    @include mobile {
+        flex-direction: column;
+        align-items: stretch;
+        gap: $spacing-sm;
+    }
+    
+    &__icon {
+        width: 24px;
+        height: 24px;
+        color: $primary-color;
+        flex-shrink: 0;
+    }
+    
+    &__details {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    &__name {
+        font-weight: $font-weight-bold;
+        color: $gray;
+        margin-bottom: 4px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    &__size {
+        font-size: 12px;
+        color: #6c757d;
+        margin-bottom: 2px;
+    }
+    
+    &__type {
+        font-size: 11px;
+        font-weight: $font-weight-bold;
+        color: $primary-color;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+}
+
+// Document Info Items đã có trong .level1-document-viewer
+
+.level1-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    
+    &__label {
+        font-size: 12px;
+        font-weight: $font-weight-bold;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    &__value {
+        font-size: 14px;
+        font-weight: 500;
+        color: $gray;
     }
 }

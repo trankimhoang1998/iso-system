@@ -227,7 +227,20 @@ class DocumentController extends Controller
             return redirect()->route('level1.documents')->with('error', 'Bạn không có quyền chỉnh sửa tài liệu này!');
         }
 
-        return view('level1.document-edit', compact('document'));
+        return view('level1.documents.edit', compact('document'));
+    }
+
+    /**
+     * Show document details
+     */
+    public function show(Document $document)
+    {
+        // Only allow viewing own documents or public documents
+        if (!$document->canUserView(auth()->user())) {
+            return redirect()->route('level1.documents')->with('error', 'Bạn không có quyền xem tài liệu này!');
+        }
+
+        return view('level1.documents.show', compact('document'));
     }
 
     /**

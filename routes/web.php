@@ -85,13 +85,14 @@ Route::middleware(['auth', 'role:1'])->prefix('level1')->name('level1.')->group(
     // Documents management
     Route::get('/documents', [Level1DocumentController::class, 'index'])->name('documents');
     Route::get('/documents/create', [Level1DocumentController::class, 'create'])->name('documents.create');
+    Route::get('/documents/permissions', [Level1DocumentController::class, 'permissions'])->name('documents.permissions');
     Route::post('/documents', [Level1DocumentController::class, 'store'])->name('documents.store');
+    Route::get('/documents/{document}', [Level1DocumentController::class, 'show'])->name('documents.show');
     Route::get('/documents/{document}/download', [Level1DocumentController::class, 'download'])->name('documents.download');
     Route::get('/documents/{document}/edit', [Level1DocumentController::class, 'edit'])->name('documents.edit');
     Route::put('/documents/{document}', [Level1DocumentController::class, 'update'])->name('documents.update');
     
-    // Document permissions management
-    Route::get('/documents/permissions', [Level1DocumentController::class, 'permissions'])->name('documents.permissions');
+    // Document permissions management  
     Route::post('/documents/{document}/grant-permission', [Level1DocumentController::class, 'grantPermission'])->name('documents.grant-permission');
     Route::delete('/documents/{document}/revoke-permission/{user}', [Level1DocumentController::class, 'revokePermission'])->name('documents.revoke-permission');
     

@@ -24,6 +24,13 @@
                 </svg>
                 Quay lại danh sách
             </a>
+            <a href="{{ route('level1.documents.show', $document) }}" class="level1-btn level1-btn--primary">
+                <svg class="level1-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                </svg>
+                Xem chi tiết
+            </a>
         </div>
     </div>
 
@@ -44,6 +51,18 @@
                         @enderror
                     </div>
                 </div>
+
+                <!-- <div class="level1-form__row">
+                    <div class="level1-form__group">
+                        <label class="level1-form__label">Mô tả</label>
+                        <textarea name="description" rows="4" 
+                                  class="level1-form__input @error('description') level1-form__input--error @enderror"
+                                  placeholder="Nhập mô tả tài liệu (tùy chọn)">{{ old('description', $document->description) }}</textarea>
+                        @error('description')
+                        <div class="level1-form__error">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div> -->
 
                 <div class="level1-form__row">
                     <div class="level1-form__group">
@@ -96,7 +115,7 @@
                                 </svg>
                                 <div class="level1-current-file__details">
                                     <div class="level1-current-file__name">{{ $document->file_name }}</div>
-                                    <div class="level1-current-file__size">{{ number_format($document->file_size / 1024, 1) }} KB</div>
+                                    <div class="level1-current-file__size">{{ $document->getFormattedFileSize() }}</div>
                                 </div>
                                 <a href="{{ route('level1.documents.download', $document) }}" 
                                    class="level1-btn level1-btn--sm level1-btn--secondary">Tải xuống</a>
@@ -159,13 +178,13 @@
                             <input type="hidden" name="is_public" value="0">
                             <input type="checkbox" name="is_public" value="1" {{ old('is_public', $document->is_public) ? 'checked' : '' }}
                                    class="level1-form__checkbox">
-                            <span class="level1-form__checkbox-text">Công khai cho tất cả người dùng</span>
+                            <span class="level1-form__checkbox-text">Công khai tài liệu (tất cả người dùng có thể truy cập)</span>
                         </label>
                     </div>
                 </div>
 
                 <div class="level1-form__actions">
-                    <a href="{{ route('level1.documents') }}" class="level1-btn level1-btn--secondary">Hủy</a>
+                    <a href="{{ route('level1.documents.show', $document) }}" class="level1-btn level1-btn--secondary">Hủy</a>
                     <button type="submit" class="level1-btn level1-btn--primary">
                         <svg class="level1-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>

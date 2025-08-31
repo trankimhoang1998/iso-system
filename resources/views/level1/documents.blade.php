@@ -127,6 +127,17 @@
                     <td class="level1-table__cell">{{ $document->created_at->format('d/m/Y H:i') }}</td>
                     <td class="level1-table__cell">
                         <div class="level1-table__actions">
+                            @if($document->canUserView(auth()->user()))
+                            <a href="{{ route('level1.documents.show', $document) }}" 
+                               class="level1-btn level1-btn--sm level1-btn--primary" 
+                               title="Xem chi tiết">
+                                <svg class="level1-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                </svg>
+                            </a>
+                            @endif
+                            
                             @if($document->canUserDownload(auth()->user()))
                             <a href="{{ route('level1.documents.download', $document) }}" 
                                class="level1-btn level1-btn--sm level1-btn--success" 
