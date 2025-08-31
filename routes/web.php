@@ -67,7 +67,9 @@ Route::middleware(['auth', 'role:0'])->prefix('admin')->name('admin.')->group(fu
     
     // Documents management
     Route::get('/documents', [DocumentController::class, 'index'])->name('documents');
+    Route::get('/documents/create', [DocumentController::class, 'create'])->name('documents.create');
     Route::post('/documents', [DocumentController::class, 'store'])->name('documents.store');
+    Route::get('/documents/{document}', [DocumentController::class, 'show'])->name('documents.show');
     Route::get('/documents/{document}/edit', [DocumentController::class, 'edit'])->name('documents.edit');
     Route::put('/documents/{document}', [DocumentController::class, 'update'])->name('documents.update');
     Route::delete('/documents/{document}', [DocumentController::class, 'destroy'])->name('documents.destroy');
@@ -82,6 +84,7 @@ Route::middleware(['auth', 'role:1'])->prefix('level1')->name('level1.')->group(
     
     // Documents management
     Route::get('/documents', [Level1DocumentController::class, 'index'])->name('documents');
+    Route::get('/documents/create', [Level1DocumentController::class, 'create'])->name('documents.create');
     Route::post('/documents', [Level1DocumentController::class, 'store'])->name('documents.store');
     Route::get('/documents/{document}/download', [Level1DocumentController::class, 'download'])->name('documents.download');
     Route::get('/documents/{document}/edit', [Level1DocumentController::class, 'edit'])->name('documents.edit');

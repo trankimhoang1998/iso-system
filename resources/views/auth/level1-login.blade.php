@@ -32,12 +32,6 @@
                class="auth-form__input">
     </div>
 
-    <div class="auth-form__group auth-form__group--checkbox">
-        <label class="auth-form__checkbox-label">
-            <input type="checkbox" name="remember" class="auth-form__checkbox">
-            <span class="auth-form__checkbox-text">Ghi nhớ đăng nhập</span>
-        </label>
-    </div>
 
     <button type="submit" class="auth-form__button">
         ĐĂNG NHẬP

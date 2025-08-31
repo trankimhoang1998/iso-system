@@ -10,12 +10,12 @@
             <p class="admin-page__subtitle">Tải lên và quản lý các tài liệu của hệ thống</p>
         </div>
         <div class="admin-page__actions">
-            <button type="button" class="admin-btn admin-btn--primary" onclick="showUploadModal()">
+            <a href="{{ route('admin.documents.create') }}" class="admin-btn admin-btn--primary">
                 <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                 </svg>
                 Tải lên tài liệu
-            </button>
+            </a>
         </div>
     </div>
 
@@ -118,6 +118,14 @@
                     <td class="admin-table__cell">{{ $document->created_at->format('d/m/Y') }}</td>
                     <td class="admin-table__cell">
                         <div class="admin-table__actions">
+                            <a href="{{ route('admin.documents.show', $document) }}" 
+                               class="admin-table__action-btn admin-table__action-btn--view" 
+                               title="Chi tiết">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                </svg>
+                            </a>
                             <a href="{{ route('admin.documents.download', $document) }}" 
                                class="admin-table__action-btn admin-table__action-btn--download" 
                                title="Tải xuống">
@@ -125,13 +133,13 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                 </svg>
                             </a>
-                            <button class="admin-table__action-btn admin-table__action-btn--edit" 
-                                    title="Chỉnh sửa"
-                                    onclick="editDocument({{ $document->id }})">
+                            <a href="{{ route('admin.documents.edit', $document) }}" 
+                               class="admin-table__action-btn admin-table__action-btn--edit" 
+                               title="Chỉnh sửa">
                                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                 </svg>
-                            </button>
+                            </a>
                             @if($document->status == 'draft')
                             <button class="admin-table__action-btn admin-table__action-btn--approve" 
                                     title="Phê duyệt"

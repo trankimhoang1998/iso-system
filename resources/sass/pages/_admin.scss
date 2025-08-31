@@ -339,6 +339,16 @@
         }
     }
 
+    &__title-section {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+
+        @include mobile {
+            gap: $spacing-sm;
+        }
+    }
+
     &__title {
         color: $gray;
         font-size: 28px;
@@ -359,6 +369,13 @@
     &__actions {
         display: flex;
         gap: $spacing-sm;
+        align-items: center;
+        flex-wrap: wrap;
+
+        @include mobile {
+            width: 100%;
+            justify-content: flex-start;
+        }
     }
 }
 
@@ -745,6 +762,16 @@
             height: 16px;
         }
 
+        &--view {
+            background: rgba(70, 130, 180, 0.1);
+            color: $primary-color;
+
+            &:hover {
+                background: $primary-color;
+                color: $white;
+            }
+        }
+
         &--edit {
             background: rgba(23, 162, 184, 0.1);
             color: #17a2b8;
@@ -840,13 +867,16 @@
 
 // Status Badges
 .admin-status-badge {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     padding: 4px 8px;
     border-radius: 12px;
     font-size: 11px;
     font-weight: $font-weight-bold;
     text-transform: uppercase;
     letter-spacing: 0.3px;
+    width: fit-content;
+    white-space: nowrap;
 
     &--active {
         background: rgba(40, 167, 69, 0.1);
@@ -866,13 +896,16 @@
 
 // Document Type Badges
 .admin-document-type-badge {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     padding: 4px 8px;
     border-radius: 12px;
     font-size: 11px;
     font-weight: $font-weight-bold;
     text-transform: uppercase;
     letter-spacing: 0.3px;
+    width: fit-content;
+    white-space: nowrap;
 
     &--policy {
         background: rgba(220, 53, 69, 0.1);
@@ -1241,5 +1274,387 @@
         font-size: 14px;
         color: $gray;
         font-weight: 500;
+    }
+}
+
+// Admin Document Viewer
+.admin-document-viewer {
+    width: 100%;
+    
+    .admin-document-header {
+        background: $white;
+        border-radius: 8px;
+        padding: $spacing-lg;
+        margin-bottom: $spacing-md;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .admin-document-meta {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: $spacing-md;
+        
+        @include mobile {
+            grid-template-columns: 1fr;
+            gap: $spacing-sm;
+        }
+        
+        &__item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        &__label {
+            font-size: 12px;
+            font-weight: $font-weight-bold;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        &__value {
+            font-size: 14px;
+            font-weight: 500;
+            color: $gray;
+        }
+    }
+    
+    .admin-document-description {
+        background: $white;
+        border-radius: 8px;
+        padding: $spacing-lg;
+        margin-bottom: $spacing-md;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        
+        &__title {
+            font-size: 16px;
+            font-weight: $font-weight-bold;
+            color: $gray;
+            margin: 0 0 $spacing-sm 0;
+        }
+        
+        &__content {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #495057;
+        }
+    }
+    
+    .admin-document-tags {
+        background: $white;
+        border-radius: 8px;
+        padding: $spacing-lg;
+        margin-bottom: $spacing-md;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        
+        &__title {
+            font-size: 16px;
+            font-weight: $font-weight-bold;
+            color: $gray;
+            margin: 0 0 $spacing-sm 0;
+        }
+        
+        &__list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+    }
+    
+    .admin-tag {
+        display: inline-block;
+        padding: 4px 8px;
+        background: rgba(70, 130, 180, 0.1);
+        color: $primary-color;
+        font-size: 12px;
+        font-weight: 500;
+        border-radius: 12px;
+    }
+    
+    .admin-document-dates {
+        background: $white;
+        border-radius: 8px;
+        padding: $spacing-lg;
+        margin-bottom: $spacing-md;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        
+        &__title {
+            font-size: 16px;
+            font-weight: $font-weight-bold;
+            color: $gray;
+            margin: 0 0 $spacing-sm 0;
+        }
+        
+        &__content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: $spacing-md;
+            
+            @include mobile {
+                grid-template-columns: 1fr;
+                gap: $spacing-sm;
+            }
+        }
+    }
+    
+    .admin-document-date {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        
+        &__label {
+            font-size: 12px;
+            font-weight: $font-weight-bold;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        &__value {
+            font-size: 14px;
+            font-weight: 500;
+            color: $gray;
+        }
+    }
+    
+    .admin-document-file {
+        background: $white;
+        border-radius: 8px;
+        padding: $spacing-lg;
+        margin-bottom: $spacing-md;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        
+        &__title {
+            font-size: 16px;
+            font-weight: $font-weight-bold;
+            color: $gray;
+            margin: 0 0 $spacing-sm 0;
+        }
+        
+        &__info {
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: $spacing-md;
+        }
+    }
+    
+    .admin-file-item {
+        display: flex;
+        align-items: center;
+        gap: $spacing-md;
+        
+        &__icon {
+            width: 40px;
+            height: 40px;
+            color: $primary-color;
+            flex-shrink: 0;
+        }
+        
+        &__details {
+            flex: 1;
+            
+            .admin-file-item__name {
+                font-weight: $font-weight-bold;
+                color: $gray;
+                margin-bottom: 2px;
+            }
+            
+            .admin-file-item__size,
+            .admin-file-item__type {
+                font-size: 12px;
+                color: #6c757d;
+            }
+        }
+    }
+    
+    .admin-document-info {
+        background: $white;
+        border-radius: 8px;
+        padding: $spacing-lg;
+        margin-bottom: $spacing-md;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        
+        &__title {
+            font-size: 16px;
+            font-weight: $font-weight-bold;
+            color: $gray;
+            margin: 0 0 $spacing-sm 0;
+        }
+        
+        &__grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: $spacing-md;
+            
+            @include mobile {
+                grid-template-columns: 1fr;
+                gap: $spacing-sm;
+            }
+        }
+    }
+    
+    .admin-info-item {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        
+        &__label {
+            font-size: 12px;
+            font-weight: $font-weight-bold;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        &__value {
+            font-size: 14px;
+            font-weight: 500;
+            color: $gray;
+        }
+    }
+}
+
+// Admin Breadcrumb
+.admin-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: $spacing-sm;
+    
+    &__item {
+        color: $primary-color;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: color 0.3s ease;
+        
+        &:hover {
+            color: $primary-dark;
+        }
+        
+        &--current {
+            color: #6c757d;
+            cursor: default;
+            
+            &:hover {
+                color: #6c757d;
+            }
+        }
+    }
+    
+    &__separator {
+        width: 16px;
+        height: 16px;
+        color: #6c757d;
+        flex-shrink: 0;
+    }
+}
+
+// Admin Document Form
+.admin-document-form {
+    width: 100%;
+}
+
+.admin-card {
+    background: $white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+// Enhanced Admin Form
+.admin-form {
+    padding: $spacing-lg;
+    
+    .admin-modal & {
+        padding: 0;
+    }
+    
+    &__row {
+        margin-bottom: $spacing-lg;
+        
+        &--split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: $spacing-md;
+            
+            @include mobile {
+                grid-template-columns: 1fr;
+                gap: $spacing-md;
+            }
+        }
+        
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+    
+    &__checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        color: $gray;
+        
+        &:hover {
+            color: $primary-color;
+        }
+    }
+    
+    &__checkbox {
+        width: 16px;
+        height: 16px;
+        border: 2px solid #ced4da;
+        border-radius: 3px;
+        background: $white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        
+        &:checked {
+            background: $primary-color;
+            border-color: $primary-color;
+        }
+    }
+    
+    &__checkbox-text {
+        font-weight: 500;
+    }
+    
+    &__current-file {
+        margin-bottom: $spacing-md;
+        padding: $spacing-md;
+        background: #f8f9fa;
+        border-radius: 6px;
+        border: 1px solid #e9ecef;
+    }
+}
+
+.admin-current-file {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    
+    &__icon {
+        width: 32px;
+        height: 32px;
+        color: $primary-color;
+        flex-shrink: 0;
+    }
+    
+    &__details {
+        flex: 1;
+        
+        .admin-current-file__name {
+            font-weight: $font-weight-bold;
+            color: $gray;
+            margin-bottom: 2px;
+        }
+        
+        .admin-current-file__size {
+            font-size: 12px;
+            color: #6c757d;
+        }
     }
 }

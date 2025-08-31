@@ -233,7 +233,6 @@
         color: $gray;
         font-size: 28px;
         font-weight: $font-weight-bold;
-        margin: 0 0 4px 0;
 
         @include mobile {
             font-size: 24px;
@@ -836,200 +835,83 @@
     }
 }
 
-// Level 1 Form
 .level1-form {
-    &__row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: $spacing-md;
-        margin-bottom: $spacing-md;
-
-        &:last-child {
-            margin-bottom: 0;
-        }
-
-        @include mobile {
-            grid-template-columns: 1fr;
-            gap: $spacing-sm;
-        }
-    }
-
     &__group {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-
-        &--full {
-            grid-column: 1 / -1;
-        }
+        margin-bottom: $spacing-md;
     }
 
     &__label {
+        display: block;
         color: $gray;
-        font-size: 14px;
+        font-size: 13px;
         font-weight: $font-weight-bold;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
 
         &--required::after {
             content: ' *';
             color: #dc3545;
-            font-weight: normal;
         }
     }
 
-    &__input, &__textarea, &__select {
+    &__input,
+    &__select {
+        width: 100%;
         padding: 10px 12px;
-        border: 1px solid #e9ecef;
-        border-radius: 6px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
         font-size: 14px;
         color: $gray;
+        background: $white;
         transition: all 0.3s ease;
-        font-family: $font-family;
 
         &:focus {
             outline: none;
             border-color: $primary-color;
-            box-shadow: 0 0 0 3px rgba(70, 130, 180, 0.1);
+            box-shadow: 0 0 0 2px rgba(70, 130, 180, 0.1);
         }
 
-        &::placeholder {
-            color: #6c757d;
+        &--error {
+            border-color: #dc3545;
+            background-color: rgba(220, 53, 69, 0.05);
+            
+            &:focus {
+                border-color: #dc3545;
+                box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.1);
+            }
         }
-    }
-
-    &__textarea {
-        resize: vertical;
-        min-height: 80px;
-    }
-
-    &__help {
-        font-size: 12px;
-        color: #6c757d;
-        margin-top: 4px;
-    }
-
-    &__actions {
-        display: flex;
-        gap: $spacing-sm;
-        margin-top: $spacing-lg;
-        padding-top: $spacing-md;
-        border-top: 1px solid #e9ecef;
-        justify-content: flex-end;
-
-        @include mobile {
-            flex-direction: column;
-        }
-    }
-
-    &__section {
-        margin-bottom: $spacing-lg;
-        
-        &:last-child {
-            margin-bottom: 0;
-        }
-    }
-
-    &__section-title {
-        color: $primary-color;
-        font-size: 18px;
-        font-weight: $font-weight-bold;
-        margin: 0 0 $spacing-md 0;
-        padding-bottom: 8px;
-        border-bottom: 2px solid rgba(70, 130, 180, 0.1);
-    }
-
-    &__checkbox {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        
-        input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-            accent-color: $primary-color;
-        }
-    }
-
-    &__checkbox-label {
-        color: $gray;
-        font-size: 14px;
-        cursor: pointer;
-        margin: 0;
     }
 
     &__error {
         color: #dc3545;
         font-size: 12px;
         margin-top: 4px;
-    }
-
-    &__input--error,
-    &__textarea--error,
-    &__select--error {
-        border-color: #dc3545;
-        
-        &:focus {
-            border-color: #dc3545;
-            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
-        }
-    }
-
-    &__file {
-        padding: 8px 12px;
-        border: 1px solid #e9ecef;
-        border-radius: 6px;
-        font-size: 14px;
-        color: $gray;
-        background: $white;
-        width: 100%;
-
-        &:focus {
-            outline: none;
-            border-color: $primary-color;
-            box-shadow: 0 0 0 3px rgba(70, 130, 180, 0.1);
-        }
-
-        &--error {
-            border-color: #dc3545;
-        }
-    }
-}
-
-// Level 1 File Upload
-.level1-file-upload {
-    &__input {
-        display: none;
-    }
-
-    &__label {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: $spacing-lg;
-        border: 2px dashed #e9ecef;
-        border-radius: 8px;
-        background: #f8f9fa;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-align: center;
-
-        &:hover {
-            border-color: $primary-color;
-            background: rgba(70, 130, 180, 0.05);
-        }
-    }
-
-    &__icon {
-        width: 32px;
-        height: 32px;
-        color: #6c757d;
-        margin-bottom: 8px;
-    }
-
-    span {
-        font-size: 14px;
-        color: $gray;
         font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        &::before {
+            content: '⚠';
+            font-size: 10px;
+        }
+    }
+
+    &__help {
+        color: #6c757d;
+        font-size: 11px;
+        margin-top: 4px;
+        font-style: italic;
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: $spacing-sm;
+        margin-top: $spacing-lg;
+        padding-top: $spacing-md;
+        border-top: 1px solid #e9ecef;
     }
 }
 
@@ -1339,7 +1221,6 @@
     background: $white;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: $spacing-lg;
     margin-bottom: $spacing-lg;
 
     &:last-child {
@@ -1347,108 +1228,70 @@
     }
 }
 
-// Additional Level 1 Form Components
-.level1-form {
-    &__group {
-        &--half {
-            flex: 0 0 calc(50% - #{$spacing-md * 0.5});
-
-            @include mobile {
-                flex: 0 0 100%;
-            }
-        }
+.level1-form  {
+    padding: $spacing-lg;
+    
+    .admin-modal & {
+        padding: 0;
     }
-
-    &__file {
-        padding: 10px 12px;
-        border: 2px dashed #e9ecef;
-        border-radius: 6px;
-        font-size: 14px;
-        color: $gray;
-        transition: all 0.3s ease;
-        cursor: pointer;
+    
+    &__row {
+        margin-bottom: $spacing-lg;
         
-        &:hover {
-            border-color: $primary-color;
-            background: rgba(70, 130, 180, 0.05);
-        }
-
-        &:focus {
-            outline: none;
-            border-color: $primary-color;
-            box-shadow: 0 0 0 3px rgba(70, 130, 180, 0.1);
-        }
-
-        &--error {
-            border-color: #dc3545;
-        }
-    }
-
-    &__error {
-        display: block;
-        margin-top: 4px;
-        color: #dc3545;
-        font-size: 12px;
-        font-weight: 500;
-    }
-
-    &__input, &__textarea, &__select {
-        &--error {
-            border-color: #dc3545;
+        &--split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: $spacing-md;
             
-            &:focus {
-                border-color: #dc3545;
-                box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+            @include mobile {
+                grid-template-columns: 1fr;
+                gap: $spacing-md;
             }
         }
+        
+        &:last-child {
+            margin-bottom: 0;
+        }
     }
-
+    
     &__checkbox-label {
-        color: $gray;
-        font-size: 14px;
-        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
         cursor: pointer;
-        user-select: none;
-
+        font-size: 14px;
+        color: $gray;
+        
         &:hover {
             color: $primary-color;
         }
     }
-
-    // File display components
+    
+    &__checkbox {
+        width: 16px;
+        height: 16px;
+        border: 2px solid #ced4da;
+        border-radius: 3px;
+        background: $white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        
+        &:checked {
+            background: $primary-color;
+            border-color: $primary-color;
+        }
+    }
+    
+    &__checkbox-text {
+        font-weight: 500;
+    }
+    
     &__current-file {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 12px;
+        margin-bottom: $spacing-md;
+        padding: $spacing-md;
         background: #f8f9fa;
         border-radius: 6px;
         border: 1px solid #e9ecef;
-    }
-
-    &__file-info {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    &__file-icon {
-        width: 24px;
-        height: 24px;
-        color: #6c757d;
-        flex-shrink: 0;
-    }
-
-    &__file-name {
-        font-weight: $font-weight-bold;
-        color: $gray;
-        font-size: 14px;
-        margin-bottom: 2px;
-    }
-
-    &__file-meta {
-        color: #6c757d;
-        font-size: 12px;
     }
 }
 
@@ -2086,44 +1929,40 @@
 
 // File upload component
 .level1-file-upload {
-    position: relative;
-    border: 2px dashed $border-color;
-    border-radius: $border-radius-md;
-    padding: $spacing-xl;
-    text-align: center;
-    background: $bg-light;
-    transition: border-color 0.2s ease;
-
-    &:hover {
-        border-color: $primary-color;
-    }
-
     &__input {
-        position: absolute;
-        opacity: 0;
-        width: 100%;
-        height: 100%;
-        cursor: pointer;
+        display: none;
     }
 
     &__label {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: $spacing-sm;
+        justify-content: center;
+        padding: $spacing-lg;
+        border: 2px dashed #e9ecef;
+        border-radius: 8px;
+        background: #f8f9fa;
         cursor: pointer;
-        color: $text-muted;
-        font-size: $font-size-sm;
+        transition: all 0.3s ease;
+        text-align: center;
 
-        span {
-            font-weight: $font-weight-medium;
+        &:hover {
+            border-color: $primary-color;
+            background: rgba(70, 130, 180, 0.05);
         }
     }
 
     &__icon {
-        width: 3rem;
-        height: 3rem;
-        color: $text-muted;
+        width: 32px;
+        height: 32px;
+        color: #6c757d;
+        margin-bottom: 8px;
+    }
+
+    span {
+        font-size: 14px;
+        color: $gray;
+        font-weight: 500;
     }
 }
 
@@ -2427,4 +2266,206 @@
 // Utility classes
 .level1-text--muted {
     color: $text-muted !important;
+}
+
+// Level 1 Document Form
+.level1-document-form {
+    width: 100%;
+}
+
+.level1-card {
+    background: $white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+// Current File Display
+.level1-form__current-file {
+    margin-bottom: $spacing-md;
+}
+
+.level1-current-file {
+    display: flex;
+    align-items: center;
+    padding: $spacing-md;
+    background: $bg-light;
+    border: 1px solid $border-color;
+    border-radius: 6px;
+    gap: $spacing-sm;
+    
+    &__icon {
+        width: 20px;
+        height: 20px;
+        color: $primary-color;
+        flex-shrink: 0;
+    }
+    
+    &__details {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    &__name {
+        font-weight: 500;
+        color: $text-primary;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    &__size {
+        font-size: 0.875rem;
+        color: $text-muted;
+        margin-top: 2px;
+    }
+}
+
+// Enhanced Level 1 Form
+.level1-form {
+    &__group {
+        margin-bottom: $spacing-md;
+    }
+
+    &__label {
+        display: block;
+        color: $gray;
+        font-size: 13px;
+        font-weight: $font-weight-bold;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+
+        &--required::after {
+            content: ' *';
+            color: #dc3545;
+        }
+    }
+
+    &__input,
+    &__select {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        font-size: 14px;
+        color: $gray;
+        background: $white;
+        transition: all 0.3s ease;
+
+        &:focus {
+            outline: none;
+            border-color: $primary-color;
+            box-shadow: 0 0 0 2px rgba(70, 130, 180, 0.1);
+        }
+
+        &--error {
+            border-color: #dc3545;
+            background-color: rgba(220, 53, 69, 0.05);
+            
+            &:focus {
+                border-color: #dc3545;
+                box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.1);
+            }
+        }
+    }
+
+    &__error {
+        color: #dc3545;
+        font-size: 12px;
+        margin-top: 4px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        &::before {
+            content: '⚠';
+            font-size: 10px;
+        }
+    }
+
+    &__help {
+        color: #6c757d;
+        font-size: 11px;
+        margin-top: 4px;
+        font-style: italic;
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: $spacing-sm;
+        margin-top: $spacing-lg;
+        padding-top: $spacing-md;
+        border-top: 1px solid #e9ecef;
+    }
+    
+    &__checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        color: $gray;
+        
+        &:hover {
+            color: $primary-color;
+        }
+    }
+    
+    &__checkbox {
+        width: 16px;
+        height: 16px;
+        border: 2px solid #ced4da;
+        border-radius: 3px;
+        background: $white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        
+        &:checked {
+            background: $primary-color;
+            border-color: $primary-color;
+        }
+    }
+    
+    &__checkbox-text {
+        font-weight: 500;
+    }
+}
+
+// Level 1 Breadcrumb
+.level1-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: $spacing-sm;
+    
+    &__item {
+        color: $primary-color;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: color 0.3s ease;
+        
+        &:hover {
+            color: $primary-dark;
+        }
+        
+        &--current {
+            color: #6c757d;
+            cursor: default;
+            
+            &:hover {
+                color: #6c757d;
+            }
+        }
+    }
+    
+    &__separator {
+        width: 16px;
+        height: 16px;
+        color: #6c757d;
+        flex-shrink: 0;
+    }
 }

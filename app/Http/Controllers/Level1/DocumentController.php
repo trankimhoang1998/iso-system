@@ -50,6 +50,14 @@ class DocumentController extends Controller
     }
 
     /**
+     * Show create document form
+     */
+    public function create()
+    {
+        return view('level1.documents.create');
+    }
+
+    /**
      * Upload new document
      */
     public function store(Request $request)

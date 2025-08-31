@@ -111,24 +111,28 @@ class DocumentController extends Controller
     }
 
     /**
-     * Get document data for editing
+     * Show document detail page
+     */
+    public function show(Document $document)
+    {
+        $document->load(['uploader', 'approver']);
+        return view('admin.documents.show', compact('document'));
+    }
+
+    /**
+     * Show create document form
+     */
+    public function create()
+    {
+        return view('admin.documents.create');
+    }
+
+    /**
+     * Show edit document form
      */
     public function edit(Document $document)
     {
-        return response()->json([
-            'success' => true,
-            'document' => [
-                'id' => $document->id,
-                'title' => $document->title,
-                'description' => $document->description,
-                'document_type' => $document->document_type,
-                'version' => $document->version,
-                'effective_date' => $document->effective_date ? $document->effective_date->format('Y-m-d') : null,
-                'expiry_date' => $document->expiry_date ? $document->expiry_date->format('Y-m-d') : null,
-                'tags' => $document->tags ? implode(', ', $document->tags) : '',
-                'is_public' => $document->is_public,
-            ]
-        ]);
+        return view('admin.documents.edit', compact('document'));
     }
 
     /**
