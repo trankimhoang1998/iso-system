@@ -12,6 +12,7 @@ class Proposal extends Model
     protected $fillable = [
         'user_id',
         'document_id',
+        'level2_user_id',
         'title',
         'proposal_type',
         'priority',
@@ -41,6 +42,11 @@ class Proposal extends Model
     public function responder()
     {
         return $this->belongsTo(User::class, 'responded_by');
+    }
+
+    public function level2User()
+    {
+        return $this->belongsTo(User::class, 'level2_user_id');
     }
 
     public function getProposalTypeName()

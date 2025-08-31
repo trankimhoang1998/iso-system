@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Level2;
+namespace App\Http\Controllers\Level3;
 
 use App\Http\Controllers\Controller;
 use App\Models\Document;
 use App\Models\Proposal;
 use App\Models\DocumentPermission;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,11 +16,8 @@ class ProposalController extends Controller
     {
         $user = Auth::user();
         
-        // Get proposals created by this Level 2 user OR proposals sent to this Level 2 user from Level 3
-        $query = Proposal::where(function($q) use ($user) {
-            $q->where('user_id', $user->id)  // Proposals created by Level 2 user
-              ->orWhere('level2_user_id', $user->id); // Proposals sent to Level 2 user from Level 3
-        })->with(['document', 'user', 'level2User']);
+        $query = Proposal::where('user_id', $user->id)
+            ->with(['document', 'user']);
 
         // Apply filters
         if ($request->filled('search')) {
@@ -38,15 +36,6 @@ class ProposalController extends Controller
             $query->where('proposal_type', $request->proposal_type);
         }
 
-        // Filter by proposal source (own proposals vs received from Level 3)
-        if ($request->filled('source')) {
-            if ($request->source === 'own') {
-                $query->where('user_id', $user->id);
-            } elseif ($request->source === 'received') {
-                $query->where('level2_user_id', $user->id)->where('user_id', '!=', $user->id);
-            }
-        }
-
         $proposals = $query->orderBy('created_at', 'desc')->paginate(20);
         
         // Get available documents for create modal
@@ -55,7 +44,10 @@ class ProposalController extends Controller
               ->where('can_view', true);
         })->get();
 
-        return view('level2.proposals', compact('proposals', 'availableDocuments'));
+        // Get Level 2 users to submit proposals to
+        $level2Users = User::where('role', 2)->get();
+
+        return view('level3.proposals', compact('proposals', 'availableDocuments', 'level2Users'));
     }
 
     public function store(Request $request)
@@ -64,6 +56,7 @@ class ProposalController extends Controller
         
         $request->validate([
             'document_id' => 'required|exists:documents,id',
+            'level2_user_id' => 'required|exists:users,id',
             'title' => 'required|string|max:255',
             'proposal_type' => 'required|in:content_correction,format_improvement,additional_info,process_optimization,other',
             'priority' => 'required|in:low,medium,high,urgent',
@@ -71,6 +64,15 @@ class ProposalController extends Controller
             'proposed_content' => 'nullable|string',
             'reason' => 'nullable|string'
         ]);
+
+        // Check if the selected user is actually Level 2
+        $level2User = User::where('id', $request->level2_user_id)
+            ->where('role', 2)
+            ->first();
+            
+        if (!$level2User) {
+            return back()->with('error', 'Người nhận đề xuất không hợp lệ');
+        }
 
         // Check if user has permission to access this document
         $hasPermission = DocumentPermission::where('document_id', $request->document_id)
@@ -85,6 +87,7 @@ class ProposalController extends Controller
         Proposal::create([
             'user_id' => $user->id,
             'document_id' => $request->document_id,
+            'level2_user_id' => $request->level2_user_id, // Level 3 proposals go to Level 2
             'title' => $request->title,
             'proposal_type' => $request->proposal_type,
             'priority' => $request->priority,
@@ -94,7 +97,7 @@ class ProposalController extends Controller
             'status' => 'pending'
         ]);
 
-        return redirect()->route('level2.proposals')->with('success', 'Đề xuất đã được gửi thành công');
+        return redirect()->route('level3.proposals')->with('success', 'Đề xuất đã được gửi đến cấp 2 thành công');
     }
 
     public function show(Proposal $proposal)
@@ -106,7 +109,7 @@ class ProposalController extends Controller
 
         $proposal->load(['document', 'user']);
         
-        return view('level2.proposal-detail', compact('proposal'));
+        return view('level3.proposal-detail', compact('proposal'));
     }
 
     public function edit(Proposal $proposal)
@@ -121,7 +124,9 @@ class ProposalController extends Controller
               ->where('can_view', true);
         })->get();
 
-        return view('level2.proposal-edit', compact('proposal', 'availableDocuments'));
+        $level2Users = User::where('role', 2)->get();
+
+        return view('level3.proposal-edit', compact('proposal', 'availableDocuments', 'level2Users'));
     }
 
     public function update(Request $request, Proposal $proposal)
@@ -133,6 +138,7 @@ class ProposalController extends Controller
 
         $request->validate([
             'document_id' => 'required|exists:documents,id',
+            'level2_user_id' => 'required|exists:users,id',
             'title' => 'required|string|max:255',
             'proposal_type' => 'required|in:content_correction,format_improvement,additional_info,process_optimization,other',
             'priority' => 'required|in:low,medium,high,urgent',
@@ -140,6 +146,15 @@ class ProposalController extends Controller
             'proposed_content' => 'nullable|string',
             'reason' => 'nullable|string'
         ]);
+
+        // Check if the selected user is actually Level 2
+        $level2User = User::where('id', $request->level2_user_id)
+            ->where('role', 2)
+            ->first();
+            
+        if (!$level2User) {
+            return back()->with('error', 'Người nhận đề xuất không hợp lệ');
+        }
 
         // Check if user has permission to access this document
         $hasPermission = DocumentPermission::where('document_id', $request->document_id)
@@ -153,6 +168,7 @@ class ProposalController extends Controller
 
         $proposal->update([
             'document_id' => $request->document_id,
+            'level2_user_id' => $request->level2_user_id,
             'title' => $request->title,
             'proposal_type' => $request->proposal_type,
             'priority' => $request->priority,
@@ -161,7 +177,7 @@ class ProposalController extends Controller
             'reason' => $request->reason
         ]);
 
-        return redirect()->route('level2.proposals')->with('success', 'Đề xuất đã được cập nhật thành công');
+        return redirect()->route('level3.proposals')->with('success', 'Đề xuất đã được cập nhật thành công');
     }
 
     public function destroy(Proposal $proposal)
@@ -173,6 +189,6 @@ class ProposalController extends Controller
 
         $proposal->delete();
 
-        return redirect()->route('level2.proposals')->with('success', 'Đề xuất đã được xóa thành công');
+        return redirect()->route('level3.proposals')->with('success', 'Đề xuất đã được xóa thành công');
     }
 }

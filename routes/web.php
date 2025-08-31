@@ -11,6 +11,8 @@ use App\Http\Controllers\Level2\Level2Controller;
 use App\Http\Controllers\Level2\DocumentController as Level2DocumentController;
 use App\Http\Controllers\Level2\ProposalController as Level2ProposalController;
 use App\Http\Controllers\Level3\Level3Controller;
+use App\Http\Controllers\Level3\DocumentController as Level3DocumentController;
+use App\Http\Controllers\Level3\ProposalController as Level3ProposalController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -117,6 +119,17 @@ Route::middleware(['auth', 'role:2'])->prefix('level2')->name('level2.')->group(
 // Level 3 (Người sử dụng) routes
 Route::middleware(['auth', 'role:3'])->prefix('level3')->name('level3.')->group(function () {
     Route::get('/dashboard', [Level3Controller::class, 'dashboard'])->name('dashboard');
-    Route::get('/documents', [Level3Controller::class, 'documents'])->name('documents');
-    Route::get('/proposals', [Level3Controller::class, 'proposals'])->name('proposals');
+    
+    // Documents management
+    Route::get('/documents', [Level3DocumentController::class, 'index'])->name('documents');
+    Route::get('/documents/{document}/view', [Level3DocumentController::class, 'view'])->name('documents.view');
+    Route::get('/documents/{document}/download', [Level3DocumentController::class, 'download'])->name('documents.download');
+    
+    // Proposals management (submit to Level 2)
+    Route::get('/proposals', [Level3ProposalController::class, 'index'])->name('proposals');
+    Route::post('/proposals', [Level3ProposalController::class, 'store'])->name('proposals.store');
+    Route::get('/proposals/{proposal}', [Level3ProposalController::class, 'show'])->name('proposals.show');
+    Route::get('/proposals/{proposal}/edit', [Level3ProposalController::class, 'edit'])->name('proposals.edit');
+    Route::put('/proposals/{proposal}', [Level3ProposalController::class, 'update'])->name('proposals.update');
+    Route::delete('/proposals/{proposal}', [Level3ProposalController::class, 'destroy'])->name('proposals.destroy');
 });
