@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\IsoDirectiveDocument;
 use App\Models\IsoDirectiveCategory;
-use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,7 +12,7 @@ class IsoDirectiveDocumentController extends Controller
 {
     public function index(Request $request)
     {
-        $query = IsoDirectiveDocument::with(['category', 'uploader', 'department']);
+        $query = IsoDirectiveDocument::with(['category', 'uploader']);
 
         // Search filter
         if ($request->filled('search')) {
@@ -55,8 +54,7 @@ class IsoDirectiveDocumentController extends Controller
     public function create()
     {
         $categories = IsoDirectiveCategory::orderBy('name')->get();
-        $departments = Department::orderBy('name')->get();
-        return view('admin.iso-directive-documents.create', compact('categories', 'departments'));
+        return view('admin.iso-directive-documents.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -65,7 +63,6 @@ class IsoDirectiveDocumentController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:iso_directive_categories,id',
-            'department_id' => 'nullable|exists:departments,id',
             'status' => 'nullable|in:draft,approved,archived',
             'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:51200', // 50MB max
         ]);
@@ -78,7 +75,6 @@ class IsoDirectiveDocumentController extends Controller
             'title' => $request->title,
             'description' => $request->description,
             'category_id' => $request->category_id,
-            'department_id' => $request->department_id,
             'status' => $request->status ?? 'draft',
             'file_name' => $fileName,
             'file_path' => $filePath,
@@ -93,15 +89,14 @@ class IsoDirectiveDocumentController extends Controller
 
     public function show(IsoDirectiveDocument $isoDirectiveDocument)
     {
-        $isoDirectiveDocument->load(['category', 'uploader', 'department']);
+        $isoDirectiveDocument->load(['category', 'uploader']);
         return view('admin.iso-directive-documents.show', compact('isoDirectiveDocument'));
     }
 
     public function edit(IsoDirectiveDocument $isoDirectiveDocument)
     {
         $categories = IsoDirectiveCategory::orderBy('name')->get();
-        $departments = Department::orderBy('name')->get();
-        return view('admin.iso-directive-documents.edit', compact('isoDirectiveDocument', 'categories', 'departments'));
+        return view('admin.iso-directive-documents.edit', compact('isoDirectiveDocument', 'categories'));
     }
 
     public function update(Request $request, IsoDirectiveDocument $isoDirectiveDocument)
@@ -110,7 +105,6 @@ class IsoDirectiveDocumentController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:iso_directive_categories,id',
-            'department_id' => 'nullable|exists:departments,id',
             'status' => 'nullable|in:draft,approved,archived',
             'file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:51200', // 50MB max
         ]);
@@ -119,7 +113,6 @@ class IsoDirectiveDocumentController extends Controller
             'title' => $request->title,
             'description' => $request->description,
             'category_id' => $request->category_id,
-            'department_id' => $request->department_id,
             'status' => $request->status ?? $isoDirectiveDocument->status,
         ];
 

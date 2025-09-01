@@ -11,7 +11,6 @@ class ManagementDocument extends Model
         'title',
         'description',
         'category_id',
-        'department_id',
         'file_name',
         'file_path',
         'file_type',
@@ -42,10 +41,6 @@ class ManagementDocument extends Model
         return $this->belongsTo(ManagementDocumentCategory::class);
     }
 
-    public function department(): BelongsTo
-    {
-        return $this->belongsTo(Department::class);
-    }
 
     public function approver(): BelongsTo
     {

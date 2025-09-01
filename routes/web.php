@@ -92,27 +92,55 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::resource('internal-document-categories', InternalDocumentCategoryController::class)->except(['show']);
         Route::resource('management-document-categories', ManagementDocumentCategoryController::class)->except(['show']);
         
-        // New Documents management - 4 separate types (Admin only - create, edit, delete)
-        Route::resource('iso-directive-documents', IsoDirectiveDocumentController::class)->except(['index', 'show']);
-        Route::resource('iso-system-documents', IsoSystemDocumentController::class)->except(['index', 'show']);
-        Route::resource('internal-documents', InternalDocumentController::class)->except(['index', 'show']);
-        Route::resource('management-documents', ManagementDocumentController::class)->except(['index', 'show']);
     });
     
-    // Document viewing - All authenticated users can access
+    // Document Index Routes - All authenticated users can access
     Route::get('iso-directive-documents', [IsoDirectiveDocumentController::class, 'index'])->name('iso-directive-documents.index');
+    Route::get('iso-system-documents', [IsoSystemDocumentController::class, 'index'])->name('iso-system-documents.index');
+    Route::get('internal-documents', [InternalDocumentController::class, 'index'])->name('internal-documents.index');
+    Route::get('management-documents', [ManagementDocumentController::class, 'index'])->name('management-documents.index');
+    
+    // Document Management - Admin & Ban ISO (roles 0,1) full access
+    Route::middleware(['role:0|1'])->group(function () {
+        // ISO Directive Documents
+        Route::get('iso-directive-documents/create', [IsoDirectiveDocumentController::class, 'create'])->name('iso-directive-documents.create');
+        Route::post('iso-directive-documents', [IsoDirectiveDocumentController::class, 'store'])->name('iso-directive-documents.store');
+        Route::get('iso-directive-documents/{isoDirectiveDocument}/edit', [IsoDirectiveDocumentController::class, 'edit'])->name('iso-directive-documents.edit');
+        Route::put('iso-directive-documents/{isoDirectiveDocument}', [IsoDirectiveDocumentController::class, 'update'])->name('iso-directive-documents.update');
+        Route::delete('iso-directive-documents/{isoDirectiveDocument}', [IsoDirectiveDocumentController::class, 'destroy'])->name('iso-directive-documents.destroy');
+        
+        // ISO System Documents
+        Route::get('iso-system-documents/create', [IsoSystemDocumentController::class, 'create'])->name('iso-system-documents.create');
+        Route::post('iso-system-documents', [IsoSystemDocumentController::class, 'store'])->name('iso-system-documents.store');
+        Route::get('iso-system-documents/{isoSystemDocument}/edit', [IsoSystemDocumentController::class, 'edit'])->name('iso-system-documents.edit');
+        Route::put('iso-system-documents/{isoSystemDocument}', [IsoSystemDocumentController::class, 'update'])->name('iso-system-documents.update');
+        Route::delete('iso-system-documents/{isoSystemDocument}', [IsoSystemDocumentController::class, 'destroy'])->name('iso-system-documents.destroy');
+        
+        // Internal Documents
+        Route::get('internal-documents/create', [InternalDocumentController::class, 'create'])->name('internal-documents.create');
+        Route::post('internal-documents', [InternalDocumentController::class, 'store'])->name('internal-documents.store');
+        Route::get('internal-documents/{internalDocument}/edit', [InternalDocumentController::class, 'edit'])->name('internal-documents.edit');
+        Route::put('internal-documents/{internalDocument}', [InternalDocumentController::class, 'update'])->name('internal-documents.update');
+        Route::delete('internal-documents/{internalDocument}', [InternalDocumentController::class, 'destroy'])->name('internal-documents.destroy');
+        
+        // Management Documents
+        Route::get('management-documents/create', [ManagementDocumentController::class, 'create'])->name('management-documents.create');
+        Route::post('management-documents', [ManagementDocumentController::class, 'store'])->name('management-documents.store');
+        Route::get('management-documents/{managementDocument}/edit', [ManagementDocumentController::class, 'edit'])->name('management-documents.edit');
+        Route::put('management-documents/{managementDocument}', [ManagementDocumentController::class, 'update'])->name('management-documents.update');
+        Route::delete('management-documents/{managementDocument}', [ManagementDocumentController::class, 'destroy'])->name('management-documents.destroy');
+    });
+    
+    // View and Download Routes - All authenticated users can access (must be after management routes)
     Route::get('iso-directive-documents/{isoDirectiveDocument}', [IsoDirectiveDocumentController::class, 'show'])->name('iso-directive-documents.show');
     Route::get('iso-directive-documents/{isoDirectiveDocument}/download', [IsoDirectiveDocumentController::class, 'download'])->name('iso-directive-documents.download');
     
-    Route::get('iso-system-documents', [IsoSystemDocumentController::class, 'index'])->name('iso-system-documents.index');
     Route::get('iso-system-documents/{isoSystemDocument}', [IsoSystemDocumentController::class, 'show'])->name('iso-system-documents.show');
     Route::get('iso-system-documents/{isoSystemDocument}/download', [IsoSystemDocumentController::class, 'download'])->name('iso-system-documents.download');
     
-    Route::get('internal-documents', [InternalDocumentController::class, 'index'])->name('internal-documents.index');
     Route::get('internal-documents/{internalDocument}', [InternalDocumentController::class, 'show'])->name('internal-documents.show');
     Route::get('internal-documents/{internalDocument}/download', [InternalDocumentController::class, 'download'])->name('internal-documents.download');
     
-    Route::get('management-documents', [ManagementDocumentController::class, 'index'])->name('management-documents.index');
     Route::get('management-documents/{managementDocument}', [ManagementDocumentController::class, 'show'])->name('management-documents.show');
     Route::get('management-documents/{managementDocument}/download', [ManagementDocumentController::class, 'download'])->name('management-documents.download');
 });

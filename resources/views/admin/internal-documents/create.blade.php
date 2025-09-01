@@ -74,8 +74,8 @@
                     </div>
                     
                     <div class="admin-form__group">
-                        <label class="admin-form__label">Phòng ban</label>
-                        <select name="department_id" id="department_id"
+                        <label class="admin-form__label admin-form__label--required">Phòng ban</label>
+                        <select name="department_id" id="department_id" required
                                 class="admin-form__select @error('department_id') admin-form__select--error @enderror">
                             <option value="">-- Chọn phòng ban --</option>
                             @foreach($departments as $department)

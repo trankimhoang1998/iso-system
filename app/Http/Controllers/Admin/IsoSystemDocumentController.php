@@ -34,6 +34,12 @@ class IsoSystemDocumentController extends Controller
             $query->where('status', $request->status);
         }
 
+        // Department filter for roles 2,3 - only see documents from their department
+        $user = auth()->user();
+        if (in_array($user->role, [2, 3]) && $user->department_id) {
+            $query->where('department_id', $user->department_id);
+        }
+
         // Uploader filter
         if ($request->filled('uploader')) {
             $query->whereHas('uploader', function($q) use ($request) {
@@ -65,7 +71,7 @@ class IsoSystemDocumentController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:iso_system_categories,id',
-            'department_id' => 'nullable|exists:departments,id',
+            'department_id' => 'required|exists:departments,id',
             'status' => 'nullable|in:draft,approved,archived',
             'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:51200', // 50MB max
         ]);
@@ -93,6 +99,12 @@ class IsoSystemDocumentController extends Controller
 
     public function show(IsoSystemDocument $isoSystemDocument)
     {
+        // Check if user can access this document
+        $user = auth()->user();
+        if (in_array($user->role, [2, 3]) && $user->department_id && $isoSystemDocument->department_id !== $user->department_id) {
+            abort(404);
+        }
+        
         $isoSystemDocument->load(['category', 'uploader', 'department']);
         return view('admin.iso-system-documents.show', compact('isoSystemDocument'));
     }
@@ -110,7 +122,7 @@ class IsoSystemDocumentController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:iso_system_categories,id',
-            'department_id' => 'nullable|exists:departments,id',
+            'department_id' => 'required|exists:departments,id',
             'status' => 'nullable|in:draft,approved,archived',
             'file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:51200', // 50MB max
         ]);
@@ -163,6 +175,12 @@ class IsoSystemDocumentController extends Controller
 
     public function download(IsoSystemDocument $isoSystemDocument)
     {
+        // Check if user can access this document
+        $user = auth()->user();
+        if (in_array($user->role, [2, 3]) && $user->department_id && $isoSystemDocument->department_id !== $user->department_id) {
+            abort(404);
+        }
+        
         if (Storage::disk('public')->exists($isoSystemDocument->file_path)) {
             return Storage::disk('public')->download($isoSystemDocument->file_path, $isoSystemDocument->file_name);
         }

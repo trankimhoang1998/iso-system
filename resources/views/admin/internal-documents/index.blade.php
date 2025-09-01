@@ -9,6 +9,7 @@
             <h1 class="admin-page__title">Tài liệu nội bộ</h1>
             <p class="admin-page__subtitle">Quản lý tài liệu nội bộ của hệ thống</p>
         </div>
+        @if(in_array(auth()->user()->role, [0, 1]))
         <div class="admin-page__actions">
             <a href="{{ route('admin.internal-documents.create') }}" class="admin-btn admin-btn--primary">
                 <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -17,6 +18,7 @@
                 Thêm tài liệu
             </a>
         </div>
+        @endif
     </div>
 
     <!-- Filter Form -->
@@ -78,6 +80,7 @@
                     <th class="admin-table__header">ID</th>
                     <th class="admin-table__header">Tiêu đề</th>
                     <th class="admin-table__header">Danh mục</th>
+                    <th class="admin-table__header">Phòng ban</th>
                     <th class="admin-table__header">Trạng thái</th>
                     <th class="admin-table__header">Kích thước</th>
                     <th class="admin-table__header">Người tải lên</th>
@@ -102,6 +105,7 @@
                             {{ $document->category->name ?? 'Không có danh mục' }}
                         </span>
                     </td>
+                    <td class="admin-table__cell">{{ $document->department->name ?? 'N/A' }}</td>
                     <td class="admin-table__cell">
                         <span class="admin-status-badge 
                             @if($document->status == 'approved') admin-status-badge--active 
@@ -132,6 +136,7 @@
                                 </svg>
                             </a>
                             @endif
+                            @if(in_array(auth()->user()->role, [0, 1]))
                             <a href="{{ route('admin.internal-documents.edit', $document) }}" 
                                class="admin-table__action-btn admin-table__action-btn--edit" 
                                title="Chỉnh sửa">
@@ -146,21 +151,30 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                 </svg>
                             </button>
+                            @endif
                         </div>
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="8" class="admin-table__empty">
+                    <td colspan="9" class="admin-table__empty">
                         <div class="admin-empty-state">
                             <svg class="admin-empty-state__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                             </svg>
                             <h3 class="admin-empty-state__title">Chưa có tài liệu nào</h3>
-                            <p class="admin-empty-state__description">Tạo tài liệu nội bộ đầu tiên</p>
+                            <p class="admin-empty-state__description">
+                                @if(in_array(auth()->user()->role, [0, 1]))
+                                    Tạo tài liệu nội bộ đầu tiên
+                                @else
+                                    Hiện tại chưa có tài liệu nội bộ nào
+                                @endif
+                            </p>
+                            @if(in_array(auth()->user()->role, [0, 1]))
                             <a href="{{ route('admin.internal-documents.create') }}" class="admin-empty-state__btn">
                                 Thêm tài liệu đầu tiên
                             </a>
+                            @endif
                         </div>
                     </td>
                 </tr>

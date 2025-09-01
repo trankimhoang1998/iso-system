@@ -26,6 +26,7 @@
                 Tải xuống
             </a>
             @endif
+            @if(in_array(auth()->user()->role, [0, 1]))
             <a href="{{ route('admin.internal-documents.edit', $internalDocument) }}" 
                class="admin-btn admin-btn--primary">
                 <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -33,6 +34,7 @@
                 </svg>
                 Chỉnh sửa
             </a>
+            @endif
         </div>
     </div>
 

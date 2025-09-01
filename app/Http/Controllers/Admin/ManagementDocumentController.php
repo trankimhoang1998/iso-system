@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ManagementDocument;
 use App\Models\ManagementDocumentCategory;
-use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,7 +12,7 @@ class ManagementDocumentController extends Controller
 {
     public function index(Request $request)
     {
-        $query = ManagementDocument::with(['category', 'uploader', 'department']);
+        $query = ManagementDocument::with(['category', 'uploader']);
 
         // Search filter
         if ($request->filled('search')) {
@@ -48,16 +47,13 @@ class ManagementDocumentController extends Controller
 
         // Get all categories for filter
         $categories = ManagementDocumentCategory::orderBy('name')->get();
-        $departments = Department::orderBy('name')->get();
-
-        return view('admin.management-documents.index', compact('documents', 'categories', 'departments'));
+        return view('admin.management-documents.index', compact('documents', 'categories'));
     }
 
     public function create()
     {
         $categories = ManagementDocumentCategory::orderBy('name')->get();
-        $departments = Department::orderBy('name')->get();
-        return view('admin.management-documents.create', compact('categories', 'departments'));
+        return view('admin.management-documents.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -66,7 +62,6 @@ class ManagementDocumentController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:management_document_categories,id',
-            'department_id' => 'nullable|exists:departments,id',
             'status' => 'nullable|in:draft,approved,archived',
             'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:51200', // 50MB max
         ]);
@@ -79,7 +74,6 @@ class ManagementDocumentController extends Controller
             'title' => $request->title,
             'description' => $request->description,
             'category_id' => $request->category_id,
-            'department_id' => $request->department_id,
             'status' => $request->status ?? 'draft',
             'file_name' => $fileName,
             'file_path' => $filePath,
@@ -94,15 +88,14 @@ class ManagementDocumentController extends Controller
 
     public function show(ManagementDocument $managementDocument)
     {
-        $managementDocument->load(['category', 'uploader', 'department']);
+        $managementDocument->load(['category', 'uploader']);
         return view('admin.management-documents.show', compact('managementDocument'));
     }
 
     public function edit(ManagementDocument $managementDocument)
     {
         $categories = ManagementDocumentCategory::orderBy('name')->get();
-        $departments = Department::orderBy('name')->get();
-        return view('admin.management-documents.edit', compact('managementDocument', 'categories', 'departments'));
+        return view('admin.management-documents.edit', compact('managementDocument', 'categories'));
     }
 
     public function update(Request $request, ManagementDocument $managementDocument)
@@ -111,7 +104,6 @@ class ManagementDocumentController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:management_document_categories,id',
-            'department_id' => 'nullable|exists:departments,id',
             'status' => 'nullable|in:draft,approved,archived',
             'file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:51200', // 50MB max
         ]);
@@ -120,7 +112,6 @@ class ManagementDocumentController extends Controller
             'title' => $request->title,
             'description' => $request->description,
             'category_id' => $request->category_id,
-            'department_id' => $request->department_id,
             'status' => $request->status ?? $managementDocument->status,
         ];
 

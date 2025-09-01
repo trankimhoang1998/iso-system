@@ -12,7 +12,6 @@ class IsoDirectiveDocument extends Model
         'title',
         'description',
         'category_id',
-        'department_id',
         'file_name',
         'file_path',
         'file_type',
@@ -39,10 +38,6 @@ class IsoDirectiveDocument extends Model
         return $this->belongsTo(IsoDirectiveCategory::class);
     }
 
-    public function department(): BelongsTo
-    {
-        return $this->belongsTo(Department::class);
-    }
 
 
     /**

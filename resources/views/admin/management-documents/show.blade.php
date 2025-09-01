@@ -26,6 +26,7 @@
                 Tải xuống
             </a>
             @endif
+            @if(in_array(auth()->user()->role, [0, 1]))
             <a href="{{ route('admin.management-documents.edit', $managementDocument) }}" 
                class="admin-btn admin-btn--primary">
                 <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -33,6 +34,7 @@
                 </svg>
                 Chỉnh sửa
             </a>
+            @endif
         </div>
     </div>
 
@@ -45,12 +47,6 @@
                         {{ $managementDocument->category->name ?? 'Không có danh mục' }}
                     </span>
                 </div>
-                @if($managementDocument->department)
-                <div class="admin-document-meta__item">
-                    <span class="admin-document-meta__label">Phòng ban:</span>
-                    <span class="admin-document-meta__value">{{ $managementDocument->department->name }}</span>
-                </div>
-                @endif
                 @if($managementDocument->file_size)
                 <div class="admin-document-meta__item">
                     <span class="admin-document-meta__label">Kích thước:</span>

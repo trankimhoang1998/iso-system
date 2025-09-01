@@ -57,7 +57,7 @@
                     </div>
                 </div>
 
-                <div class="admin-form__row admin-form__row--split">
+                <div class="admin-form__row">
                     <div class="admin-form__group">
                         <label class="admin-form__label admin-form__label--required">Danh mục</label>
                         <select name="category_id" id="category_id" required
@@ -70,22 +70,6 @@
                             @endforeach
                         </select>
                         @error('category_id')
-                        <div class="admin-form__error">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    
-                    <div class="admin-form__group">
-                        <label class="admin-form__label">Phòng ban</label>
-                        <select name="department_id" id="department_id"
-                                class="admin-form__select @error('department_id') admin-form__select--error @enderror">
-                            <option value="">-- Chọn phòng ban --</option>
-                            @foreach($departments as $department)
-                                <option value="{{ $department->id }}" {{ old('department_id', $managementDocument->department_id) == $department->id ? 'selected' : '' }}>
-                                    {{ $department->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('department_id')
                         <div class="admin-form__error">{{ $message }}</div>
                         @enderror
                     </div>
