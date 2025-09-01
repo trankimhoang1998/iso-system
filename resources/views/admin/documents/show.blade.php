@@ -5,7 +5,7 @@
 @section('content')
 <div class="admin-page">
     <div class="admin-breadcrumb">
-        <a href="{{ route('admin.documents') }}" class="admin-breadcrumb__item">Quản lý tài liệu</a>
+        <a href="{{ route('admin.documents.index') }}" class="admin-breadcrumb__item">Quản lý tài liệu</a>
         <svg class="admin-breadcrumb__separator" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
         </svg>
@@ -56,7 +56,7 @@
             <div class="admin-document-meta">
                 <div class="admin-document-meta__item">
                     <span class="admin-document-meta__label">Loại tài liệu:</span>
-                    <span class="admin-document-type-badge admin-document-type-badge--{{ $document->document_type }}">
+                    <span class="admin-document-type-badge admin-document-type-badge--{{ $document->getDocumentTypeCssClass() }}">
                         {{ $document->getDocumentTypeName() }}
                     </span>
                 </div>

@@ -14,7 +14,7 @@ class DocumentController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Document::with(['uploader', 'approver']);
+        $query = Document::with(['uploader', 'approver', 'documentType', 'category']);
 
         // Search filter
         if ($request->filled('search')) {
@@ -26,8 +26,8 @@ class DocumentController extends Controller
         }
 
         // Document type filter
-        if ($request->filled('document_type')) {
-            $query->where('document_type', $request->document_type);
+        if ($request->filled('document_type_id')) {
+            $query->where('document_type_id', $request->document_type_id);
         }
 
         // Status filter
@@ -46,8 +46,33 @@ class DocumentController extends Controller
         
         // Preserve query parameters in pagination links
         $documents->appends($request->all());
+        
+        // Get document type info if filtered
+        $documentType = null;
+        if ($request->filled('document_type_id')) {
+            $documentType = \App\Models\DocumentType::find($request->document_type_id);
+        }
+        
+        // Get all document types for filter
+        $documentTypes = \App\Models\DocumentType::all();
 
-        return view('admin.documents', compact('documents'));
+        return view('admin.documents.index', compact('documents', 'documentType', 'documentTypes'));
+    }
+
+    /**
+     * Show create document form
+     */
+    public function create(Request $request)
+    {
+        $documentTypes = \App\Models\DocumentType::all();
+        
+        // Get document type if specified
+        $selectedDocumentType = null;
+        if ($request->filled('document_type_id')) {
+            $selectedDocumentType = \App\Models\DocumentType::find($request->document_type_id);
+        }
+        
+        return view('admin.documents.create', compact('documentTypes', 'selectedDocumentType'));
     }
 
     /**
@@ -58,23 +83,20 @@ class DocumentController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'document_type' => 'required|in:policy,procedure,form,manual,report,other',
+            'document_type_id' => 'required|exists:document_types,id',
+            'category_id' => 'required|exists:categories,id',
             'file' => 'required|file|max:51200|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt',
-            'version' => 'nullable|string|max:20',
-            'effective_date' => 'nullable|date',
-            'expiry_date' => 'nullable|date|after:effective_date',
-            'tags' => 'nullable|string',
             'is_public' => 'boolean',
         ], [
             'title.required' => 'Vui lòng nhập tiêu đề tài liệu.',
             'title.max' => 'Tiêu đề không được vượt quá 255 ký tự.',
-            'document_type.required' => 'Vui lòng chọn loại tài liệu.',
-            'document_type.in' => 'Loại tài liệu được chọn không hợp lệ.',
+            'document_type_id.required' => 'Vui lòng chọn loại tài liệu.',
+            'document_type_id.exists' => 'Loại tài liệu được chọn không hợp lệ.',
+            'category_id.required' => 'Vui lòng chọn danh mục.',
+            'category_id.exists' => 'Danh mục được chọn không hợp lệ.',
             'file.required' => 'Vui lòng chọn file tải lên.',
             'file.max' => 'Kích thước file không được vượt quá 50MB.',
             'file.mimes' => 'File phải có định dạng: pdf, doc, docx, xls, xlsx, ppt, pptx, txt.',
-            'version.max' => 'Phiên bản không được vượt quá 20 ký tự.',
-            'expiry_date.after' => 'Ngày hết hiệu lực phải sau ngày có hiệu lực.',
         ]);
 
         if ($request->hasFile('file')) {
@@ -82,12 +104,6 @@ class DocumentController extends Controller
             $fileName = time() . '_' . $file->getClientOriginalName();
             $filePath = $file->storeAs('documents', $fileName, 'public');
             
-            // Process tags
-            $tags = null;
-            if ($request->filled('tags')) {
-                $tags = array_map('trim', explode(',', $request->tags));
-            }
-
             Document::create([
                 'title' => $request->title,
                 'description' => $request->description,
@@ -95,19 +111,16 @@ class DocumentController extends Controller
                 'file_path' => $filePath,
                 'file_type' => $file->getClientOriginalExtension(),
                 'file_size' => $file->getSize(),
-                'document_type' => $request->document_type,
-                'version' => $request->version ?: '1.0',
+                'document_type_id' => $request->document_type_id,
+                'category_id' => $request->category_id,
                 'uploaded_by' => auth()->id(),
-                'effective_date' => $request->effective_date,
-                'expiry_date' => $request->expiry_date,
-                'tags' => $tags,
                 'is_public' => $request->boolean('is_public', false),
             ]);
 
-            return redirect()->route('admin.documents')->with('success', 'Tải lên tài liệu thành công!');
+            return redirect()->route('admin.documents.index')->with('success', 'Tải lên tài liệu thành công!');
         }
 
-        return redirect()->route('admin.documents')->with('error', 'Có lỗi xảy ra khi tải lên tài liệu!');
+        return redirect()->route('admin.documents.index')->with('error', 'Có lỗi xảy ra khi tải lên tài liệu!');
     }
 
     /**
@@ -115,17 +128,10 @@ class DocumentController extends Controller
      */
     public function show(Document $document)
     {
-        $document->load(['uploader', 'approver']);
+        $document->load(['uploader', 'approver', 'documentType', 'category']);
         return view('admin.documents.show', compact('document'));
     }
 
-    /**
-     * Show create document form
-     */
-    public function create()
-    {
-        return view('admin.documents.create');
-    }
 
     /**
      * Show edit document form
@@ -143,38 +149,26 @@ class DocumentController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'document_type' => 'required|in:policy,procedure,form,manual,report,other',
+            'document_type_id' => 'required|exists:document_types,id',
+            'category_id' => 'required|exists:categories,id',
             'file' => 'nullable|file|max:51200|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt',
-            'version' => 'nullable|string|max:20',
-            'effective_date' => 'nullable|date',
-            'expiry_date' => 'nullable|date|after:effective_date',
-            'tags' => 'nullable|string',
             'is_public' => 'boolean',
         ], [
             'title.required' => 'Vui lòng nhập tiêu đề tài liệu.',
             'title.max' => 'Tiêu đề không được vượt quá 255 ký tự.',
-            'document_type.required' => 'Vui lòng chọn loại tài liệu.',
-            'document_type.in' => 'Loại tài liệu được chọn không hợp lệ.',
+            'document_type_id.required' => 'Vui lòng chọn loại tài liệu.',
+            'document_type_id.exists' => 'Loại tài liệu được chọn không hợp lệ.',
+            'category_id.required' => 'Vui lòng chọn danh mục.',
+            'category_id.exists' => 'Danh mục được chọn không hợp lệ.',
             'file.max' => 'Kích thước file không được vượt quá 50MB.',
             'file.mimes' => 'File phải có định dạng: pdf, doc, docx, xls, xlsx, ppt, pptx, txt.',
-            'version.max' => 'Phiên bản không được vượt quá 20 ký tự.',
-            'expiry_date.after' => 'Ngày hết hiệu lực phải sau ngày có hiệu lực.',
         ]);
-
-        // Process tags
-        $tags = null;
-        if ($request->filled('tags')) {
-            $tags = array_map('trim', explode(',', $request->tags));
-        }
 
         $updateData = [
             'title' => $request->title,
             'description' => $request->description,
-            'document_type' => $request->document_type,
-            'version' => $request->version ?: $document->version,
-            'effective_date' => $request->effective_date,
-            'expiry_date' => $request->expiry_date,
-            'tags' => $tags,
+            'document_type_id' => $request->document_type_id,
+            'category_id' => $request->category_id,
             'is_public' => $request->boolean('is_public', false),
         ];
 
@@ -200,7 +194,7 @@ class DocumentController extends Controller
 
         $document->update($updateData);
 
-        return redirect()->route('admin.documents')->with('success', 'Cập nhật tài liệu thành công!');
+        return redirect()->route('admin.documents.index')->with('success', 'Cập nhật tài liệu thành công!');
     }
 
     /**
@@ -215,7 +209,7 @@ class DocumentController extends Controller
 
         $document->delete();
 
-        return redirect()->route('admin.documents')->with('success', 'Đã xóa tài liệu thành công!');
+        return redirect()->route('admin.documents.index')->with('success', 'Đã xóa tài liệu thành công!');
     }
 
     /**
@@ -227,7 +221,7 @@ class DocumentController extends Controller
             return Storage::disk('public')->download($document->file_path, $document->file_name);
         }
 
-        return redirect()->route('admin.documents')->with('error', 'File không tồn tại!');
+        return redirect()->route('admin.documents.index')->with('error', 'File không tồn tại!');
     }
 
     /**
@@ -241,7 +235,7 @@ class DocumentController extends Controller
             'approved_at' => now(),
         ]);
 
-        return redirect()->route('admin.documents')->with('success', 'Đã phê duyệt tài liệu thành công!');
+        return redirect()->route('admin.documents.index')->with('success', 'Đã phê duyệt tài liệu thành công!');
     }
 
     /**
@@ -255,6 +249,6 @@ class DocumentController extends Controller
             'approved_at' => null,
         ]);
 
-        return redirect()->route('admin.documents')->with('success', 'Đã hủy phê duyệt tài liệu thành công!');
+        return redirect()->route('admin.documents.index')->with('success', 'Đã hủy phê duyệt tài liệu thành công!');
     }
 }

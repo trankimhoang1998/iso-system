@@ -12,37 +12,24 @@ class Document extends Model
         'title',
         'description',
         'category_id',
+        'department_id',
         'file_name',
         'file_path',
         'file_type',
         'file_size',
-        'document_type',
+        'document_type_id',
         'status',
-        'version',
         'uploaded_by',
         'approved_by',
         'approved_at',
-        'effective_date',
-        'expiry_date',
-        'tags',
         'is_public',
     ];
 
     protected $casts = [
-        'tags' => 'array',
         'approved_at' => 'datetime',
-        'effective_date' => 'date',
-        'expiry_date' => 'date',
         'is_public' => 'boolean',
     ];
 
-    // Document types
-    const TYPE_POLICY = 'policy';
-    const TYPE_PROCEDURE = 'procedure';
-    const TYPE_FORM = 'form';
-    const TYPE_MANUAL = 'manual';
-    const TYPE_REPORT = 'report';
-    const TYPE_OTHER = 'other';
 
     // Status types
     const STATUS_DRAFT = 'draft';
@@ -62,6 +49,11 @@ class Document extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(Department::class);
+    }
+
     /**
      * Get the user who approved the document
      */
@@ -71,19 +63,11 @@ class Document extends Model
     }
 
     /**
-     * Get document type name in Vietnamese
+     * Get document type
      */
-    public function getDocumentTypeName(): string
+    public function documentType(): BelongsTo
     {
-        return match($this->document_type) {
-            self::TYPE_POLICY => 'Chính sách',
-            self::TYPE_PROCEDURE => 'Quy trình',
-            self::TYPE_FORM => 'Biểu mẫu',
-            self::TYPE_MANUAL => 'Hướng dẫn',
-            self::TYPE_REPORT => 'Báo cáo',
-            self::TYPE_OTHER => 'Khác',
-            default => 'Không xác định',
-        };
+        return $this->belongsTo(DocumentType::class);
     }
 
     /**
@@ -96,6 +80,33 @@ class Document extends Model
             self::STATUS_APPROVED => 'Đã phê duyệt',
             self::STATUS_ARCHIVED => 'Lưu trữ',
             default => 'Không xác định',
+        };
+    }
+
+    /**
+     * Get document type name
+     */
+    public function getDocumentTypeName(): string
+    {
+        return $this->documentType ? $this->documentType->name : 'Không xác định';
+    }
+
+    /**
+     * Get document type CSS class for badge
+     */
+    public function getDocumentTypeCssClass(): string
+    {
+        if (!$this->documentType) {
+            return 'other';
+        }
+
+        // Map document type names to CSS classes
+        return match($this->documentType->name) {
+            'BAN CHỈ ĐẠO ISO' => 'policy',
+            'TÀI LIỆU HỆ THỐNG ISO' => 'procedure', 
+            'TÀI LIỆU NỘI BỘ' => 'manual',
+            'VĂN BẢN QUẢN LÝ' => 'form',
+            default => 'other',
         };
     }
 

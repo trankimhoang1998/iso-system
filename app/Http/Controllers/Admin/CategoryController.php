@@ -4,67 +4,66 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\DocumentType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::with(['parent', 'children'])
-            ->withCount('documents')
-            ->orderBy('sort_order')
-            ->orderBy('name')
-            ->get();
+        $documentTypeId = $request->get('document_type_id');
+        $documentType = null;
+        
+        if ($documentTypeId) {
+            $documentType = DocumentType::findOrFail($documentTypeId);
+        }
 
-        return view('admin.categories.index', compact('categories'));
+        $categories = Category::with('parent', 'children')
+            ->when($documentTypeId, function ($query) use ($documentTypeId) {
+                return $query->where('document_type_id', $documentTypeId);
+            })
+            ->whereNull('parent_id')
+            ->orderBy('name')
+            ->paginate(15);
+
+        $documentTypes = DocumentType::all();
+
+        return view('admin.categories.index', compact('categories', 'documentType', 'documentTypes'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        // Get all categories with max depth of 3 (to allow max 4 levels)
-        $parentCategories = Category::with('parent')
-            ->active()
-            ->get()
-            ->filter(function ($category) {
-                return $category->depth < 3; // Allow max 4 levels (0,1,2,3)
-            })
-            ->sortBy('full_name');
+        $documentTypeId = $request->get('document_type_id');
+        $documentType = null;
+        
+        if ($documentTypeId) {
+            $documentType = DocumentType::findOrFail($documentTypeId);
+        }
 
-        return view('admin.categories.create', compact('parentCategories'));
+        $parentCategories = $this->getCategoriesWithIndent($documentTypeId);
+
+        $documentTypes = DocumentType::all();
+
+        return view('admin.categories.create', compact('parentCategories', 'documentType', 'documentTypes'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'document_type_id' => 'required|exists:document_types,id',
             'parent_id' => 'nullable|exists:categories,id',
-            'sort_order' => 'integer|min:0',
         ]);
 
-        // Check depth limit (max 4 levels: 0,1,2,3)
-        if ($request->filled('parent_id')) {
-            $parent = Category::find($request->parent_id);
-            if ($parent && $parent->depth >= 3) {
-                return back()->withErrors(['parent_id' => 'Không thể tạo danh mục con cho danh mục cấp 4. Hệ thống chỉ hỗ trợ tối đa 4 cấp.'])->withInput();
-            }
-        }
+        $category = Category::create([
+            'name' => $request->name,
+            'document_type_id' => $request->document_type_id,
+            'parent_id' => $request->parent_id,
+        ]);
 
-        $data = $request->only(['name', 'description', 'parent_id', 'sort_order']);
-        
-        if (empty($data['sort_order'])) {
-            $data['sort_order'] = Category::where('parent_id', $data['parent_id'])->max('sort_order') + 1;
-        }
-
-        if (!$request->filled('slug')) {
-            $data['slug'] = Str::slug($data['name']);
-        }
-
-        Category::create($data);
-
-        return redirect()->route('admin.categories.index')
-            ->with('success', 'Danh mục đã được tạo thành công!');
+        return redirect()->route('admin.categories.index', ['document_type_id' => $category->document_type_id])
+            ->with('success', 'Danh mục đã được tạo thành công.');
     }
 
     public function show(Category $category)
@@ -78,79 +77,48 @@ class CategoryController extends Controller
 
     public function edit(Category $category)
     {
-        // Get potential parent categories, exclude current category and its descendants
-        $excludeIds = $category->getAllDescendants()->pluck('id')->push($category->id)->toArray();
-        
-        $parentCategories = Category::with('parent')
-            ->active()
-            ->whereNotIn('id', $excludeIds)
-            ->get()
-            ->filter(function ($cat) {
-                return $cat->depth < 3; // Allow max 4 levels
-            })
-            ->sortBy('full_name');
+        $parentCategories = $this->getCategoriesWithIndent($category->document_type_id, $category->id);
 
-        return view('admin.categories.edit', compact('category', 'parentCategories'));
+        $documentTypes = DocumentType::all();
+
+        return view('admin.categories.edit', compact('category', 'parentCategories', 'documentTypes'));
     }
 
     public function update(Request $request, Category $category)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'parent_id' => 'nullable|exists:categories,id|not_in:' . $category->id,
-            'sort_order' => 'integer|min:0',
-            'is_active' => 'boolean',
+            'document_type_id' => 'required|exists:document_types,id',
+            'parent_id' => 'nullable|exists:categories,id',
         ]);
 
-        // Check depth limit and circular reference
-        if ($request->filled('parent_id')) {
-            $parent = Category::find($request->parent_id);
-            if ($parent) {
-                // Check if parent is a descendant of current category
-                if ($category->getAllDescendants()->contains($parent->id)) {
-                    return back()->withErrors(['parent_id' => 'Không thể chọn danh mục con làm danh mục cha.'])->withInput();
-                }
-                
-                // Check depth limit
-                if ($parent->depth >= 3) {
-                    return back()->withErrors(['parent_id' => 'Không thể di chuyển danh mục đến cấp quá sâu. Hệ thống chỉ hỗ trợ tối đa 4 cấp.'])->withInput();
-                }
-            }
-        }
+        $category->update([
+            'name' => $request->name,
+            'document_type_id' => $request->document_type_id,
+            'parent_id' => $request->parent_id,
+        ]);
 
-        $data = $request->only(['name', 'description', 'parent_id', 'sort_order', 'is_active']);
-        
-        if ($request->filled('slug')) {
-            $data['slug'] = $request->slug;
-        } elseif ($category->isDirty('name')) {
-            $data['slug'] = Str::slug($data['name']);
-        }
-
-        $category->update($data);
-
-        return redirect()->route('admin.categories.index')
-            ->with('success', 'Danh mục đã được cập nhật thành công!');
+        return redirect()->route('admin.categories.index', ['document_type_id' => $category->document_type_id])
+            ->with('success', 'Danh mục đã được cập nhật thành công.');
     }
 
     public function destroy(Category $category)
     {
-        // Kiểm tra xem có tài liệu nào đang sử dụng danh mục này không
-        if ($category->documents()->count() > 0) {
-            return redirect()->route('admin.categories.index')
-                ->with('error', 'Không thể xóa danh mục vì còn có tài liệu đang sử dụng!');
+        $documentTypeId = $category->document_type_id;
+        
+        // Check if category has children or documents
+        if ($category->children()->count() > 0) {
+            return back()->with('error', 'Không thể xóa danh mục có danh mục con.');
         }
 
-        // Kiểm tra xem có danh mục con nào không
-        if ($category->children()->count() > 0) {
-            return redirect()->route('admin.categories.index')
-                ->with('error', 'Không thể xóa danh mục vì còn có danh mục con!');
+        if ($category->documents()->count() > 0) {
+            return back()->with('error', 'Không thể xóa danh mục đang có tài liệu.');
         }
 
         $category->delete();
 
-        return redirect()->route('admin.categories.index')
-            ->with('success', 'Danh mục đã được xóa thành công!');
+        return redirect()->route('admin.categories.index', ['document_type_id' => $documentTypeId])
+            ->with('success', 'Danh mục đã được xóa thành công.');
     }
 
     public function reorder(Request $request)
@@ -192,5 +160,61 @@ class CategoryController extends Controller
             ->get(['id', 'name', 'slug']);
 
         return response()->json($children);
+    }
+
+    private function getCategoriesWithIndent($documentTypeId, $excludeId = null)
+    {
+        $categories = Category::when($documentTypeId, function ($query) use ($documentTypeId) {
+                return $query->where('document_type_id', $documentTypeId);
+            })
+            ->when($excludeId, function ($query) use ($excludeId) {
+                return $query->where('id', '!=', $excludeId);
+            })
+            ->with('children.children.children')
+            ->whereNull('parent_id')
+            ->orderBy('name')
+            ->get();
+
+        $result = collect();
+        
+        foreach ($categories as $category) {
+            $this->addCategoryWithChildren($result, $category, 0);
+        }
+        
+        return $result;
+    }
+
+    private function addCategoryWithChildren($collection, $category, $level)
+    {
+        $category->indent_level = $level;
+        $category->display_name = str_repeat('— ', $level) . $category->name;
+        $collection->push($category);
+        
+        foreach ($category->children as $child) {
+            $this->addCategoryWithChildren($collection, $child, $level + 1);
+        }
+    }
+
+    public function getByDocumentType($documentTypeId)
+    {
+        $categories = Category::where('document_type_id', $documentTypeId)
+            ->with('children.children.children')
+            ->whereNull('parent_id')
+            ->orderBy('name')
+            ->get();
+
+        $result = collect();
+        
+        foreach ($categories as $category) {
+            $this->addCategoryWithChildren($result, $category, 0);
+        }
+        
+        return response()->json($result->map(function ($category) {
+            return [
+                'id' => $category->id,
+                'name' => $category->display_name,
+                'level' => $category->indent_level
+            ];
+        }));
     }
 }

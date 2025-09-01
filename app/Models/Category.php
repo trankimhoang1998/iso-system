@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Str;
 
 class Category extends Model
 {
@@ -14,33 +13,9 @@ class Category extends Model
 
     protected $fillable = [
         'name',
-        'slug',
-        'description',
+        'document_type_id',
         'parent_id',
-        'sort_order',
-        'is_active',
     ];
-
-    protected $casts = [
-        'is_active' => 'boolean',
-    ];
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($category) {
-            if (empty($category->slug)) {
-                $category->slug = Str::slug($category->name);
-            }
-        });
-
-        static::updating(function ($category) {
-            if ($category->isDirty('name') && empty($category->slug)) {
-                $category->slug = Str::slug($category->name);
-            }
-        });
-    }
 
     public function parent(): BelongsTo
     {
@@ -49,7 +24,7 @@ class Category extends Model
 
     public function children(): HasMany
     {
-        return $this->hasMany(Category::class, 'parent_id')->orderBy('sort_order');
+        return $this->hasMany(Category::class, 'parent_id');
     }
 
     public function documents(): HasMany
@@ -57,137 +32,42 @@ class Category extends Model
         return $this->hasMany(Document::class);
     }
 
-    public function allChildren(): HasMany
+    public function documentType(): BelongsTo
     {
-        return $this->children()->with('allChildren');
+        return $this->belongsTo(DocumentType::class);
     }
 
-    public function getFullNameAttribute(): string
+    public function scopeByDocumentType($query, $documentTypeId)
     {
-        $names = [$this->name];
-        $parent = $this->parent;
-
-        while ($parent) {
-            array_unshift($names, $parent->name);
-            $parent = $parent->parent;
-        }
-
-        return implode(' > ', $names);
-    }
-
-    public function getDepthAttribute(): int
-    {
-        $depth = 0;
-        $parent = $this->parent;
-
-        while ($parent) {
-            $depth++;
-            $parent = $parent->parent;
-        }
-
-        return $depth;
-    }
-
-    public function getDocumentCountAttribute(): int
-    {
-        return $this->documents()->count();
-    }
-
-    public function scopeActive($query)
-    {
-        return $query->where('is_active', true);
-    }
-
-    public function scopeRoots($query)
-    {
-        return $query->whereNull('parent_id');
-    }
-
-    public function scopeOrdered($query)
-    {
-        return $query->orderBy('sort_order')->orderBy('name');
-    }
-
-    public static function getTree()
-    {
-        return static::with('allChildren')
-            ->roots()
-            ->active()
-            ->ordered()
-            ->get();
+        return $query->where('document_type_id', $documentTypeId);
     }
 
     public static function getFlatList()
     {
-        return static::active()
-            ->with('parent')
-            ->ordered()
-            ->get()
-            ->map(function ($category) {
-                $prefix = str_repeat('— ', $category->depth);
-                return [
-                    'id' => $category->id,
-                    'name' => $prefix . $category->name,
-                    'full_name' => $category->full_name,
-                    'depth' => $category->depth,
-                ];
-            });
-    }
+        $categories = self::with('children.children.children')
+            ->whereNull('parent_id')
+            ->orderBy('name')
+            ->get();
 
-    public function getAllParents(): array
-    {
-        $parents = [];
-        $parent = $this->parent;
+        $result = [];
         
-        while ($parent) {
-            array_unshift($parents, $parent);
-            $parent = $parent->parent;
+        foreach ($categories as $category) {
+            self::addCategoryToFlatList($result, $category, 0);
         }
         
-        return $parents;
+        return $result;
     }
 
-    public function getAllDescendants()
+    private static function addCategoryToFlatList(&$list, $category, $level)
     {
-        $descendants = collect();
+        $list[] = [
+            'id' => $category->id,
+            'name' => str_repeat('— ', $level) . $category->name,
+            'level' => $level
+        ];
         
-        foreach ($this->children as $child) {
-            $descendants->push($child);
-            $descendants = $descendants->merge($child->getAllDescendants());
+        foreach ($category->children as $child) {
+            self::addCategoryToFlatList($list, $child, $level + 1);
         }
-        
-        return $descendants;
-    }
-
-    public function getTotalDocumentCountAttribute(): int
-    {
-        $count = $this->documents()->count();
-        
-        foreach ($this->children as $child) {
-            $count += $child->total_document_count;
-        }
-        
-        return $count;
-    }
-
-    public function getIndentedNameAttribute(): string
-    {
-        return str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $this->depth) . $this->name;
-    }
-
-    public static function getTreeStructure($maxDepth = 4)
-    {
-        return static::with(['allChildren' => function ($query) use ($maxDepth) {
-            $query->where(function ($q) use ($maxDepth) {
-                // Limit depth to prevent infinite recursion
-                for ($i = 0; $i < $maxDepth; $i++) {
-                    $q->orWhereRaw("(SELECT COUNT(*) FROM categories c WHERE c.id = categories.parent_id) <= ?", [$i]);
-                }
-            });
-        }])
-        ->roots()
-        ->active()
-        ->ordered()
-        ->get();
     }
 }

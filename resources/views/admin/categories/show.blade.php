@@ -112,7 +112,7 @@
                                         <a href="{{ route('admin.documents.show', $document) }}">{{ $document->title }}</a>
                                     </h4>
                                     <div class="admin-document-item__meta">
-                                        <span class="admin-document-type-badge admin-document-type-badge--{{ $document->document_type }}">
+                                        <span class="admin-document-type-badge admin-document-type-badge--{{ $document->getDocumentTypeCssClass() }}">
                                             {{ $document->getDocumentTypeName() }}
                                         </span>
                                         <span class="admin-status-badge admin-status-badge--sm {{ $document->status == 'approved' ? 'admin-status-badge--active' : ($document->status == 'draft' ? 'admin-status-badge--warning' : 'admin-status-badge--inactive') }}">
@@ -132,7 +132,7 @@
 
                     @if($category->documents->count() > 10)
                         <div class="admin-category-detail__show-more">
-                            <a href="{{ route('admin.documents') }}?category_id={{ $category->id }}" class="admin-btn admin-btn--secondary">
+                            <a href="{{ route('admin.documents.index') }}?category_id={{ $category->id }}" class="admin-btn admin-btn--secondary">
                                 Xem tất cả {{ $category->documents->count() }} tài liệu
                                 <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>

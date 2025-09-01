@@ -21,7 +21,7 @@
 
     <!-- Filter Form -->
     <div class="admin-filter">
-        <form method="GET" action="{{ route('admin.documents') }}" class="admin-filter__form">
+        <form method="GET" action="{{ route('admin.documents.index') }}" class="admin-filter__form">
             <div class="admin-filter__row">
                 <div class="admin-filter__group">
                     <label class="admin-filter__label">Tìm kiếm</label>
@@ -30,14 +30,15 @@
                 </div>
                 <div class="admin-filter__group">
                     <label class="admin-filter__label">Loại tài liệu</label>
-                    <select name="document_type" class="admin-filter__select">
+                    <select name="document_type_id" class="admin-filter__select">
                         <option value="">Tất cả</option>
-                        <option value="policy" {{ request('document_type') == 'policy' ? 'selected' : '' }}>Chính sách</option>
-                        <option value="procedure" {{ request('document_type') == 'procedure' ? 'selected' : '' }}>Quy trình</option>
-                        <option value="form" {{ request('document_type') == 'form' ? 'selected' : '' }}>Biểu mẫu</option>
-                        <option value="manual" {{ request('document_type') == 'manual' ? 'selected' : '' }}>Hướng dẫn</option>
-                        <option value="report" {{ request('document_type') == 'report' ? 'selected' : '' }}>Báo cáo</option>
-                        <option value="other" {{ request('document_type') == 'other' ? 'selected' : '' }}>Khác</option>
+                        @if(isset($documentTypes))
+                            @foreach($documentTypes as $type)
+                                <option value="{{ $type->id }}" {{ request('document_type_id') == $type->id ? 'selected' : '' }}>
+                                    {{ $type->name }}
+                                </option>
+                            @endforeach
+                        @endif
                     </select>
                 </div>
                 <div class="admin-filter__group">
@@ -61,7 +62,7 @@
                         </svg>
                         Lọc
                     </button>
-                    <a href="{{ route('admin.documents') }}" class="admin-btn admin-btn--secondary">
+                    <a href="{{ route('admin.documents.index') }}" class="admin-btn admin-btn--secondary">
                         <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                         </svg>
@@ -79,7 +80,6 @@
                     <th class="admin-table__header">ID</th>
                     <th class="admin-table__header">Tiêu đề</th>
                     <th class="admin-table__header">Loại tài liệu</th>
-                    <th class="admin-table__header">Phiên bản</th>
                     <th class="admin-table__header">Trạng thái</th>
                     <th class="admin-table__header">Kích thước</th>
                     <th class="admin-table__header">Người tải lên</th>
@@ -100,11 +100,10 @@
                         </div>
                     </td>
                     <td class="admin-table__cell">
-                        <span class="admin-document-type-badge admin-document-type-badge--{{ $document->document_type }}">
+                        <span class="admin-document-type-badge admin-document-type-badge--{{ $document->getDocumentTypeCssClass() }}">
                             {{ $document->getDocumentTypeName() }}
                         </span>
                     </td>
-                    <td class="admin-table__cell">{{ $document->version }}</td>
                     <td class="admin-table__cell">
                         <span class="admin-status-badge 
                             @if($document->status == 'approved') admin-status-badge--active 
@@ -159,7 +158,7 @@
                             @endif
                             <button class="admin-table__action-btn admin-table__action-btn--delete" 
                                     title="Xóa"
-                                    onclick="deleteDocument({{ $document->id }}, '{{ $document->title }}')">
+                                    onclick="openDeleteModal({{ $document->id }}, '{{ $document->title }}')">
                                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                 </svg>
@@ -212,17 +211,18 @@
 
                 <div class="admin-form__group">
                     <label class="admin-form__label admin-form__label--required">Loại tài liệu</label>
-                    <select name="document_type" required 
-                            class="admin-form__select @error('document_type') admin-form__select--error @enderror">
+                    <select name="document_type_id" required 
+                            class="admin-form__select @error('document_type_id') admin-form__select--error @enderror">
                         <option value="">-- Chọn loại tài liệu --</option>
-                        <option value="policy" {{ old('document_type') == 'policy' ? 'selected' : '' }}>Chính sách</option>
-                        <option value="procedure" {{ old('document_type') == 'procedure' ? 'selected' : '' }}>Quy trình</option>
-                        <option value="form" {{ old('document_type') == 'form' ? 'selected' : '' }}>Biểu mẫu</option>
-                        <option value="manual" {{ old('document_type') == 'manual' ? 'selected' : '' }}>Hướng dẫn</option>
-                        <option value="report" {{ old('document_type') == 'report' ? 'selected' : '' }}>Báo cáo</option>
-                        <option value="other" {{ old('document_type') == 'other' ? 'selected' : '' }}>Khác</option>
+                        @if(isset($documentTypes))
+                            @foreach($documentTypes as $type)
+                                <option value="{{ $type->id }}" {{ old('document_type_id') == $type->id ? 'selected' : '' }}>
+                                    {{ $type->name }}
+                                </option>
+                            @endforeach
+                        @endif
                     </select>
-                    @error('document_type')
+                    @error('document_type_id')
                     <div class="admin-form__error">{{ $message }}</div>
                     @enderror
                 </div>
@@ -382,27 +382,35 @@
 </div>
 
 <!-- Delete Document Modal -->
-<div id="deleteDocumentModal" class="admin-modal" style="display: none;">
-    <div class="admin-modal__overlay"></div>
-    <div class="admin-modal__container">
+<div id="deleteModal" class="admin-modal">
+    <div class="admin-modal__content">
         <div class="admin-modal__header">
             <h3 class="admin-modal__title">Xác nhận xóa tài liệu</h3>
-            <button type="button" class="admin-modal__close" onclick="hideDeleteModal()">
+            <button type="button" class="admin-modal__close" onclick="closeDeleteModal()">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
         </div>
         <div class="admin-modal__body">
-            <p>Bạn có chắc chắn muốn xóa tài liệu <strong id="deleteDocumentTitle"></strong>?</p>
-            <p>Hành động này không thể hoàn tác.</p>
+            <div class="admin-modal__message">
+                <div class="admin-modal__icon admin-modal__icon--danger">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.728-.833-2.598 0L4.266 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                    </svg>
+                </div>
+                <div class="admin-modal__message-content">
+                    <p class="admin-modal__message-title">Bạn có chắc chắn muốn xóa tài liệu?</p>
+                    <p class="admin-modal__message-text">Tài liệu <strong id="deleteDocumentName"></strong> sẽ bị xóa vĩnh viễn. Hành động này không thể hoàn tác.</p>
+                </div>
+            </div>
             
             <div class="admin-form__actions">
-                <button type="button" class="admin-btn admin-btn--secondary" onclick="hideDeleteModal()">Hủy</button>
-                <form method="POST" id="deleteDocumentForm" style="display: inline;">
+                <button type="button" class="admin-btn admin-btn--secondary" onclick="closeDeleteModal()">Hủy</button>
+                <form method="POST" id="deleteForm" style="display: inline;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="admin-btn admin-btn--secondary" style="background: #dc3545;">Xóa</button>
+                    <button type="submit" class="admin-btn admin-btn--danger">Xóa tài liệu</button>
                 </form>
             </div>
         </div>
@@ -515,25 +523,22 @@ function editDocument(documentId) {
         });
 }
 
-// Delete modal functions
-function showDeleteModal() {
-    document.getElementById('deleteDocumentModal').style.display = 'flex';
+function openDeleteModal(documentId, documentTitle) {
+    document.getElementById('deleteDocumentName').textContent = documentTitle;
+    document.getElementById('deleteForm').action = `/admin/documents/${documentId}`;
+    document.getElementById('deleteModal').classList.add('admin-modal--active');
 }
 
-function hideDeleteModal() {
-    document.getElementById('deleteDocumentModal').style.display = 'none';
+function closeDeleteModal() {
+    document.getElementById('deleteModal').classList.remove('admin-modal--active');
 }
 
-function deleteDocument(documentId, documentTitle) {
-    // Set document title in modal
-    document.getElementById('deleteDocumentTitle').textContent = documentTitle;
-    
-    // Set form action
-    document.getElementById('deleteDocumentForm').action = `/admin/documents/${documentId}`;
-    
-    // Show modal
-    showDeleteModal();
-}
+// Close modal when clicking outside
+window.addEventListener('click', function(e) {
+    if (e.target.classList.contains('admin-modal')) {
+        e.target.classList.remove('admin-modal--active');
+    }
+});
 
 // Approve modal functions
 function showApproveModal() {

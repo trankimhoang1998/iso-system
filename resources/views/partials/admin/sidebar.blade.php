@@ -36,28 +36,49 @@
             </li>
             @endif
             @if(auth()->user()->isAdmin())
-             <li class="admin-nav__item">
-                <a href="{{ route('admin.categories.index') }}" 
-                   class="admin-nav__link @if(request()->routeIs('admin.categories*')) admin-nav__link--active @endif"
-                   data-tooltip="Quản lý danh mục">
+            <li class="admin-nav__item admin-nav__item--has-submenu">
+                <a href="#" class="admin-nav__link admin-nav__toggle" data-tooltip="Quản lý danh mục">
                     <svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v3m0 0V5a2 2 0 012-2h4a2 2 0 012 2v3M8 5a2 2 0 00-2 2v1H4a2 2 0 00-2 2v4a2 2 0 002 2h2v1a2 2 0 002 2h4a2 2 0 002-2v-1h2a2 2 0 002-2V9a2 2 0 00-2-2h-2V5a2 2 0 00-2-2H8z"></path>
                     </svg>
                     <span>Quản lý danh mục</span>
+                    <svg class="admin-nav__arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
                 </a>
+                <ul class="admin-nav__submenu">
+                    @foreach(\App\Models\DocumentType::all() as $documentType)
+                    <li class="admin-nav__subitem">
+                        <a href="{{ route('admin.categories.index', ['document_type_id' => $documentType->id]) }}" 
+                           class="admin-nav__sublink @if(request()->routeIs('admin.categories*') && request('document_type_id') == $documentType->id) admin-nav__sublink--active @endif">
+                            {{ $documentType->name }}
+                        </a>
+                    </li>
+                    @endforeach
+                </ul>
             </li>
             @endif
+            @foreach(\App\Models\DocumentType::all() as $documentType)
             <li class="admin-nav__item">
-                <a href="{{ route('admin.documents') }}" 
-                   class="admin-nav__link @if(request()->routeIs('admin.documents*')) admin-nav__link--active @endif"
-                   data-tooltip="Quản lý tài liệu">
+                <a href="{{ route('admin.documents.index', ['document_type_id' => $documentType->id]) }}" 
+                   class="admin-nav__link @if(request()->routeIs('admin.documents.index') && request('document_type_id') == $documentType->id) admin-nav__link--active @endif"
+                   data-tooltip="{{ $documentType->name }}">
                     <svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        @if($documentType->name == 'BAN CHỈ ĐẠO ISO')
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        @elseif($documentType->name == 'TÀI LIỆU HỆ THỐNG ISO')
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        @elseif($documentType->name == 'TÀI LIỆU NỘI BỘ')
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                        @else
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        @endif
                     </svg>
-                    <span>Quản lý tài liệu</span>
+                    <span>{{ $documentType->name }}</span>
                 </a>
             </li>
+            @endforeach
             <li class="admin-nav__item">
                 <a href="#" class="admin-nav__link" data-tooltip="Cài đặt hệ thống">
                     <svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -70,3 +91,118 @@
         </ul>
     </nav>
 </aside>
+
+<style>
+/* Submenu styles - Using !important to override existing styles */
+.admin-nav__item--has-submenu {
+    position: relative !important;
+}
+
+.admin-nav__submenu {
+    display: none !important;
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: rgba(255, 255, 255, 0.15) !important; /* Slightly more visible background */
+    border-radius: 4px !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.admin-nav__item--has-submenu.active .admin-nav__submenu {
+    display: block !important;
+    max-height: 300px;
+    opacity: 1;
+}
+
+.admin-nav__subitem {
+    margin: 0 !important;
+    list-style: none !important;
+}
+
+.admin-nav__sublink {
+    display: flex !important;
+    align-items: center !important;
+    padding: 8px 15px 8px 40px !important; /* Reduced padding */
+    color: #374151 !important;
+    text-decoration: none !important;
+    font-size: 14px !important;
+    border-radius: 4px !important;
+    margin: 1px 8px !important;
+    border: none !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+}
+
+.admin-nav__sublink:hover {
+    background: rgba(255, 255, 255, 0.95) !important; /* Slightly brighter on hover */
+    color: #374151 !important;
+    text-decoration: none !important;
+}
+
+.admin-nav__sublink--active {
+    background: rgba(255, 255, 255, 1) !important; /* Full white for active */
+    color: #1e40af !important; /* Blue text for active */
+    font-weight: 500 !important;
+}
+
+.admin-nav__arrow {
+    width: 16px !important;
+    height: 16px !important;
+    margin-left: auto !important;
+    transition: transform 0.2s ease !important;
+    flex-shrink: 0 !important;
+}
+
+.admin-nav__item--has-submenu.active .admin-nav__arrow {
+    transform: rotate(180deg) !important;
+}
+
+.admin-nav__toggle {
+    cursor: pointer !important;
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Clean styles without debug borders */
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle submenu toggle
+    const toggles = document.querySelectorAll('.admin-nav__toggle');
+    
+    toggles.forEach(toggle => {
+        toggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const item = this.closest('.admin-nav__item--has-submenu');
+            if (!item) return;
+            
+            const isActive = item.classList.contains('active');
+            
+            // Close all other submenus
+            document.querySelectorAll('.admin-nav__item--has-submenu').forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.classList.remove('active');
+                }
+            });
+            
+            // Toggle current submenu
+            item.classList.toggle('active', !isActive);
+        });
+    });
+
+    // Auto-open submenu if current page is in submenu
+    const activeSublink = document.querySelector('.admin-nav__sublink--active');
+    if (activeSublink) {
+        const submenuParent = activeSublink.closest('.admin-nav__item--has-submenu');
+        if (submenuParent) {
+            submenuParent.classList.add('active');
+        }
+    }
+});
+</script>

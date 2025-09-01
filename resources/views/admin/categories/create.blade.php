@@ -5,7 +5,9 @@
 @section('content')
 <div class="admin-page">
     <div class="admin-breadcrumb">
-        <a href="{{ route('admin.categories.index') }}" class="admin-breadcrumb__item">Quản lý danh mục</a>
+        <a href="{{ route('admin.categories.index', ['document_type_id' => request('document_type_id')]) }}" class="admin-breadcrumb__item">
+            Quản lý danh mục{{ $documentType ? ' - ' . $documentType->name : '' }}
+        </a>
         <svg class="admin-breadcrumb__separator" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
         </svg>
@@ -15,13 +17,41 @@
     <div class="admin-page__header">
         <div class="admin-page__title-section">
             <h1 class="admin-page__title">Thêm danh mục mới</h1>
-            <p class="admin-page__subtitle">Tạo danh mục mới để phân loại tài liệu</p>
+            <p class="admin-page__subtitle">Tạo danh mục cho {{ $documentType ? $documentType->name : 'loại tài liệu' }}</p>
         </div>
     </div>
 
     <div class="admin-card">
         <form action="{{ route('admin.categories.store') }}" method="POST" class="admin-form">
             @csrf
+            
+            <!-- Document Type (hidden or display) -->
+            @if($documentType)
+                <input type="hidden" name="document_type_id" value="{{ $documentType->id }}">
+                <div class="admin-form__row">
+                    <div class="admin-form__group">
+                        <label class="admin-form__label">Loại tài liệu</label>
+                        <div class="admin-form__display">{{ $documentType->name }}</div>
+                    </div>
+                </div>
+            @else
+                <div class="admin-form__row">
+                    <div class="admin-form__group">
+                        <label class="admin-form__label admin-form__label--required" for="document_type_id">Loại tài liệu</label>
+                        <select id="document_type_id" name="document_type_id" class="admin-form__select @error('document_type_id') admin-form__select--error @enderror" required>
+                            <option value="">-- Chọn loại tài liệu --</option>
+                            @foreach($documentTypes as $type)
+                                <option value="{{ $type->id }}" {{ old('document_type_id') == $type->id ? 'selected' : '' }}>
+                                    {{ $type->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('document_type_id')
+                            <div class="admin-form__error">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+            @endif
             
             <div class="admin-form__row">
                 <div class="admin-form__group">
@@ -38,64 +68,28 @@
                 </div>
             </div>
 
+            @if($parentCategories->count() > 0)
             <div class="admin-form__row">
                 <div class="admin-form__group">
                     <label class="admin-form__label" for="parent_id">Danh mục cha</label>
                     <select id="parent_id" name="parent_id" class="admin-form__select @error('parent_id') admin-form__select--error @enderror">
-                        <option value="">-- Chọn danh mục cha (tùy chọn) --</option>
+                        <option value="">-- Vui lòng chọn danh mục --</option>
                         @foreach($parentCategories as $parent)
-                            <option value="{{ $parent->id }}" 
-                                    {{ old('parent_id') == $parent->id ? 'selected' : '' }}
-                                    data-depth="{{ $parent->depth }}">
-                                {{ $parent->full_name }} 
-                                @if($parent->depth > 0)
-                                    <span class="category-level">(Cấp {{ $parent->depth + 1 }})</span>
-                                @endif
+                            <option value="{{ $parent->id }}" {{ old('parent_id') == $parent->id ? 'selected' : '' }}>
+                                {{ $parent->display_name }}
                             </option>
                         @endforeach
                     </select>
                     @error('parent_id')
                         <div class="admin-form__error">{{ $message }}</div>
                     @enderror
-                    <div class="admin-form__help">
-                        Để trống nếu đây là danh mục cấp 1. Hệ thống hỗ trợ tối đa 4 cấp danh mục.
-                        <br><small>Cấp 1 → Cấp 2 → Cấp 3 → Cấp 4</small>
-                    </div>
+                    <div class="admin-form__help">Để trống nếu đây là danh mục cấp cha</div>
                 </div>
             </div>
-
-            <div class="admin-form__row">
-                <div class="admin-form__group">
-                    <label class="admin-form__label" for="description">Mô tả</label>
-                    <textarea id="description" 
-                              name="description" 
-                              class="admin-form__textarea @error('description') admin-form__textarea--error @enderror" 
-                              rows="4" 
-                              placeholder="Mô tả chi tiết về danh mục...">{{ old('description') }}</textarea>
-                    @error('description')
-                        <div class="admin-form__error">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-
-            <div class="admin-form__row">
-                <div class="admin-form__group">
-                    <label class="admin-form__label" for="sort_order">Thứ tự sắp xếp</label>
-                    <input type="number" 
-                           id="sort_order" 
-                           name="sort_order" 
-                           class="admin-form__input @error('sort_order') admin-form__input--error @enderror" 
-                           value="{{ old('sort_order', 0) }}" 
-                           min="0">
-                    @error('sort_order')
-                        <div class="admin-form__error">{{ $message }}</div>
-                    @enderror
-                    <div class="admin-form__help">Số càng nhỏ sẽ hiển thị trước (mặc định: 0)</div>
-                </div>
-            </div>
+            @endif
 
             <div class="admin-form__actions">
-                <a href="{{ route('admin.categories.index') }}" class="admin-btn admin-btn--secondary">
+                <a href="{{ route('admin.categories.index', ['document_type_id' => request('document_type_id')]) }}" class="admin-btn admin-btn--secondary">
                     <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
@@ -111,4 +105,15 @@
         </form>
     </div>
 </div>
+
+<style>
+.admin-form__display {
+    padding: 12px 16px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    color: #374151;
+    font-weight: 500;
+}
+</style>
 @endsection

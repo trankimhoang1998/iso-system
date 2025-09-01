@@ -5,7 +5,7 @@
 @section('content')
 <div class="admin-page">
     <div class="admin-breadcrumb">
-        <a href="{{ route('admin.documents') }}" class="admin-breadcrumb__item">Quản lý tài liệu</a>
+        <a href="{{ route('admin.documents.index') }}" class="admin-breadcrumb__item">Quản lý tài liệu</a>
         <svg class="admin-breadcrumb__separator" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
         </svg>
@@ -18,7 +18,7 @@
             <p class="admin-page__subtitle">{{ $document->title }}</p>
         </div>
         <div class="admin-page__actions">
-            <a href="{{ route('admin.documents') }}" class="admin-btn admin-btn--secondary">
+            <a href="{{ route('admin.documents.index') }}" class="admin-btn admin-btn--secondary">
                 <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                 </svg>
@@ -66,47 +66,32 @@
 
                 <div class="admin-form__row admin-form__row--split">
                     <div class="admin-form__group">
-                        <label class="admin-form__label">Danh mục</label>
-                        <select name="category_id" 
-                                class="admin-form__select @error('category_id') admin-form__select--error @enderror">
-                            <option value="">-- Chọn danh mục (tùy chọn) --</option>
-                            @foreach(\App\Models\Category::getFlatList() as $category)
-                                <option value="{{ $category['id'] }}" {{ old('category_id', $document->category_id) == $category['id'] ? 'selected' : '' }}>
-                                    {{ $category['name'] }}
+                        <label class="admin-form__label admin-form__label--required">Loại tài liệu</label>
+                        <select name="document_type_id" id="document_type_id"
+                                class="admin-form__select @error('document_type_id') admin-form__select--error @enderror" required>
+                            <option value="">-- Chọn loại tài liệu --</option>
+                            @foreach(\App\Models\DocumentType::all() as $type)
+                                <option value="{{ $type->id }}" {{ old('document_type_id', $document->document_type_id) == $type->id ? 'selected' : '' }}>
+                                    {{ $type->name }}
                                 </option>
                             @endforeach
+                        </select>
+                        @error('document_type_id')
+                        <div class="admin-form__error">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    
+                    <div class="admin-form__group">
+                        <label class="admin-form__label admin-form__label--required">Danh mục</label>
+                        <select name="category_id" id="category_id" required
+                                class="admin-form__select @error('category_id') admin-form__select--error @enderror">
+                            <option value="">-- Chọn danh mục --</option>
                         </select>
                         @error('category_id')
                         <div class="admin-form__error">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <div class="admin-form__group">
-                        <label class="admin-form__label admin-form__label--required">Loại tài liệu</label>
-                        <select name="document_type" required 
-                                class="admin-form__select @error('document_type') admin-form__select--error @enderror">
-                            <option value="">-- Chọn loại tài liệu --</option>
-                            <option value="policy" {{ old('document_type', $document->document_type) == 'policy' ? 'selected' : '' }}>Chính sách</option>
-                            <option value="procedure" {{ old('document_type', $document->document_type) == 'procedure' ? 'selected' : '' }}>Quy trình</option>
-                            <option value="form" {{ old('document_type', $document->document_type) == 'form' ? 'selected' : '' }}>Biểu mẫu</option>
-                            <option value="manual" {{ old('document_type', $document->document_type) == 'manual' ? 'selected' : '' }}>Hướng dẫn</option>
-                            <option value="report" {{ old('document_type', $document->document_type) == 'report' ? 'selected' : '' }}>Báo cáo</option>
-                            <option value="other" {{ old('document_type', $document->document_type) == 'other' ? 'selected' : '' }}>Khác</option>
-                        </select>
-                        @error('document_type')
-                        <div class="admin-form__error">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="admin-form__group">
-                        <label class="admin-form__label">Phiên bản</label>
-                        <input type="text" name="version" value="{{ old('version', $document->version) }}" 
-                               class="admin-form__input @error('version') admin-form__input--error @enderror"
-                               placeholder="1.0">
-                        @error('version')
-                        <div class="admin-form__error">{{ $message }}</div>
-                        @enderror
-                    </div>
                 </div>
 
                 <div class="admin-form__row">
@@ -138,39 +123,6 @@
                         </div>
                         <small class="admin-form__help">Để trống nếu không muốn thay đổi file hiện tại. Định dạng hỗ trợ: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT. Kích thước tối đa: 50MB</small>
                         @error('file')
-                        <div class="admin-form__error">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="admin-form__row admin-form__row--split">
-                    <div class="admin-form__group">
-                        <label class="admin-form__label">Ngày có hiệu lực</label>
-                        <input type="date" name="effective_date" value="{{ old('effective_date', $document->effective_date ? $document->effective_date->format('Y-m-d') : '') }}" 
-                               class="admin-form__input @error('effective_date') admin-form__input--error @enderror">
-                        @error('effective_date')
-                        <div class="admin-form__error">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="admin-form__group">
-                        <label class="admin-form__label">Ngày hết hiệu lực</label>
-                        <input type="date" name="expiry_date" value="{{ old('expiry_date', $document->expiry_date ? $document->expiry_date->format('Y-m-d') : '') }}" 
-                               class="admin-form__input @error('expiry_date') admin-form__input--error @enderror">
-                        @error('expiry_date')
-                        <div class="admin-form__error">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="admin-form__row">
-                    <div class="admin-form__group">
-                        <label class="admin-form__label">Tags</label>
-                        <input type="text" name="tags" value="{{ old('tags', $document->tags ? implode(', ', $document->tags) : '') }}" 
-                               class="admin-form__input @error('tags') admin-form__input--error @enderror"
-                               placeholder="ISO, quy trình, chính sách (phân tách bằng dấu phẩy)">
-                        <small class="admin-form__help">Phân tách các tag bằng dấu phẩy</small>
-                        @error('tags')
                         <div class="admin-form__error">{{ $message }}</div>
                         @enderror
                     </div>
@@ -209,6 +161,47 @@ document.getElementById('adminFileInput').addEventListener('change', function(e)
         label.textContent = e.target.files[0].name;
     } else {
         label.textContent = 'Chọn file mới để thay thế';
+    }
+});
+
+// Load categories based on document type
+document.getElementById('document_type_id').addEventListener('change', function() {
+    const documentTypeId = this.value;
+    const categorySelect = document.getElementById('category_id');
+    const currentCategoryId = '{{ old("category_id", $document->category_id) }}';
+    
+    // Clear existing options
+    categorySelect.innerHTML = '<option value="">-- Chọn danh mục --</option>';
+    
+    if (documentTypeId) {
+        fetch(`/admin/categories/by-document-type/${documentTypeId}`)
+            .then(response => response.json())
+            .then(categories => {
+                if (categories.length === 0) {
+                    categorySelect.innerHTML = '<option value="">-- Không có danh mục nào --</option>';
+                } else {
+                    categories.forEach(category => {
+                        const option = document.createElement('option');
+                        option.value = category.id;
+                        option.textContent = category.name;
+                        if (category.id == currentCategoryId) {
+                            option.selected = true;
+                        }
+                        categorySelect.appendChild(option);
+                    });
+                }
+            })
+            .catch(error => console.error('Error loading categories:', error));
+    } else {
+        categorySelect.innerHTML = '<option value="">-- Vui lòng chọn loại tài liệu trước --</option>';
+    }
+});
+
+// Load categories on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const documentTypeSelect = document.getElementById('document_type_id');
+    if (documentTypeSelect.value) {
+        documentTypeSelect.dispatchEvent(new Event('change'));
     }
 });
 </script>
