@@ -6,15 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('proposals', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('document_id')->constrained()->onDelete('cascade');
+            $table->foreignId('level2_user_id')->nullable()->constrained('users')->onDelete('set null');
             $table->string('title');
             $table->enum('proposal_type', ['content_correction', 'format_improvement', 'additional_info', 'process_optimization', 'other']);
             $table->enum('priority', ['low', 'medium', 'high', 'urgent']);
@@ -29,13 +27,11 @@ return new class extends Migration
             
             $table->index(['user_id', 'status']);
             $table->index(['document_id', 'status']);
+            $table->index(['level2_user_id', 'status']);
             $table->index('created_at');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('proposals');

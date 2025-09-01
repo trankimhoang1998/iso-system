@@ -6,18 +6,15 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('document_permissions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('document_id');
-            $table->unsignedBigInteger('user_id'); // User cấp 2 được cấp quyền
+            $table->unsignedBigInteger('user_id');
             $table->boolean('can_view')->default(true);
             $table->boolean('can_download')->default(true);
-            $table->unsignedBigInteger('granted_by'); // User cấp 1 cấp quyền
+            $table->unsignedBigInteger('granted_by');
             $table->timestamp('granted_at')->nullable();
             $table->timestamps();
 
@@ -30,9 +27,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('document_permissions');

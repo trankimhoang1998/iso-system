@@ -7,7 +7,7 @@
     <div class="admin-page__header">
         <h1 class="admin-page__title">Quản lý tài khoản</h1>
         <div class="admin-page__actions">
-            <button type="button" class="admin-btn admin-btn--primary" onclick="showCreateUserModal()">
+            <button type="button" class="admin-btn admin-btn--primary" onclick="openCreateUserModal()">
                 <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                 </svg>
@@ -134,12 +134,11 @@
 </div>
 
 <!-- Create User Modal -->
-<div id="createUserModal" class="admin-modal" style="display: none;">
-    <div class="admin-modal__overlay"></div>
-    <div class="admin-modal__container">
+<div id="createUserModal" class="admin-modal">
+    <div class="admin-modal__content">
         <div class="admin-modal__header">
             <h3 class="admin-modal__title">Tạo tài khoản mới</h3>
-            <button type="button" class="admin-modal__close" onclick="hideCreateUserModal()">
+            <button type="button" class="admin-modal__close" onclick="closeCreateUserModal()">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -182,7 +181,7 @@
                         <option value="">-- Chọn phân quyền --</option>
                         <option value="0" {{ old('role') == '0' ? 'selected' : '' }}>Admin</option>
                         <option value="1" {{ old('role') == '1' ? 'selected' : '' }}>Ban ISO</option>
-                        <option value="2" {{ old('role') == '2' ? 'selected' : '' }}>Cơ quan/Phân xưởng</option>
+                        <option value="2" {{ old('role') == '2' ? 'selected' : '' }}>Cơ quan - Phân xưởng</option>
                         <option value="3" {{ old('role') == '3' ? 'selected' : '' }}>Người sử dụng</option>
                     </select>
                     @error('role')
@@ -216,7 +215,7 @@
                 </div>
 
                 <div class="admin-form__actions">
-                    <button type="button" class="admin-btn admin-btn--secondary" onclick="hideCreateUserModal()">Hủy</button>
+                    <button type="button" class="admin-btn admin-btn--secondary" onclick="closeCreateUserModal()">Hủy</button>
                     <button type="submit" class="admin-btn admin-btn--primary">Tạo tài khoản</button>
                 </div>
             </form>
@@ -225,12 +224,11 @@
 </div>
 
 <!-- Edit User Modal -->
-<div id="editUserModal" class="admin-modal" style="display: none;">
-    <div class="admin-modal__overlay"></div>
-    <div class="admin-modal__container">
+<div id="editUserModal" class="admin-modal">
+    <div class="admin-modal__content">
         <div class="admin-modal__header">
             <h3 class="admin-modal__title">Chỉnh sửa tài khoản</h3>
-            <button type="button" class="admin-modal__close" onclick="hideEditUserModal()">
+            <button type="button" class="admin-modal__close" onclick="closeEditUserModal()">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -264,7 +262,7 @@
                         <option value="">-- Chọn phân quyền --</option>
                         <option value="0">Admin</option>
                         <option value="1">Ban ISO</option>
-                        <option value="2">Cơ quan/Phân xưởng</option>
+                        <option value="2">Cơ quan - Phân xưởng</option>
                         <option value="3">Người sử dụng</option>
                     </select>
                 </div>
@@ -294,7 +292,7 @@
                 </div>
 
                 <div class="admin-form__actions">
-                    <button type="button" class="admin-btn admin-btn--secondary" onclick="hideEditUserModal()">Hủy</button>
+                    <button type="button" class="admin-btn admin-btn--secondary" onclick="closeEditUserModal()">Hủy</button>
                     <button type="submit" class="admin-btn admin-btn--primary">Cập nhật</button>
                 </div>
             </form>
@@ -303,12 +301,11 @@
 </div>
 
 <!-- Delete User Modal -->
-<div id="deleteUserModal" class="admin-modal" style="display: none;">
-    <div class="admin-modal__overlay"></div>
-    <div class="admin-modal__container">
+<div id="deleteUserModal" class="admin-modal">
+    <div class="admin-modal__content">
         <div class="admin-modal__header">
             <h3 class="admin-modal__title">Xác nhận xóa tài khoản</h3>
-            <button type="button" class="admin-modal__close" onclick="hideDeleteUserModal()">
+            <button type="button" class="admin-modal__close" onclick="closeDeleteUserModal()">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -319,11 +316,11 @@
             <p>Hành động này không thể hoàn tác.</p>
             
             <div class="admin-form__actions">
-                <button type="button" class="admin-btn admin-btn--secondary" onclick="hideDeleteUserModal()">Hủy</button>
+                <button type="button" class="admin-btn admin-btn--secondary" onclick="closeDeleteUserModal()">Hủy</button>
                 <form method="POST" id="deleteUserForm" style="display: inline;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="admin-btn admin-btn--secondary" style="background: #dc3545;">Xóa</button>
+                    <button type="submit" class="admin-btn admin-btn--danger">Xóa</button>
                 </form>
             </div>
         </div>
@@ -331,21 +328,23 @@
 </div>
 
 <script>
-function showCreateUserModal() {
-    document.getElementById('createUserModal').style.display = 'flex';
+function openCreateUserModal() {
+    document.getElementById('createUserModal').classList.add('admin-modal--active');
+    document.getElementById('createUserModal').querySelector('form').reset();
+    clearErrors();
 }
 
-function hideCreateUserModal() {
-    document.getElementById('createUserModal').style.display = 'none';
+function closeCreateUserModal() {
+    document.getElementById('createUserModal').classList.remove('admin-modal--active');
 }
 
 // Edit User Functions
-function showEditUserModal() {
-    document.getElementById('editUserModal').style.display = 'flex';
+function openEditUserModal() {
+    document.getElementById('editUserModal').classList.add('admin-modal--active');
 }
 
-function hideEditUserModal() {
-    document.getElementById('editUserModal').style.display = 'none';
+function closeEditUserModal() {
+    document.getElementById('editUserModal').classList.remove('admin-modal--active');
 }
 
 function editUser(userId) {
@@ -369,7 +368,7 @@ function editUser(userId) {
                 document.getElementById('editUserForm').action = `/admin/users/${userId}`;
                 
                 // Show modal
-                showEditUserModal();
+                openEditUserModal();
             }
         })
         .catch(error => {
@@ -379,12 +378,12 @@ function editUser(userId) {
 }
 
 // Delete User Functions
-function showDeleteUserModal() {
-    document.getElementById('deleteUserModal').style.display = 'flex';
+function openDeleteUserModal() {
+    document.getElementById('deleteUserModal').classList.add('admin-modal--active');
 }
 
-function hideDeleteUserModal() {
-    document.getElementById('deleteUserModal').style.display = 'none';
+function closeDeleteUserModal() {
+    document.getElementById('deleteUserModal').classList.remove('admin-modal--active');
 }
 
 function deleteUser(userId, userName) {
@@ -395,13 +394,31 @@ function deleteUser(userId, userName) {
     document.getElementById('deleteUserForm').action = `/admin/users/${userId}`;
     
     // Show modal
-    showDeleteUserModal();
+    openDeleteUserModal();
+}
+
+// Close modal when clicking outside
+window.addEventListener('click', function(e) {
+    if (e.target.classList.contains('admin-modal')) {
+        e.target.classList.remove('admin-modal--active');
+    }
+});
+
+// Clear errors function
+function clearErrors() {
+    document.querySelectorAll('.admin-form__error').forEach(error => error.textContent = '');
+    document.querySelectorAll('.admin-form__input--error').forEach(input => 
+        input.classList.remove('admin-form__input--error')
+    );
+    document.querySelectorAll('.admin-form__select--error').forEach(select => 
+        select.classList.remove('admin-form__select--error')
+    );
 }
 
 // Show modal if there are validation errors
 @if($errors->any())
 document.addEventListener('DOMContentLoaded', function() {
-    showCreateUserModal();
+    openCreateUserModal();
 });
 @endif
 </script>

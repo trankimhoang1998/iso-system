@@ -8,7 +8,7 @@
         <nav class="header__nav" id="headerNav">
             <ul class="nav__list">
                 <li class="nav__item">
-                    <a href="/" class="nav__link {{ request()->routeIs('home') ? 'nav__link--active' : '' }}">
+                    <a href="{{ route('trang-chu') }}" class="nav__link {{ request()->routeIs('trang-chu') ? 'nav__link--active' : '' }}">
                         TRANG CHỦ
                     </a>
                 </li>

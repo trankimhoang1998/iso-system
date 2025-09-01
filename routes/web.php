@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\DocumentController;
+use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Level1\Level1Controller;
 use App\Http\Controllers\Level1\DocumentController as Level1DocumentController;
 use App\Http\Controllers\Level1\ProposalController as Level1ProposalController;
@@ -17,39 +18,17 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 // Public routes
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [AuthController::class, 'showLogin'])->name('home');
+
+// Home page (require authentication)
+Route::get('/trang-chu', [HomeController::class, 'index'])->middleware('auth')->name('trang-chu');
 
 // Authentication routes
 Route::controller(AuthController::class)->group(function () {
-    // General login route (smart redirect based on intended URL)
+    // General login route (redirect to home)
     Route::get('/login', function () {
-        // Redirect to dashboard if already logged in
-        if (Auth::check()) {
-            return redirect()->route(Auth::user()->getDashboardRoute());
-        }
-        
-        $intended = session('url.intended');
-        
-        // Redirect to appropriate login based on intended URL
-        if (str_contains($intended, '/level1')) {
-            return redirect()->route('level1.login');
-        } elseif (str_contains($intended, '/level2')) {
-            return redirect()->route('level2.login');
-        } elseif (str_contains($intended, '/level3')) {
-            return redirect()->route('level3.login');
-        } elseif (str_contains($intended, '/admin')) {
-            return redirect()->route('admin.login');
-        }
-        
-        // Default to admin login
-        return redirect()->route('admin.login');
+        return redirect()->route('home');
     })->name('login');
-    
-    // Login routes for different roles
-    Route::get('/admin/login', 'showAdminLogin')->name('admin.login');
-    Route::get('/level1/login', 'showLevel1Login')->name('level1.login');
-    Route::get('/level2/login', 'showLevel2Login')->name('level2.login');
-    Route::get('/level3/login', 'showLevel3Login')->name('level3.login');
     
     // Process login
     Route::post('/login', 'login')->name('auth.login');
@@ -82,6 +61,13 @@ Route::middleware(['auth', 'role:0'])->prefix('admin')->name('admin.')->group(fu
     Route::post('/categories/reorder', [\App\Http\Controllers\Admin\CategoryController::class, 'reorder'])->name('categories.reorder');
     Route::patch('/categories/{category}/toggle', [\App\Http\Controllers\Admin\CategoryController::class, 'toggle'])->name('categories.toggle');
     Route::get('/categories/{category}/children', [\App\Http\Controllers\Admin\CategoryController::class, 'getChildren'])->name('categories.children');
+    
+    // Departments management
+    Route::get('/departments', [DepartmentController::class, 'index'])->name('departments.index');
+    Route::post('/departments', [DepartmentController::class, 'store'])->name('departments.store');
+    Route::put('/departments/{department}', [DepartmentController::class, 'update'])->name('departments.update');
+    Route::delete('/departments/{department}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
+    Route::post('/departments/{department}/toggle', [DepartmentController::class, 'toggle'])->name('departments.toggle');
 });
 
 // Level 1 (Ban ISO) routes

@@ -11,56 +11,18 @@ use Illuminate\Validation\ValidationException;
 class AuthController extends Controller
 {
     /**
-     * Show admin login form
+     * Show unified login form
      */
-    public function showAdminLogin()
+    public function showLogin()
     {
-        // Redirect to dashboard if already logged in
+        // Redirect to trang-chu if already logged in
         if (Auth::check()) {
-            return redirect()->route(Auth::user()->getDashboardRoute());
+            return redirect()->route('trang-chu');
         }
         
-        return view('auth.admin-login');
+        return view('auth.login');
     }
 
-    /**
-     * Show level 1 login form
-     */
-    public function showLevel1Login()
-    {
-        // Redirect to dashboard if already logged in
-        if (Auth::check()) {
-            return redirect()->route(Auth::user()->getDashboardRoute());
-        }
-        
-        return view('auth.level1-login');
-    }
-
-    /**
-     * Show level 2 login form
-     */
-    public function showLevel2Login()
-    {
-        // Redirect to dashboard if already logged in
-        if (Auth::check()) {
-            return redirect()->route(Auth::user()->getDashboardRoute());
-        }
-        
-        return view('auth.level2-login');
-    }
-
-    /**
-     * Show level 3 login form
-     */
-    public function showLevel3Login()
-    {
-        // Redirect to dashboard if already logged in
-        if (Auth::check()) {
-            return redirect()->route(Auth::user()->getDashboardRoute());
-        }
-        
-        return view('auth.level3-login');
-    }
 
     /**
      * Handle login request
@@ -88,8 +50,8 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        // Redirect to appropriate dashboard
-        return redirect()->route($user->getDashboardRoute());
+        // Redirect to home page first for all roles
+        return redirect()->route('trang-chu');
     }
 
     /**

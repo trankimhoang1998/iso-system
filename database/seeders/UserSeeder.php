@@ -14,9 +14,6 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Clear existing users (optional - remove if you want to keep existing data)
-        User::truncate();
-
         // 1. Create Admin users (Role 0)
         $admin1 = User::create([
             'name' => 'Administrator',

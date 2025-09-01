@@ -37,15 +37,6 @@
             </div>
         </div>
         
-        <div class="auth-footer">
-            <div class="auth-links">
-                <a href="{{ route('admin.login') }}" class="auth-link @yield('admin-active')">Admin</a>
-                <a href="{{ route('level1.login') }}" class="auth-link @yield('level1-active')">Ban ISO</a>
-                <a href="{{ route('level2.login') }}" class="auth-link @yield('level2-active')">Cơ quan/Phân xưởng</a>
-                <a href="{{ route('level3.login') }}" class="auth-link @yield('level3-active')">Người sử dụng</a>
-            </div>
-            <a href="{{ route('home') }}" class="auth-back-link">← Về trang chủ</a>
-        </div>
     </div>
 </body>
 </html>
