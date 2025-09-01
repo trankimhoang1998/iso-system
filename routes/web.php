@@ -76,6 +76,12 @@ Route::middleware(['auth', 'role:0'])->prefix('admin')->name('admin.')->group(fu
     Route::get('/documents/{document}/download', [DocumentController::class, 'download'])->name('documents.download');
     Route::put('/documents/{document}/approve', [DocumentController::class, 'approve'])->name('documents.approve');
     Route::put('/documents/{document}/revoke', [DocumentController::class, 'revokeApproval'])->name('documents.revoke');
+    
+    // Categories management
+    Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
+    Route::post('/categories/reorder', [\App\Http\Controllers\Admin\CategoryController::class, 'reorder'])->name('categories.reorder');
+    Route::patch('/categories/{category}/toggle', [\App\Http\Controllers\Admin\CategoryController::class, 'toggle'])->name('categories.toggle');
+    Route::get('/categories/{category}/children', [\App\Http\Controllers\Admin\CategoryController::class, 'getChildren'])->name('categories.children');
 });
 
 // Level 1 (Ban ISO) routes

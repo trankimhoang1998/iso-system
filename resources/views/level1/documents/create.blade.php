@@ -58,6 +58,22 @@
 
                 <div class="level1-form__row level1-form__row--split">
                     <div class="level1-form__group">
+                        <label class="level1-form__label">Danh mục</label>
+                        <select name="category_id" 
+                                class="level1-form__select @error('category_id') level1-form__select--error @enderror">
+                            <option value="">-- Chọn danh mục (tùy chọn) --</option>
+                            @foreach(\App\Models\Category::getFlatList() as $category)
+                                <option value="{{ $category['id'] }}" {{ old('category_id') == $category['id'] ? 'selected' : '' }}>
+                                    {{ $category['name'] }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('category_id')
+                        <div class="level1-form__error">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="level1-form__group">
                         <label class="level1-form__label level1-form__label--required">Loại tài liệu</label>
                         <select name="document_type" required 
                                 class="level1-form__select @error('document_type') level1-form__select--error @enderror">

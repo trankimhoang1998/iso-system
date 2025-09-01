@@ -66,6 +66,22 @@
 
                 <div class="admin-form__row admin-form__row--split">
                     <div class="admin-form__group">
+                        <label class="admin-form__label">Danh mục</label>
+                        <select name="category_id" 
+                                class="admin-form__select @error('category_id') admin-form__select--error @enderror">
+                            <option value="">-- Chọn danh mục (tùy chọn) --</option>
+                            @foreach(\App\Models\Category::getFlatList() as $category)
+                                <option value="{{ $category['id'] }}" {{ old('category_id', $document->category_id) == $category['id'] ? 'selected' : '' }}>
+                                    {{ $category['name'] }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('category_id')
+                        <div class="admin-form__error">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="admin-form__group">
                         <label class="admin-form__label admin-form__label--required">Loại tài liệu</label>
                         <select name="document_type" required 
                                 class="admin-form__select @error('document_type') admin-form__select--error @enderror">

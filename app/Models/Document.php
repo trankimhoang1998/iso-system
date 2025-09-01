@@ -11,6 +11,7 @@ class Document extends Model
     protected $fillable = [
         'title',
         'description',
+        'category_id',
         'file_name',
         'file_path',
         'file_type',
@@ -54,6 +55,11 @@ class Document extends Model
     public function uploader(): BelongsTo
     {
         return $this->belongsTo(User::class, 'uploaded_by');
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 
     /**

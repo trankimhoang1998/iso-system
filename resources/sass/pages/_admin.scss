@@ -1590,6 +1590,110 @@
         }
     }
     
+    &__group {
+        display: flex;
+        flex-direction: column;
+        min-width: 150px;
+        flex: 1;
+    }
+
+    &__label {
+        color: $gray;
+        font-size: 13px;
+        font-weight: $font-weight-bold;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        
+        &--required::after {
+            content: ' *';
+            color: $danger-color;
+        }
+    }
+
+    &__input, &__select, &__textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
+        font-size: 14px;
+        color: $gray;
+        background: $white;
+        transition: all 0.3s ease;
+        font-family: inherit;
+
+        &:focus {
+            outline: none;
+            border-color: $primary-color;
+            box-shadow: 0 0 0 2px rgba(70, 130, 180, 0.1);
+        }
+
+        &::placeholder {
+            color: #6c757d;
+            font-size: 13px;
+        }
+    }
+
+    &__textarea {
+        min-height: 100px;
+        resize: vertical;
+        line-height: 1.5;
+
+        &--error {
+            border-color: $danger-color;
+            background-color: rgba($danger-color, 0.05);
+        }
+    }
+
+    &__input--error, &__select--error {
+        border-color: $danger-color;
+        background-color: rgba($danger-color, 0.05);
+    }
+
+    &__error {
+        color: $danger-color;
+        font-size: 12px;
+        margin-top: 4px;
+        font-weight: 500;
+    }
+
+    &__help {
+        font-size: 12px;
+        color: #6c757d;
+        margin-top: 4px;
+        line-height: 1.4;
+
+        small {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+    }
+
+    &__actions {
+        display: flex;
+        gap: $spacing-sm;
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-shrink: 0;
+        margin-top: $spacing-lg;
+        padding-top: $spacing-md;
+        border-top: 1px solid #e9ecef;
+
+        .admin-btn {
+            min-width: 120px;
+            height: 38px;
+            justify-content: center;
+        }
+
+        @include mobile {
+            flex-direction: column;
+            
+            .admin-btn {
+                min-width: 100%;
+            }
+        }
+    }
+    
     &__checkbox-label {
         display: flex;
         align-items: center;
@@ -1655,6 +1759,570 @@
         .admin-current-file__size {
             font-size: 12px;
             color: #6c757d;
+        }
+    }
+}
+
+// ===============================================
+// Category Management Styles
+// ===============================================
+
+// Categories Tree View
+.admin-categories-tree {
+    width: 100%;
+}
+
+.admin-category-item {
+    margin-bottom: $spacing-md;
+    
+    &__content {
+        display: flex;
+        align-items: center;
+        padding: $spacing-md;
+        background: $white;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        
+        &:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-color: $primary-color;
+        }
+    }
+    
+    &__main {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        gap: $spacing-sm;
+    }
+    
+    &__icon {
+        width: 20px;
+        height: 20px;
+        color: $primary-color;
+        flex-shrink: 0;
+        
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    }
+    
+    &__toggle {
+        cursor: pointer;
+        transition: transform 0.3s ease;
+        
+        &.rotated {
+            transform: rotate(-90deg);
+        }
+    }
+    
+    &__info {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    &__name {
+        font-size: 16px;
+        font-weight: $font-weight-bold;
+        color: $gray;
+        margin: 0 0 4px 0;
+        
+        a {
+            color: inherit;
+            text-decoration: none;
+            
+            &:hover {
+                color: $primary-color;
+            }
+        }
+    }
+    
+    &__description {
+        font-size: 14px;
+        color: #6c757d;
+        margin: 0;
+        line-height: 1.4;
+    }
+    
+    &__meta {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        margin-right: $spacing-md;
+        
+        @include mobile {
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+    }
+    
+    &__count {
+        font-size: 13px;
+        color: #6c757d;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+    
+    &__actions {
+        display: flex;
+        gap: 6px;
+        flex-shrink: 0;
+        
+        @include mobile {
+            flex-direction: column;
+            gap: 4px;
+        }
+    }
+    
+    // Child categories
+    &--child {
+        margin-bottom: $spacing-sm;
+        
+        .admin-category-item__content {
+            background: #f8f9fa;
+            border-left: 3px solid $primary-color;
+        }
+        
+        .admin-category-item__name {
+            font-size: 15px;
+        }
+    }
+}
+
+.admin-category-children {
+    margin-left: 30px;
+    margin-top: $spacing-sm;
+    padding-left: $spacing-md;
+    border-left: 2px solid #e9ecef;
+    
+    @include mobile {
+        margin-left: $spacing-sm;
+        padding-left: $spacing-sm;
+    }
+}
+
+// Category Detail Page
+.admin-category-detail {
+    &__header {
+        background: $white;
+        border-radius: 8px;
+        padding: $spacing-lg;
+        margin-bottom: $spacing-lg;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    &__meta {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: $spacing-md;
+        
+        @include mobile {
+            grid-template-columns: 1fr;
+            gap: $spacing-sm;
+        }
+    }
+    
+    &__meta-item {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    &__meta-label {
+        font-size: 12px;
+        font-weight: $font-weight-bold;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    &__meta-value {
+        font-size: 14px;
+        font-weight: 500;
+        color: $gray;
+    }
+    
+    &__description {
+        background: $white;
+        border-radius: 8px;
+        padding: $spacing-lg;
+        margin-bottom: $spacing-lg;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        
+        &-content {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #495057;
+        }
+    }
+    
+    &__children {
+        background: $white;
+        border-radius: 8px;
+        padding: $spacing-lg;
+        margin-bottom: $spacing-lg;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    &__documents {
+        background: $white;
+        border-radius: 8px;
+        padding: $spacing-lg;
+        margin-bottom: $spacing-lg;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    &__section-title {
+        font-size: 18px;
+        font-weight: $font-weight-bold;
+        color: $gray;
+        margin: 0 0 $spacing-md 0;
+        padding-bottom: $spacing-sm;
+        border-bottom: 2px solid rgba($primary-color, 0.1);
+    }
+    
+    &__show-more {
+        margin-top: $spacing-md;
+        text-align: center;
+        padding-top: $spacing-md;
+        border-top: 1px solid #e9ecef;
+    }
+    
+    &__info {
+        background: $white;
+        border-radius: 8px;
+        padding: $spacing-lg;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+}
+
+// Category Children Grid
+.admin-category-children-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: $spacing-md;
+    
+    @include mobile {
+        grid-template-columns: 1fr;
+        gap: $spacing-sm;
+    }
+}
+
+.admin-category-child-card {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: $spacing-md;
+    transition: all 0.3s ease;
+    
+    &:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-color: $primary-color;
+    }
+    
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: $spacing-sm;
+        gap: $spacing-sm;
+    }
+    
+    &__name {
+        font-size: 16px;
+        font-weight: $font-weight-bold;
+        margin: 0;
+        
+        a {
+            color: $gray;
+            text-decoration: none;
+            
+            &:hover {
+                color: $primary-color;
+            }
+        }
+    }
+    
+    &__description {
+        font-size: 13px;
+        color: #6c757d;
+        line-height: 1.4;
+        margin: 0 0 $spacing-sm 0;
+    }
+    
+    &__footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: $spacing-sm;
+        padding-top: $spacing-sm;
+        border-top: 1px solid #e9ecef;
+    }
+    
+    &__count {
+        font-size: 12px;
+        color: #6c757d;
+        font-weight: 500;
+    }
+    
+    &__actions {
+        display: flex;
+        gap: 4px;
+    }
+}
+
+// Documents List in Category Detail
+.admin-documents-list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+}
+
+.admin-document-item {
+    display: flex;
+    align-items: center;
+    padding: $spacing-md;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    
+    &:hover {
+        background: #f8f9fa;
+        border-color: $primary-color;
+    }
+    
+    &__icon {
+        width: 24px;
+        height: 24px;
+        color: $primary-color;
+        margin-right: $spacing-sm;
+        flex-shrink: 0;
+        
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    }
+    
+    &__content {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    &__title {
+        font-size: 15px;
+        font-weight: $font-weight-bold;
+        margin: 0 0 4px 0;
+        
+        a {
+            color: $gray;
+            text-decoration: none;
+            
+            &:hover {
+                color: $primary-color;
+            }
+        }
+    }
+    
+    &__meta {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        flex-wrap: wrap;
+    }
+    
+    &__date {
+        font-size: 12px;
+        color: #6c757d;
+        font-weight: 500;
+    }
+    
+    &__actions {
+        display: flex;
+        gap: 4px;
+        margin-left: $spacing-sm;
+    }
+}
+
+// Info Cards
+.admin-info-card {
+    background: $white;
+    border-radius: 8px;
+    padding: $spacing-lg;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    
+    &__title {
+        font-size: 18px;
+        font-weight: $font-weight-bold;
+        color: $gray;
+        margin: 0 0 $spacing-md 0;
+        padding-bottom: $spacing-sm;
+        border-bottom: 2px solid rgba($primary-color, 0.1);
+    }
+}
+
+.admin-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: $spacing-md;
+    
+    @include mobile {
+        grid-template-columns: 1fr;
+        gap: $spacing-sm;
+    }
+}
+
+.admin-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    
+    &__label {
+        font-size: 12px;
+        font-weight: $font-weight-bold;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    &__value {
+        font-size: 14px;
+        font-weight: 500;
+        color: $gray;
+        
+        a {
+            color: $primary-color;
+            text-decoration: none;
+            
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+// Category Level Indicators
+.admin-category-level {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 6px;
+    margin-left: 8px;
+    background: rgba($primary-color, 0.1);
+    color: $primary-color;
+    font-size: 10px;
+    font-weight: $font-weight-bold;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    
+    &--level-1 { background: rgba(#28a745, 0.1); color: #28a745; }
+    &--level-2 { background: rgba(#17a2b8, 0.1); color: #17a2b8; }
+    &--level-3 { background: rgba(#ffc107, 0.1); color: #e0a800; }
+    &--level-4 { background: rgba(#dc3545, 0.1); color: #dc3545; }
+}
+
+.category-level {
+    @extend .admin-category-level;
+}
+
+// Empty State Messages
+.admin-empty-state {
+    text-align: center;
+    padding: $spacing-xl $spacing-md;
+    color: #6c757d;
+    font-size: 14px;
+    
+    &__icon {
+        width: 48px;
+        height: 48px;
+        margin: 0 auto $spacing-md auto;
+        color: #dee2e6;
+        
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    }
+    
+    &__title {
+        font-size: 16px;
+        font-weight: $font-weight-bold;
+        color: #495057;
+        margin: 0 0 $spacing-sm 0;
+    }
+    
+    &__description {
+        font-size: 14px;
+        color: #6c757d;
+        line-height: 1.5;
+        margin: 0;
+    }
+    
+    &__actions {
+        margin-top: $spacing-md;
+    }
+}
+
+.admin-no-documents,
+.admin-no-categories,
+.admin-empty-message {
+    @extend .admin-empty-state;
+}
+
+// Responsive adjustments
+@include mobile {
+    .admin-category-item {
+        &__content {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: $spacing-sm;
+        }
+        
+        &__main {
+            width: 100%;
+        }
+        
+        &__meta {
+            width: 100%;
+            justify-content: flex-start;
+        }
+        
+        &__actions {
+            width: 100%;
+            justify-content: flex-end;
+        }
+    }
+    
+    .admin-category-detail {
+        &__header {
+            padding: $spacing-md;
+        }
+        
+        &__description,
+        &__children,
+        &__documents {
+            padding: $spacing-md;
+        }
+    }
+    
+    .admin-empty-state {
+        padding: $spacing-lg $spacing-md;
+        
+        &__icon {
+            width: 40px;
+            height: 40px;
+        }
+        
+        &__title {
+            font-size: 15px;
+        }
+        
+        &__description {
+            font-size: 13px;
         }
     }
 }
