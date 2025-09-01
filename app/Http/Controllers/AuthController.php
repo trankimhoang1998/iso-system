@@ -31,12 +31,10 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required',
-            'role' => 'required|integer|in:0,1,2,3'
+            'password' => 'required'
         ]);
 
         $user = User::where('email', $request->email)
-                   ->where('role', $request->role)
                    ->where('is_active', true)
                    ->first();
 

@@ -17,11 +17,9 @@ class Level1Controller extends Controller
         
         $stats = [
             'level2_users' => User::where('role', User::ROLE_LEVEL2)
-                                 ->where('parent_id', $user->id)
                                  ->where('is_active', true)
                                  ->count(),
             'level3_users' => User::where('role', User::ROLE_LEVEL3)
-                                 ->where('parent_id', $user->id)
                                  ->where('is_active', true)
                                  ->count(),
         ];

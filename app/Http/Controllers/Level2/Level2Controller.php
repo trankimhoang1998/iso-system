@@ -17,7 +17,6 @@ class Level2Controller extends Controller
         
         $stats = [
             'level3_users' => User::where('role', User::ROLE_LEVEL3)
-                                 ->where('parent_id', $user->id)
                                  ->where('is_active', true)
                                  ->count(),
             'pending_proposals' => 0, // TODO: implement proposals

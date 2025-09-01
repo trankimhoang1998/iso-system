@@ -35,17 +35,11 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/logout', 'logout')->name('auth.logout');
 });
 
-// Admin routes
-Route::middleware(['auth', 'role:0'])->prefix('admin')->name('admin.')->group(function () {
+// Admin routes - All authenticated users can access
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-    Route::get('/users', [AdminController::class, 'users'])->name('users');
-    Route::get('/users/create', [AdminController::class, 'showCreateUser'])->name('users.create');
-    Route::post('/users', [AdminController::class, 'storeUser'])->name('users.store');
-    Route::get('/users/{user}/edit', [AdminController::class, 'showEditUser'])->name('users.edit');
-    Route::put('/users/{user}', [AdminController::class, 'updateUser'])->name('users.update');
-    Route::delete('/users/{user}', [AdminController::class, 'deleteUser'])->name('users.delete');
     
-    // Documents management
+    // Documents management - All users
     Route::get('/documents', [DocumentController::class, 'index'])->name('documents');
     Route::get('/documents/create', [DocumentController::class, 'create'])->name('documents.create');
     Route::post('/documents', [DocumentController::class, 'store'])->name('documents.store');
@@ -57,18 +51,29 @@ Route::middleware(['auth', 'role:0'])->prefix('admin')->name('admin.')->group(fu
     Route::put('/documents/{document}/approve', [DocumentController::class, 'approve'])->name('documents.approve');
     Route::put('/documents/{document}/revoke', [DocumentController::class, 'revokeApproval'])->name('documents.revoke');
     
-    // Categories management
-    Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
-    Route::post('/categories/reorder', [\App\Http\Controllers\Admin\CategoryController::class, 'reorder'])->name('categories.reorder');
-    Route::patch('/categories/{category}/toggle', [\App\Http\Controllers\Admin\CategoryController::class, 'toggle'])->name('categories.toggle');
-    Route::get('/categories/{category}/children', [\App\Http\Controllers\Admin\CategoryController::class, 'getChildren'])->name('categories.children');
-    
-    // Departments management
-    Route::get('/departments', [DepartmentController::class, 'index'])->name('departments.index');
-    Route::post('/departments', [DepartmentController::class, 'store'])->name('departments.store');
-    Route::put('/departments/{department}', [DepartmentController::class, 'update'])->name('departments.update');
-    Route::delete('/departments/{department}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
-    Route::post('/departments/{department}/toggle', [DepartmentController::class, 'toggle'])->name('departments.toggle');
+    // Admin only routes - User and Department management
+    Route::middleware(['role:0'])->group(function () {
+        // Users management - Admin only
+        Route::get('/users', [AdminController::class, 'users'])->name('users');
+        Route::get('/users/create', [AdminController::class, 'showCreateUser'])->name('users.create');
+        Route::post('/users', [AdminController::class, 'storeUser'])->name('users.store');
+        Route::get('/users/{user}/edit', [AdminController::class, 'showEditUser'])->name('users.edit');
+        Route::put('/users/{user}', [AdminController::class, 'updateUser'])->name('users.update');
+        Route::delete('/users/{user}', [AdminController::class, 'deleteUser'])->name('users.delete');
+        
+        // Departments management - Admin only
+        Route::get('/departments', [DepartmentController::class, 'index'])->name('departments.index');
+        Route::post('/departments', [DepartmentController::class, 'store'])->name('departments.store');
+        Route::put('/departments/{department}', [DepartmentController::class, 'update'])->name('departments.update');
+        Route::delete('/departments/{department}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
+        Route::post('/departments/{department}/toggle', [DepartmentController::class, 'toggle'])->name('departments.toggle');
+        
+        // Categories management - Admin only
+        Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
+        Route::post('/categories/reorder', [\App\Http\Controllers\Admin\CategoryController::class, 'reorder'])->name('categories.reorder');
+        Route::patch('/categories/{category}/toggle', [\App\Http\Controllers\Admin\CategoryController::class, 'toggle'])->name('categories.toggle');
+        Route::get('/categories/{category}/children', [\App\Http\Controllers\Admin\CategoryController::class, 'getChildren'])->name('categories.children');
+    });
 });
 
 // Level 1 (Ban ISO) routes

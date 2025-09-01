@@ -13,6 +13,7 @@
                     <span>Tổng quan</span>
                 </a>
             </li>
+            @if(auth()->user()->isAdmin())
             <li class="admin-nav__item">
                 <a href="{{ route('admin.users') }}" 
                    class="admin-nav__link @if(request()->routeIs('admin.users*')) admin-nav__link--active @endif"
@@ -33,6 +34,8 @@
                     <span>Quản lý phân xưởng</span>
                 </a>
             </li>
+            @endif
+            @if(auth()->user()->isAdmin())
              <li class="admin-nav__item">
                 <a href="{{ route('admin.categories.index') }}" 
                    class="admin-nav__link @if(request()->routeIs('admin.categories*')) admin-nav__link--active @endif"
@@ -44,6 +47,7 @@
                     <span>Quản lý danh mục</span>
                 </a>
             </li>
+            @endif
             <li class="admin-nav__item">
                 <a href="{{ route('admin.documents') }}" 
                    class="admin-nav__link @if(request()->routeIs('admin.documents*')) admin-nav__link--active @endif"

@@ -36,23 +36,6 @@
         @enderror
     </div>
 
-    <div class="auth-form__group">
-        <label for="role" class="auth-form__label">Quyền đăng nhập</label>
-        <select id="role" 
-                name="role" 
-                required
-                class="auth-form__select @error('role') auth-form__select--error @enderror">
-            <option value="">-- Chọn quyền đăng nhập --</option>
-            <option value="0" {{ old('role') == '0' ? 'selected' : '' }}>Admin</option>
-            <option value="1" {{ old('role') == '1' ? 'selected' : '' }}>Ban ISO</option>
-            <option value="2" {{ old('role') == '2' ? 'selected' : '' }}>Cơ quan - Phân xưởng</option>
-            <option value="3" {{ old('role') == '3' ? 'selected' : '' }}>Người sử dụng</option>
-        </select>
-        @error('role')
-            <div class="auth-form__error">{{ $message }}</div>
-        @enderror
-        <div class="auth-form__help">Chọn quyền tương ứng với tài khoản của bạn</div>
-    </div>
 
     @if ($errors->any())
         <div class="auth-form__errors">

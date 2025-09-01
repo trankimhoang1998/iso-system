@@ -25,8 +25,8 @@ class RoleMiddleware
         $requiredRole = is_numeric($role) ? (int)$role : $role;
         
         if ($user->role !== $requiredRole) {
-            // Redirect to appropriate dashboard based on user's role
-            return redirect()->route($user->getDashboardRoute());
+            // Return 404 when user tries to access restricted area
+            abort(404);
         }
 
         // Check if user is active

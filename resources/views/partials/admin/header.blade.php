@@ -7,7 +7,7 @@
             </svg>
         </button>
         <div class="admin-header__logo">
-            <h1 class="admin-header__title">HỆ THỐNG ISO - ADMIN</h1>
+            <h1 class="admin-header__title">HỆ THỐNG ISO - {{ strtoupper(auth()->user()->getRoleName()) }}</h1>
         </div>
     </div>
     
