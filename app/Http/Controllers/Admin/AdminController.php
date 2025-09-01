@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Document;
+use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -32,7 +33,7 @@ class AdminController extends Controller
      */
     public function users(Request $request)
     {
-        $query = User::query();
+        $query = User::with('department');
 
         // Search filter
         if ($request->filled('search')) {
@@ -55,7 +56,7 @@ class AdminController extends Controller
 
         // Department filter
         if ($request->filled('department')) {
-            $query->where('department', 'like', "%{$request->department}%");
+            $query->where('department_id', $request->department);
         }
 
         $users = $query->orderBy('created_at', 'desc')->paginate(20);
@@ -63,22 +64,40 @@ class AdminController extends Controller
         // Preserve query parameters in pagination links
         $users->appends($request->all());
 
-        return view('admin.users', compact('users'));
+        // Get departments for the department selection dropdown
+        $departments = Department::orderBy('name')->get();
+
+        return view('admin.users', compact('users', 'departments'));
     }
 
     /**
-     * Create new user
+     * Show create user form
      */
-    public function createUser(Request $request)
+    public function showCreateUser()
     {
-        $request->validate([
+        $departments = Department::orderBy('name')->get();
+        return view('admin.users.create', compact('departments'));
+    }
+
+    /**
+     * Store new user
+     */
+    public function storeUser(Request $request)
+    {
+        // Define validation rules
+        $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
             'role' => 'required|integer|in:0,1,2,3',
-            'department' => 'nullable|string|max:255',
-            'parent_id' => 'nullable|exists:users,id',
-        ], [
+        ];
+
+        // Add department_id validation for roles 2 and 3
+        if (in_array($request->role, [2, 3])) {
+            $rules['department_id'] = 'required|exists:departments,id';
+        }
+
+        $request->validate($rules, [
             'name.required' => 'Vui lòng nhập họ và tên.',
             'name.max' => 'Họ và tên không được vượt quá 255 ký tự.',
             'email.required' => 'Vui lòng nhập địa chỉ email.',
@@ -88,32 +107,35 @@ class AdminController extends Controller
             'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
             'role.required' => 'Vui lòng chọn phân quyền.',
             'role.in' => 'Phân quyền được chọn không hợp lệ.',
-            'department.max' => 'Tên cơ quan/phòng ban không được vượt quá 255 ký tự.',
-            'parent_id.exists' => 'Tài khoản cấp trên được chọn không tồn tại.',
+            'department_id.required' => 'Vui lòng chọn phân xưởng.',
+            'department_id.exists' => 'Phân xưởng được chọn không tồn tại.',
         ]);
 
-        User::create([
+        $userData = [
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
-            'department' => $request->department,
-            'parent_id' => $request->parent_id,
             'is_active' => true,
-        ]);
+        ];
+
+        // Add department_id for roles 2 and 3
+        if (in_array($request->role, [2, 3])) {
+            $userData['department_id'] = $request->department_id;
+        }
+
+        User::create($userData);
 
         return redirect()->route('admin.users')->with('success', 'Tạo tài khoản thành công!');
     }
 
     /**
-     * Get user data for editing
+     * Show edit user form
      */
-    public function editUser(User $user)
+    public function showEditUser(User $user)
     {
-        return response()->json([
-            'success' => true,
-            'user' => $user->only(['id', 'name', 'email', 'role', 'department', 'parent_id', 'is_active'])
-        ]);
+        $departments = Department::orderBy('name')->get();
+        return view('admin.users.edit', compact('user', 'departments'));
     }
 
     /**
@@ -121,15 +143,21 @@ class AdminController extends Controller
      */
     public function updateUser(Request $request, User $user)
     {
-        $request->validate([
+        // Define validation rules
+        $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|min:6',
             'role' => 'required|integer|in:0,1,2,3',
-            'department' => 'nullable|string|max:255',
-            'parent_id' => 'nullable|exists:users,id',
             'is_active' => 'boolean',
-        ], [
+        ];
+
+        // Add department_id validation for roles 2 and 3
+        if (in_array($request->role, [2, 3])) {
+            $rules['department_id'] = 'required|exists:departments,id';
+        }
+
+        $request->validate($rules, [
             'name.required' => 'Vui lòng nhập họ và tên.',
             'name.max' => 'Họ và tên không được vượt quá 255 ký tự.',
             'email.required' => 'Vui lòng nhập địa chỉ email.',
@@ -138,18 +166,23 @@ class AdminController extends Controller
             'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
             'role.required' => 'Vui lòng chọn phân quyền.',
             'role.in' => 'Phân quyền được chọn không hợp lệ.',
-            'department.max' => 'Tên cơ quan/phòng ban không được vượt quá 255 ký tự.',
-            'parent_id.exists' => 'Tài khoản cấp trên được chọn không tồn tại.',
+            'department_id.required' => 'Vui lòng chọn phân xưởng.',
+            'department_id.exists' => 'Phân xưởng được chọn không tồn tại.',
         ]);
 
         $updateData = [
             'name' => $request->name,
             'email' => $request->email,
             'role' => $request->role,
-            'department' => $request->department,
-            'parent_id' => $request->parent_id,
             'is_active' => $request->boolean('is_active', true),
         ];
+
+        // Add department_id for roles 2 and 3, null for others
+        if (in_array($request->role, [2, 3])) {
+            $updateData['department_id'] = $request->department_id;
+        } else {
+            $updateData['department_id'] = null;
+        }
 
         // Only update password if provided
         if ($request->filled('password')) {

@@ -22,8 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'department',
-        'parent_id',
+        'department_id',
         'is_active',
     ];
 
@@ -54,7 +53,7 @@ class User extends Authenticatable
     // Role constants
     const ROLE_ADMIN = 0;
     const ROLE_LEVEL1 = 1; // Ban ISO
-    const ROLE_LEVEL2 = 2; // Cơ quan/Phân xưởng
+    const ROLE_LEVEL2 = 2; // Cơ quan - Phân xưởng
     const ROLE_LEVEL3 = 3; // Người sử dụng
 
     /**
@@ -65,7 +64,7 @@ class User extends Authenticatable
         return match ($this->role) {
             self::ROLE_ADMIN => 'Admin',
             self::ROLE_LEVEL1 => 'Ban ISO',
-            self::ROLE_LEVEL2 => 'Cơ quan/Phân xưởng',
+            self::ROLE_LEVEL2 => 'Cơ quan - Phân xưởng',
             self::ROLE_LEVEL3 => 'Người sử dụng',
             default => 'Unknown',
         };
@@ -88,7 +87,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if user is Cơ quan/Phân xưởng
+     * Check if user is Cơ quan - Phân xưởng
      */
     public function isLevel2()
     {
@@ -103,20 +102,13 @@ class User extends Authenticatable
         return $this->role === self::ROLE_LEVEL3;
     }
 
-    /**
-     * Parent user relationship
-     */
-    public function parent()
-    {
-        return $this->belongsTo(User::class, 'parent_id');
-    }
 
     /**
-     * Children users relationship
+     * Department relationship
      */
-    public function children()
+    public function department()
     {
-        return $this->hasMany(User::class, 'parent_id');
+        return $this->belongsTo(Department::class);
     }
 
     /**

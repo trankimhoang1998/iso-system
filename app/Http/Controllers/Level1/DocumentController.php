@@ -181,7 +181,7 @@ class DocumentController extends Controller
         // Check if user is Level 2
         $user = User::find($request->user_id);
         if ($user->role !== User::ROLE_LEVEL2) {
-            return redirect()->route('level1.documents.permissions')->with('error', 'Chỉ có thể cấp quyền cho tài khoản Cơ quan/Phân xưởng!');
+            return redirect()->route('level1.documents.permissions')->with('error', 'Chỉ có thể cấp quyền cho tài khoản Cơ quan - Phân xưởng!');
         }
 
         DocumentPermission::updateOrCreate(

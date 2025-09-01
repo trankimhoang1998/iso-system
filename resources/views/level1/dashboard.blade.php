@@ -31,7 +31,7 @@
                 </div>
                 <div class="level1-stat-card__content">
                     <div class="level1-stat-card__number">{{ $stats['level2_users'] }}</div>
-                    <div class="level1-stat-card__label">Cơ quan/Phân xưởng</div>
+                    <div class="level1-stat-card__label">Cơ quan - Phân xưởng</div>
                 </div>
             </div>
 

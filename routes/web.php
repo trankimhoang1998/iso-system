@@ -39,8 +39,9 @@ Route::controller(AuthController::class)->group(function () {
 Route::middleware(['auth', 'role:0'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/users', [AdminController::class, 'users'])->name('users');
-    Route::post('/users', [AdminController::class, 'createUser'])->name('users.create');
-    Route::get('/users/{user}/edit', [AdminController::class, 'editUser'])->name('users.edit');
+    Route::get('/users/create', [AdminController::class, 'showCreateUser'])->name('users.create');
+    Route::post('/users', [AdminController::class, 'storeUser'])->name('users.store');
+    Route::get('/users/{user}/edit', [AdminController::class, 'showEditUser'])->name('users.edit');
     Route::put('/users/{user}', [AdminController::class, 'updateUser'])->name('users.update');
     Route::delete('/users/{user}', [AdminController::class, 'deleteUser'])->name('users.delete');
     
@@ -94,7 +95,7 @@ Route::middleware(['auth', 'role:1'])->prefix('level1')->name('level1.')->group(
     Route::patch('/proposals/{proposal}', [Level1ProposalController::class, 'update'])->name('proposals.update');
 });
 
-// Level 2 (Cơ quan/Phân xưởng) routes
+// Level 2 (Cơ quan - Phân xưởng) routes
 Route::middleware(['auth', 'role:2'])->prefix('level2')->name('level2.')->group(function () {
     Route::get('/dashboard', [Level2Controller::class, 'dashboard'])->name('dashboard');
     

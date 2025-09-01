@@ -1,6 +1,6 @@
 @extends('layouts.level2')
 
-@section('title', 'Tổng quan - Cơ quan/Phân xưởng')
+@section('title', 'Tổng quan - Cơ quan - Phân xưởng')
 
 @section('content')
 <div class="level2-page">

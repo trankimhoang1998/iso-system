@@ -17,14 +17,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->tinyInteger('role')->default(3)->comment('0: Admin, 1: Ban ISO, 2: Cơ quan/Phân xưởng, 3: Người sử dụng');
-            $table->string('department')->nullable()->comment('Tên cơ quan/phân xưởng');
-            $table->unsignedBigInteger('parent_id')->nullable()->comment('ID của tài khoản cấp trên');
+            $table->tinyInteger('role')->default(3)->comment('0: Admin, 1: Ban ISO, 2: Cơ quan - Phân xưởng, 3: Người sử dụng');
+            $table->foreignId('department_id')->nullable()->constrained('departments')->onDelete('set null');
             $table->boolean('is_active')->default(true);
             $table->rememberToken();
             $table->timestamps();
-            
-            $table->foreign('parent_id')->references('id')->on('users')->onDelete('set null');
             $table->index(['role', 'is_active']);
         });
 

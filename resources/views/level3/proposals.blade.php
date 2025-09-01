@@ -217,7 +217,7 @@
                         <select name="level2_user_id" required class="level3-form__select">
                             <option value="">Chọn người nhận</option>
                             @foreach($level2Users as $user)
-                            <option value="{{ $user->id }}">{{ $user->name }} - {{ $user->department ?? 'Cơ quan/Phân xưởng' }}</option>
+                            <option value="{{ $user->id }}">{{ $user->name }} - {{ $user->department ?? 'Cơ quan - Phân xưởng' }}</option>
                             @endforeach
                         </select>
                     </div>

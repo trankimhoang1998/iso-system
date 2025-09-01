@@ -137,7 +137,7 @@ class Document extends Model
             return $this->uploaded_by == $user->id || $this->is_public;
         }
 
-        // Level 2 (Cơ quan/Phân xưởng) can only view if they have permission or document is public
+        // Level 2 (Cơ quan - Phân xưởng) can only view if they have permission or document is public
         if ($user->role == User::ROLE_LEVEL2) {
             return $this->is_public || $this->permissions()->where('user_id', $user->id)->where('can_view', true)->exists();
         }
@@ -165,7 +165,7 @@ class Document extends Model
             return $this->uploaded_by == $user->id || $this->is_public;
         }
 
-        // Level 2 (Cơ quan/Phân xưởng) can only download if they have permission or document is public
+        // Level 2 (Cơ quan - Phân xưởng) can only download if they have permission or document is public
         if ($user->role == User::ROLE_LEVEL2) {
             return $this->is_public || $this->permissions()->where('user_id', $user->id)->where('can_download', true)->exists();
         }

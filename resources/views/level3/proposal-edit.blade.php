@@ -61,7 +61,7 @@
                             <option value="">Chọn người nhận</option>
                             @foreach($level2Users as $user)
                             <option value="{{ $user->id }}" {{ $user->id == $proposal->level2_user_id ? 'selected' : '' }}>
-                                {{ $user->name }} - {{ $user->department ?? 'Cơ quan/Phân xưởng' }}
+                                {{ $user->name }} - {{ $user->department ?? 'Cơ quan - Phân xưởng' }}
                             </option>
                             @endforeach
                         </select>

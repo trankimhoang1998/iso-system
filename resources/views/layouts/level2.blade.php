@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
-    <title>@yield('title', 'Cơ quan/Phân xưởng - Hệ thống ISO')</title>
+    <title>@yield('title', 'Cơ quan - Phân xưởng - Hệ thống ISO')</title>
     
     <!-- Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
