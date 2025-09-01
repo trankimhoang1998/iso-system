@@ -17,15 +17,7 @@ class AdminController extends Controller
      */
     public function dashboard()
     {
-        $stats = [
-            'total_users' => User::where('is_active', true)->count(),
-            'admin_users' => User::where('role', User::ROLE_ADMIN)->where('is_active', true)->count(),
-            'level1_users' => User::where('role', User::ROLE_LEVEL1)->where('is_active', true)->count(),
-            'level2_users' => User::where('role', User::ROLE_LEVEL2)->where('is_active', true)->count(),
-            'level3_users' => User::where('role', User::ROLE_LEVEL3)->where('is_active', true)->count(),
-        ];
-
-        return view('admin.dashboard', compact('stats'));
+        return view('admin.dashboard');
     }
 
     /**

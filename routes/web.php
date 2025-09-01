@@ -5,6 +5,15 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\DocumentController;
 use App\Http\Controllers\Admin\DepartmentController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\IsoDirectiveCategoryController;
+use App\Http\Controllers\Admin\IsoSystemCategoryController;
+use App\Http\Controllers\Admin\InternalDocumentCategoryController;
+use App\Http\Controllers\Admin\ManagementDocumentCategoryController;
+use App\Http\Controllers\Admin\IsoDirectiveDocumentController;
+use App\Http\Controllers\Admin\IsoSystemDocumentController;
+use App\Http\Controllers\Admin\InternalDocumentController;
+use App\Http\Controllers\Admin\ManagementDocumentController;
 use App\Http\Controllers\Level1\Level1Controller;
 use App\Http\Controllers\Level1\DocumentController as Level1DocumentController;
 use App\Http\Controllers\Level1\ProposalController as Level1ProposalController;
@@ -70,13 +79,42 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::delete('/departments/{department}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
         Route::post('/departments/{department}/toggle', [DepartmentController::class, 'toggle'])->name('departments.toggle');
         
-        // Categories management - Admin only
-        Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
-        Route::post('/categories/reorder', [\App\Http\Controllers\Admin\CategoryController::class, 'reorder'])->name('categories.reorder');
-        Route::patch('/categories/{category}/toggle', [\App\Http\Controllers\Admin\CategoryController::class, 'toggle'])->name('categories.toggle');
-        Route::get('/categories/{category}/children', [\App\Http\Controllers\Admin\CategoryController::class, 'getChildren'])->name('categories.children');
-        Route::get('/categories/by-document-type/{documentType}', [\App\Http\Controllers\Admin\CategoryController::class, 'getByDocumentType'])->name('categories.by-document-type');
+        // Categories management - Admin only (Legacy)
+        Route::resource('categories', CategoryController::class);
+        Route::post('/categories/reorder', [CategoryController::class, 'reorder'])->name('categories.reorder');
+        Route::patch('/categories/{category}/toggle', [CategoryController::class, 'toggle'])->name('categories.toggle');
+        Route::get('/categories/{category}/children', [CategoryController::class, 'getChildren'])->name('categories.children');
+        Route::get('/categories/by-document-type/{documentType}', [CategoryController::class, 'getByDocumentType'])->name('categories.by-document-type');
+            
+        // New Categories management - 4 separate types (without show routes)
+        Route::resource('iso-directive-categories', IsoDirectiveCategoryController::class)->except(['show']);
+        Route::resource('iso-system-categories', IsoSystemCategoryController::class)->except(['show']);
+        Route::resource('internal-document-categories', InternalDocumentCategoryController::class)->except(['show']);
+        Route::resource('management-document-categories', ManagementDocumentCategoryController::class)->except(['show']);
+        
+        // New Documents management - 4 separate types (Admin only - create, edit, delete)
+        Route::resource('iso-directive-documents', IsoDirectiveDocumentController::class)->except(['index', 'show']);
+        Route::resource('iso-system-documents', IsoSystemDocumentController::class)->except(['index', 'show']);
+        Route::resource('internal-documents', InternalDocumentController::class)->except(['index', 'show']);
+        Route::resource('management-documents', ManagementDocumentController::class)->except(['index', 'show']);
     });
+    
+    // Document viewing - All authenticated users can access
+    Route::get('iso-directive-documents', [IsoDirectiveDocumentController::class, 'index'])->name('iso-directive-documents.index');
+    Route::get('iso-directive-documents/{isoDirectiveDocument}', [IsoDirectiveDocumentController::class, 'show'])->name('iso-directive-documents.show');
+    Route::get('iso-directive-documents/{isoDirectiveDocument}/download', [IsoDirectiveDocumentController::class, 'download'])->name('iso-directive-documents.download');
+    
+    Route::get('iso-system-documents', [IsoSystemDocumentController::class, 'index'])->name('iso-system-documents.index');
+    Route::get('iso-system-documents/{isoSystemDocument}', [IsoSystemDocumentController::class, 'show'])->name('iso-system-documents.show');
+    Route::get('iso-system-documents/{isoSystemDocument}/download', [IsoSystemDocumentController::class, 'download'])->name('iso-system-documents.download');
+    
+    Route::get('internal-documents', [InternalDocumentController::class, 'index'])->name('internal-documents.index');
+    Route::get('internal-documents/{internalDocument}', [InternalDocumentController::class, 'show'])->name('internal-documents.show');
+    Route::get('internal-documents/{internalDocument}/download', [InternalDocumentController::class, 'download'])->name('internal-documents.download');
+    
+    Route::get('management-documents', [ManagementDocumentController::class, 'index'])->name('management-documents.index');
+    Route::get('management-documents/{managementDocument}', [ManagementDocumentController::class, 'show'])->name('management-documents.show');
+    Route::get('management-documents/{managementDocument}/download', [ManagementDocumentController::class, 'download'])->name('management-documents.download');
 });
 
 // Level 1 (Ban ISO) routes

@@ -17,4 +17,9 @@ class DocumentType extends Model
     {
         return $this->hasMany(Document::class);
     }
+
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
+    }
 }

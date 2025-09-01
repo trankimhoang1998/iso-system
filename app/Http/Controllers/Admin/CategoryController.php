@@ -13,23 +13,44 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $documentTypeId = $request->get('document_type_id');
-        $documentType = null;
+        $isAjax = $request->get('ajax');
         
-        if ($documentTypeId) {
+        // Load all document types with category counts
+        $documentTypes = DocumentType::withCount('categories')->get();
+        
+        // Handle AJAX request for specific document type
+        if ($isAjax && $documentTypeId) {
             $documentType = DocumentType::findOrFail($documentTypeId);
+            
+            $categories = Category::with('parent', 'children')
+                ->where('document_type_id', $documentTypeId)
+                ->whereNull('parent_id')
+                ->orderBy('name')
+                ->get();
+
+            if ($categories->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'html' => ''
+                ]);
+            }
+
+            $html = '';
+            foreach ($categories as $category) {
+                $html .= view('admin.categories.partials.category-item', [
+                    'category' => $category, 
+                    'level' => 0
+                ])->render();
+            }
+
+            return response()->json([
+                'success' => true,
+                'html' => $html
+            ]);
         }
 
-        $categories = Category::with('parent', 'children')
-            ->when($documentTypeId, function ($query) use ($documentTypeId) {
-                return $query->where('document_type_id', $documentTypeId);
-            })
-            ->whereNull('parent_id')
-            ->orderBy('name')
-            ->paginate(15);
-
-        $documentTypes = DocumentType::all();
-
-        return view('admin.categories.index', compact('categories', 'documentType', 'documentTypes'));
+        // Regular page load - return view with all document types
+        return view('admin.categories.index', compact('documentTypes'));
     }
 
     public function create(Request $request)
