@@ -13,11 +13,23 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->unsignedBigInteger('category_id')->nullable();
-            $table->string('file_name');
-            $table->string('file_path');
-            $table->string('file_type', 10);
-            $table->integer('file_size');
+            // PDF file (required)
+            $table->string('pdf_file_name');
+            $table->string('pdf_file_path');
+            $table->string('pdf_file_type', 10);
+            $table->integer('pdf_file_size');
+            
+            // Word file (optional)
+            $table->string('word_file_name')->nullable();
+            $table->string('word_file_path')->nullable();
+            $table->string('word_file_type', 10)->nullable();
+            $table->integer('word_file_size')->nullable();
             $table->enum('status', ['draft', 'approved', 'archived'])->default('draft');
+            $table->string('symbol')->nullable()->comment('Ký hiệu');
+            $table->string('time_period')->nullable()->comment('Thời gian');
+            $table->string('document_number')->nullable()->comment('Số văn bản');
+            $table->string('issuing_agency')->nullable()->comment('Cơ quan ban hành');
+            $table->string('summary')->nullable()->comment('Trích yếu');
             $table->unsignedBigInteger('uploaded_by');
             $table->timestamps();
 

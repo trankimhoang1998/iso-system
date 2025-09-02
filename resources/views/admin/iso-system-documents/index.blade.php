@@ -81,10 +81,11 @@
                     <th class="admin-table__header">Tiêu đề</th>
                     <th class="admin-table__header">Danh mục</th>
                     <th class="admin-table__header">Phòng ban</th>
-                    <th class="admin-table__header">Trạng thái</th>
-                    <th class="admin-table__header">Kích thước</th>
-                    <th class="admin-table__header">Người tải lên</th>
-                    <th class="admin-table__header">Ngày tải lên</th>
+                    <th class="admin-table__header">Ký hiệu</th>
+                    <th class="admin-table__header">Thời gian</th>
+                    <th class="admin-table__header">Số văn bản</th>
+                    <th class="admin-table__header">Cơ quan ban hành</th>
+                    <th class="admin-table__header">Trích yếu</th>
                     <th class="admin-table__header">Thao tác</th>
                 </tr>
             </thead>
@@ -106,17 +107,11 @@
                         </span>
                     </td>
                     <td class="admin-table__cell">{{ $document->department->name ?? 'N/A' }}</td>
-                    <td class="admin-table__cell">
-                        <span class="admin-status-badge 
-                            @if($document->status == 'approved') admin-status-badge--active 
-                            @elseif($document->status == 'draft') admin-status-badge--warning
-                            @else admin-status-badge--inactive @endif">
-                            {{ $document->getStatusName() }}
-                        </span>
-                    </td>
-                    <td class="admin-table__cell">{{ $document->getFormattedFileSize() }}</td>
-                    <td class="admin-table__cell">{{ $document->uploader->name ?? 'N/A' }}</td>
-                    <td class="admin-table__cell">{{ $document->created_at->format('d/m/Y') }}</td>
+                    <td class="admin-table__cell">{{ $document->symbol ?: '_' }}</td>
+                    <td class="admin-table__cell">{{ $document->time_period ?: '_' }}</td>
+                    <td class="admin-table__cell">{{ $document->document_number ?: '_' }}</td>
+                    <td class="admin-table__cell">{{ $document->issuing_agency ?: '_' }}</td>
+                    <td class="admin-table__cell">{{ $document->summary ? Str::limit($document->summary, 50) : '_' }}</td>
                     <td class="admin-table__cell">
                         <div class="admin-table__actions">
                             <a href="{{ route('admin.iso-system-documents.show', $document) }}" 
@@ -127,13 +122,24 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                                 </svg>
                             </a>
-                            @if($document->file_path)
-                            <a href="{{ route('admin.iso-system-documents.download', $document) }}"
+                            @if($document->pdf_file_path)
+                            <a href="{{ route('admin.iso-system-documents.download', [$document, 'pdf']) }}"
                                class="admin-table__action-btn admin-table__action-btn--download" 
-                               title="Tải xuống">
+                               title="Tải PDF">
                                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                 </svg>
+                                <span class="admin-file-type-label">PDF</span>
+                            </a>
+                            @endif
+                            @if($document->word_file_path)
+                            <a href="{{ route('admin.iso-system-documents.download', [$document, 'word']) }}"
+                               class="admin-table__action-btn admin-table__action-btn--download admin-table__action-btn--word" 
+                               title="Tải Word">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <span class="admin-file-type-label">Word</span>
                             </a>
                             @endif
                             @if(in_array(auth()->user()->role, [0, 1]))
@@ -157,7 +163,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="9" class="admin-table__empty">
+                    <td colspan="10" class="admin-table__empty">
                         <div class="admin-empty-state">
                             <svg class="admin-empty-state__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -242,4 +248,46 @@ window.addEventListener('click', function(e) {
     }
 });
 </script>
+
+<style>
+.admin-file-type-label {
+    position: absolute;
+    bottom: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    background: #3b82f6;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+.admin-table__action-btn {
+    position: relative;
+}
+
+.admin-table__action-btn:hover .admin-file-type-label {
+    opacity: 1;
+}
+
+.admin-table__action-btn--word .admin-file-type-label {
+    background: #16a34a;
+}
+
+.admin-table__action-btn--download {
+    margin-right: 4px;
+}
+
+.admin-table__actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+</style>
 @endsection

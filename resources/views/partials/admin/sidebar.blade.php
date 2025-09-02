@@ -82,9 +82,9 @@
             </li>
             @endif
             
-            <!-- Xem tài liệu - All authenticated users can access -->
+            <!-- Quản lý tài liệu - All authenticated users can access -->
             <li class="admin-nav__section">
-                <span class="admin-nav__section-title">Xem tài liệu</span>
+                <span class="admin-nav__section-title">Quản lý tài liệu</span>
             </li>
             <li class="admin-nav__item">
                 <a href="{{ route('admin.iso-directive-documents.index') }}" 

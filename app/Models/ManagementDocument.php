@@ -11,11 +11,20 @@ class ManagementDocument extends Model
         'title',
         'description',
         'category_id',
-        'file_name',
-        'file_path',
-        'file_type',
-        'file_size',
+        'pdf_file_name',
+        'pdf_file_path',
+        'pdf_file_type',
+        'pdf_file_size',
+        'word_file_name',
+        'word_file_path',
+        'word_file_type',
+        'word_file_size',
         'status',
+        'symbol',
+        'time_period',
+        'document_number',
+        'issuing_agency',
+        'summary',
         'uploaded_by',
         'approved_by',
         'approved_at',
@@ -57,9 +66,27 @@ class ManagementDocument extends Model
         };
     }
 
+    public function getFormattedPdfFileSize(): string
+    {
+        return $this->formatFileSize($this->pdf_file_size);
+    }
+
+    public function getFormattedWordFileSize(): string
+    {
+        return $this->formatFileSize($this->word_file_size);
+    }
+
     public function getFormattedFileSize(): string
     {
-        $bytes = $this->file_size;
+        return $this->getFormattedPdfFileSize();
+    }
+
+    private function formatFileSize(?int $bytes): string
+    {
+        if (!$bytes) {
+            return '0 bytes';
+        }
+        
         if ($bytes >= 1048576) {
             return number_format($bytes / 1048576, 2) . ' MB';
         } elseif ($bytes >= 1024) {
@@ -67,6 +94,26 @@ class ManagementDocument extends Model
         } else {
             return $bytes . ' bytes';
         }
+    }
+
+    public function hasPdfFile(): bool
+    {
+        return !empty($this->pdf_file_path);
+    }
+
+    public function hasWordFile(): bool
+    {
+        return !empty($this->word_file_path);
+    }
+
+    public function getFilePathAttribute()
+    {
+        return $this->pdf_file_path;
+    }
+
+    public function getFileNameAttribute()
+    {
+        return $this->pdf_file_name;
     }
 
     public function canUserView(User $user): bool

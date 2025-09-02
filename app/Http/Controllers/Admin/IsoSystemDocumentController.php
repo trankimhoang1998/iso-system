@@ -73,12 +73,33 @@ class IsoSystemDocumentController extends Controller
             'category_id' => 'required|exists:iso_system_categories,id',
             'department_id' => 'required|exists:departments,id',
             'status' => 'nullable|in:draft,approved,archived',
-            'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:51200', // 50MB max
+            'symbol' => 'nullable|string|max:255',
+            'time_period' => 'nullable|string|max:255',
+            'document_number' => 'nullable|string|max:255',
+            'issuing_agency' => 'nullable|string|max:255',
+            'summary' => 'nullable|string|max:1000',
+            'pdf_file' => 'required|file|mimes:pdf|max:51200', // PDF file required, 50MB max
+            'word_file' => 'nullable|file|mimes:doc,docx|max:51200', // Word file optional, 50MB max
         ]);
 
-        $file = $request->file('file');
-        $fileName = time() . '_' . $file->getClientOriginalName();
-        $filePath = $file->storeAs('documents/iso-system', $fileName, 'public');
+        // Handle PDF file upload (required)
+        $pdfFile = $request->file('pdf_file');
+        $pdfFileName = time() . '_pdf_' . $pdfFile->getClientOriginalName();
+        $pdfFilePath = $pdfFile->storeAs('documents/iso-system/pdf', $pdfFileName, 'public');
+
+        // Handle Word file upload (optional)
+        $wordFileName = null;
+        $wordFilePath = null;
+        $wordFileType = null;
+        $wordFileSize = null;
+
+        if ($request->hasFile('word_file')) {
+            $wordFile = $request->file('word_file');
+            $wordFileName = time() . '_word_' . $wordFile->getClientOriginalName();
+            $wordFilePath = $wordFile->storeAs('documents/iso-system/word', $wordFileName, 'public');
+            $wordFileType = $wordFile->getClientOriginalExtension();
+            $wordFileSize = $wordFile->getSize();
+        }
 
         IsoSystemDocument::create([
             'title' => $request->title,
@@ -86,10 +107,21 @@ class IsoSystemDocumentController extends Controller
             'category_id' => $request->category_id,
             'department_id' => $request->department_id,
             'status' => $request->status ?? 'draft',
-            'file_name' => $fileName,
-            'file_path' => $filePath,
-            'file_type' => $file->getClientOriginalExtension(),
-            'file_size' => $file->getSize(),
+            'symbol' => $request->symbol,
+            'time_period' => $request->time_period,
+            'document_number' => $request->document_number,
+            'issuing_agency' => $request->issuing_agency,
+            'summary' => $request->summary,
+            // PDF file fields
+            'pdf_file_name' => $pdfFileName,
+            'pdf_file_path' => $pdfFilePath,
+            'pdf_file_type' => $pdfFile->getClientOriginalExtension(),
+            'pdf_file_size' => $pdfFile->getSize(),
+            // Word file fields
+            'word_file_name' => $wordFileName,
+            'word_file_path' => $wordFilePath,
+            'word_file_type' => $wordFileType,
+            'word_file_size' => $wordFileSize,
             'uploaded_by' => auth()->id(),
         ]);
 
@@ -124,7 +156,13 @@ class IsoSystemDocumentController extends Controller
             'category_id' => 'required|exists:iso_system_categories,id',
             'department_id' => 'required|exists:departments,id',
             'status' => 'nullable|in:draft,approved,archived',
-            'file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:51200', // 50MB max
+            'symbol' => 'nullable|string|max:255',
+            'time_period' => 'nullable|string|max:255',
+            'document_number' => 'nullable|string|max:255',
+            'issuing_agency' => 'nullable|string|max:255',
+            'summary' => 'nullable|string|max:1000',
+            'pdf_file' => 'nullable|file|mimes:pdf|max:51200', // PDF file optional for update, 50MB max
+            'word_file' => 'nullable|file|mimes:doc,docx|max:51200', // Word file optional, 50MB max
         ]);
 
         $updateData = [
@@ -133,25 +171,45 @@ class IsoSystemDocumentController extends Controller
             'category_id' => $request->category_id,
             'department_id' => $request->department_id,
             'status' => $request->status ?? $isoSystemDocument->status,
+            'symbol' => $request->symbol,
+            'time_period' => $request->time_period,
+            'document_number' => $request->document_number,
+            'issuing_agency' => $request->issuing_agency,
+            'summary' => $request->summary,
         ];
 
-        // Handle file upload if new file is provided
-        if ($request->hasFile('file')) {
-            // Delete old file if exists
-            if ($isoSystemDocument->file_path && Storage::disk('public')->exists($isoSystemDocument->file_path)) {
-                Storage::disk('public')->delete($isoSystemDocument->file_path);
+        // Handle PDF file update
+        if ($request->hasFile('pdf_file')) {
+            // Delete old PDF file
+            if ($isoSystemDocument->pdf_file_path && Storage::disk('public')->exists($isoSystemDocument->pdf_file_path)) {
+                Storage::disk('public')->delete($isoSystemDocument->pdf_file_path);
             }
 
-            $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $filePath = $file->storeAs('documents/iso-system', $fileName, 'public');
+            $pdfFile = $request->file('pdf_file');
+            $pdfFileName = time() . '_pdf_' . $pdfFile->getClientOriginalName();
+            $pdfFilePath = $pdfFile->storeAs('documents/iso-system/pdf', $pdfFileName, 'public');
 
-            $updateData = array_merge($updateData, [
-                'file_name' => $fileName,
-                'file_path' => $filePath,
-                'file_type' => $file->getClientOriginalExtension(),
-                'file_size' => $file->getSize(),
-            ]);
+            $updateData['pdf_file_name'] = $pdfFileName;
+            $updateData['pdf_file_path'] = $pdfFilePath;
+            $updateData['pdf_file_type'] = $pdfFile->getClientOriginalExtension();
+            $updateData['pdf_file_size'] = $pdfFile->getSize();
+        }
+
+        // Handle Word file update
+        if ($request->hasFile('word_file')) {
+            // Delete old Word file
+            if ($isoSystemDocument->word_file_path && Storage::disk('public')->exists($isoSystemDocument->word_file_path)) {
+                Storage::disk('public')->delete($isoSystemDocument->word_file_path);
+            }
+
+            $wordFile = $request->file('word_file');
+            $wordFileName = time() . '_word_' . $wordFile->getClientOriginalName();
+            $wordFilePath = $wordFile->storeAs('documents/iso-system/word', $wordFileName, 'public');
+
+            $updateData['word_file_name'] = $wordFileName;
+            $updateData['word_file_path'] = $wordFilePath;
+            $updateData['word_file_type'] = $wordFile->getClientOriginalExtension();
+            $updateData['word_file_size'] = $wordFile->getSize();
         }
 
         $isoSystemDocument->update($updateData);
@@ -162,9 +220,14 @@ class IsoSystemDocumentController extends Controller
 
     public function destroy(IsoSystemDocument $isoSystemDocument)
     {
-        // Delete file from storage
-        if (Storage::disk('public')->exists($isoSystemDocument->file_path)) {
-            Storage::disk('public')->delete($isoSystemDocument->file_path);
+        // Delete PDF file from storage
+        if ($isoSystemDocument->pdf_file_path && Storage::disk('public')->exists($isoSystemDocument->pdf_file_path)) {
+            Storage::disk('public')->delete($isoSystemDocument->pdf_file_path);
+        }
+
+        // Delete Word file from storage
+        if ($isoSystemDocument->word_file_path && Storage::disk('public')->exists($isoSystemDocument->word_file_path)) {
+            Storage::disk('public')->delete($isoSystemDocument->word_file_path);
         }
 
         $isoSystemDocument->delete();
@@ -173,7 +236,7 @@ class IsoSystemDocumentController extends Controller
             ->with('success', 'Tài liệu đã được xóa thành công.');
     }
 
-    public function download(IsoSystemDocument $isoSystemDocument)
+    public function download(IsoSystemDocument $isoSystemDocument, $type = 'pdf')
     {
         // Check if user can access this document
         $user = auth()->user();
@@ -181,8 +244,14 @@ class IsoSystemDocumentController extends Controller
             abort(404);
         }
         
-        if (Storage::disk('public')->exists($isoSystemDocument->file_path)) {
-            return Storage::disk('public')->download($isoSystemDocument->file_path, $isoSystemDocument->file_name);
+        if ($type === 'word' && $isoSystemDocument->word_file_path) {
+            if (Storage::disk('public')->exists($isoSystemDocument->word_file_path)) {
+                return Storage::disk('public')->download($isoSystemDocument->word_file_path, $isoSystemDocument->word_file_name);
+            }
+        } elseif ($isoSystemDocument->pdf_file_path) {
+            if (Storage::disk('public')->exists($isoSystemDocument->pdf_file_path)) {
+                return Storage::disk('public')->download($isoSystemDocument->pdf_file_path, $isoSystemDocument->pdf_file_name);
+            }
         }
 
         return redirect()->route('admin.iso-system-documents.index')->with('error', 'File không tồn tại!');

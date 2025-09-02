@@ -17,13 +17,22 @@
             <h1 class="admin-page__title">{{ $isoDirectiveDocument->title }}</h1>
         </div>
         <div class="admin-page__actions">
-            @if($isoDirectiveDocument->file_path)
-            <a href="{{ Storage::url($isoDirectiveDocument->file_path) }}" target="_blank"
+            @if($isoDirectiveDocument->hasPdfFile())
+            <a href="{{ Storage::url($isoDirectiveDocument->pdf_file_path) }}" target="_blank"
                class="admin-btn admin-btn--success">
                 <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                 </svg>
-                Tải xuống
+                Tải PDF
+            </a>
+            @endif
+            @if($isoDirectiveDocument->hasWordFile())
+            <a href="{{ Storage::url($isoDirectiveDocument->word_file_path) }}" target="_blank"
+               class="admin-btn admin-btn--primary">
+                <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                Tải Word
             </a>
             @endif
             @if(in_array(auth()->user()->role, [0, 1]))
@@ -74,31 +83,53 @@
         </div>
         @endif
 
-        @if($isoDirectiveDocument->file_path)
+        @if($isoDirectiveDocument->hasPdfFile() || $isoDirectiveDocument->hasWordFile())
         <div class="admin-document-file">
             <h3 class="admin-document-file__title">File đính kèm</h3>
             <div class="admin-document-file__info">
+                @if($isoDirectiveDocument->hasPdfFile())
                 <div class="admin-file-item">
                     <svg class="admin-file-item__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
                     <div class="admin-file-item__details">
-                        <div class="admin-file-item__name">{{ $isoDirectiveDocument->file_name }}</div>
-                        @if($isoDirectiveDocument->file_size)
-                        <div class="admin-file-item__size">{{ $isoDirectiveDocument->getFormattedFileSize() }}</div>
+                        <div class="admin-file-item__name">{{ $isoDirectiveDocument->pdf_file_name }}</div>
+                        @if($isoDirectiveDocument->pdf_file_size)
+                        <div class="admin-file-item__size">{{ $isoDirectiveDocument->getFormattedPdfFileSize() }}</div>
                         @endif
-                        @if($isoDirectiveDocument->file_type)
-                        <div class="admin-file-item__type">{{ strtoupper($isoDirectiveDocument->file_type) }}</div>
-                        @endif
+                        <div class="admin-file-item__type">PDF</div>
                     </div>
-                    <a href="{{ Storage::url($isoDirectiveDocument->file_path) }}" target="_blank"
+                    <a href="{{ Storage::url($isoDirectiveDocument->pdf_file_path) }}" target="_blank"
                        class="admin-btn admin-btn--sm admin-btn--success">
                         <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                         </svg>
-                        Tải xuống
+                        Tải PDF
                     </a>
                 </div>
+                @endif
+                
+                @if($isoDirectiveDocument->hasWordFile())
+                <div class="admin-file-item">
+                    <svg class="admin-file-item__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <div class="admin-file-item__details">
+                        <div class="admin-file-item__name">{{ $isoDirectiveDocument->word_file_name }}</div>
+                        @if($isoDirectiveDocument->word_file_size)
+                        <div class="admin-file-item__size">{{ $isoDirectiveDocument->getFormattedWordFileSize() }}</div>
+                        @endif
+                        <div class="admin-file-item__type">{{ strtoupper($isoDirectiveDocument->word_file_type) }}</div>
+                    </div>
+                    <a href="{{ Storage::url($isoDirectiveDocument->word_file_path) }}" target="_blank"
+                       class="admin-btn admin-btn--sm admin-btn--primary">
+                        <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Tải Word
+                    </a>
+                </div>
+                @endif
             </div>
         </div>
         @endif
@@ -106,6 +137,22 @@
         <div class="admin-document-info">
             <h3 class="admin-document-info__title">Thông tin văn bản</h3>
             <div class="admin-document-info__grid">
+                <div class="admin-info-item">
+                    <span class="admin-info-item__label">Ký hiệu:</span>
+                    <span class="admin-info-item__value">{{ $isoDirectiveDocument->symbol ?: '_' }}</span>
+                </div>
+                <div class="admin-info-item">
+                    <span class="admin-info-item__label">Thời gian:</span>
+                    <span class="admin-info-item__value">{{ $isoDirectiveDocument->time_period ?: '_' }}</span>
+                </div>
+                <div class="admin-info-item">
+                    <span class="admin-info-item__label">Số văn bản:</span>
+                    <span class="admin-info-item__value">{{ $isoDirectiveDocument->document_number ?: '_' }}</span>
+                </div>
+                <div class="admin-info-item">
+                    <span class="admin-info-item__label">Cơ quan ban hành:</span>
+                    <span class="admin-info-item__value">{{ $isoDirectiveDocument->issuing_agency ?: '_' }}</span>
+                </div>
                 @if($isoDirectiveDocument->uploader)
                 <div class="admin-info-item">
                     <span class="admin-info-item__label">Người tải lên:</span>
@@ -122,6 +169,15 @@
                 </div>
             </div>
         </div>
+
+        @if($isoDirectiveDocument->summary)
+        <div class="admin-document-summary">
+            <h3 class="admin-document-summary__title">Trích yếu</h3>
+            <div class="admin-document-summary__content">
+                {{ $isoDirectiveDocument->summary }}
+            </div>
+        </div>
+        @endif
     </div>
 </div>
 

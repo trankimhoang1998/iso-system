@@ -17,13 +17,22 @@
             <h1 class="admin-page__title">{{ $isoSystemDocument->title }}</h1>
         </div>
         <div class="admin-page__actions">
-            @if($isoSystemDocument->file_path)
-            <a href="{{ route('admin.iso-system-documents.download', $isoSystemDocument) }}"
+            @if($isoSystemDocument->pdf_file_path)
+            <a href="{{ route('admin.iso-system-documents.download', [$isoSystemDocument, 'pdf']) }}"
                class="admin-btn admin-btn--success">
                 <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                 </svg>
-                Tải xuống
+                Tải PDF
+            </a>
+            @endif
+            @if($isoSystemDocument->word_file_path)
+            <a href="{{ route('admin.iso-system-documents.download', [$isoSystemDocument, 'word']) }}"
+               class="admin-btn admin-btn--info">
+                <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                Tải Word
             </a>
             @endif
             @if(in_array(auth()->user()->role, [0, 1]))
@@ -53,12 +62,6 @@
                     <span class="admin-document-meta__value">{{ $isoSystemDocument->department->name }}</span>
                 </div>
                 @endif
-                @if($isoSystemDocument->file_size)
-                <div class="admin-document-meta__item">
-                    <span class="admin-document-meta__label">Kích thước:</span>
-                    <span class="admin-document-meta__value">{{ $isoSystemDocument->getFormattedFileSize() }}</span>
-                </div>
-                @endif
                 <div class="admin-document-meta__item">
                     <span class="admin-document-meta__label">Trạng thái:</span>
                     <span class="admin-status-badge 
@@ -80,31 +83,49 @@
         </div>
         @endif
 
-        @if($isoSystemDocument->file_path)
+        @if($isoSystemDocument->pdf_file_path || $isoSystemDocument->word_file_path)
         <div class="admin-document-file">
             <h3 class="admin-document-file__title">File đính kèm</h3>
             <div class="admin-document-file__info">
+                @if($isoSystemDocument->pdf_file_path)
                 <div class="admin-file-item">
-                    <svg class="admin-file-item__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="admin-file-item__icon admin-file-item__icon--pdf" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
                     <div class="admin-file-item__details">
-                        <div class="admin-file-item__name">{{ $isoSystemDocument->file_name }}</div>
-                        @if($isoSystemDocument->file_size)
-                        <div class="admin-file-item__size">{{ $isoSystemDocument->getFormattedFileSize() }}</div>
-                        @endif
-                        @if($isoSystemDocument->file_type)
-                        <div class="admin-file-item__type">{{ strtoupper($isoSystemDocument->file_type) }}</div>
-                        @endif
+                        <div class="admin-file-item__name">{{ $isoSystemDocument->pdf_file_name }}</div>
+                        <div class="admin-file-item__size">{{ number_format($isoSystemDocument->pdf_file_size / 1024 / 1024, 2) }}MB</div>
+                        <div class="admin-file-item__type">PDF</div>
                     </div>
-                    <a href="{{ route('admin.iso-system-documents.download', $isoSystemDocument) }}"
+                    <a href="{{ route('admin.iso-system-documents.download', [$isoSystemDocument, 'pdf']) }}"
                        class="admin-btn admin-btn--sm admin-btn--success">
                         <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                         </svg>
-                        Tải xuống
+                        Tải PDF
                     </a>
                 </div>
+                @endif
+                
+                @if($isoSystemDocument->word_file_path)
+                <div class="admin-file-item">
+                    <svg class="admin-file-item__icon admin-file-item__icon--word" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <div class="admin-file-item__details">
+                        <div class="admin-file-item__name">{{ $isoSystemDocument->word_file_name }}</div>
+                        <div class="admin-file-item__size">{{ number_format($isoSystemDocument->word_file_size / 1024 / 1024, 2) }}MB</div>
+                        <div class="admin-file-item__type">{{ strtoupper($isoSystemDocument->word_file_type) }}</div>
+                    </div>
+                    <a href="{{ route('admin.iso-system-documents.download', [$isoSystemDocument, 'word']) }}"
+                       class="admin-btn admin-btn--sm admin-btn--info">
+                        <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Tải Word
+                    </a>
+                </div>
+                @endif
             </div>
         </div>
         @endif
@@ -112,6 +133,22 @@
         <div class="admin-document-info">
             <h3 class="admin-document-info__title">Thông tin văn bản</h3>
             <div class="admin-document-info__grid">
+                <div class="admin-info-item">
+                    <span class="admin-info-item__label">Ký hiệu:</span>
+                    <span class="admin-info-item__value">{{ $isoSystemDocument->symbol ?: '_' }}</span>
+                </div>
+                <div class="admin-info-item">
+                    <span class="admin-info-item__label">Thời gian:</span>
+                    <span class="admin-info-item__value">{{ $isoSystemDocument->time_period ?: '_' }}</span>
+                </div>
+                <div class="admin-info-item">
+                    <span class="admin-info-item__label">Số văn bản:</span>
+                    <span class="admin-info-item__value">{{ $isoSystemDocument->document_number ?: '_' }}</span>
+                </div>
+                <div class="admin-info-item">
+                    <span class="admin-info-item__label">Cơ quan ban hành:</span>
+                    <span class="admin-info-item__value">{{ $isoSystemDocument->issuing_agency ?: '_' }}</span>
+                </div>
                 @if($isoSystemDocument->uploader)
                 <div class="admin-info-item">
                     <span class="admin-info-item__label">Người tải lên:</span>
@@ -128,7 +165,48 @@
                 </div>
             </div>
         </div>
+
+        @if($isoSystemDocument->summary)
+        <div class="admin-document-summary">
+            <h3 class="admin-document-summary__title">Trích yếu</h3>
+            <div class="admin-document-summary__content">
+                {{ $isoSystemDocument->summary }}
+            </div>
+        </div>
+        @endif
     </div>
 </div>
 
+<style>
+.admin-file-item__icon--pdf {
+    color: #dc2626; /* Red for PDF */
+}
+
+.admin-file-item__icon--word {
+    color: #2563eb; /* Blue for Word */
+}
+
+.admin-document-file__info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.admin-page__actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.admin-btn--info {
+    background-color: #3b82f6;
+    color: white;
+    border: 1px solid #3b82f6;
+}
+
+.admin-btn--info:hover {
+    background-color: #2563eb;
+    border-color: #2563eb;
+}
+</style>
 @endsection

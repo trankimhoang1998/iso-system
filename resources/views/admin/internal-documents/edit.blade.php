@@ -76,61 +76,172 @@
                     
                     <div class="admin-form__group">
                         <label class="admin-form__label admin-form__label--required">Phòng ban</label>
-                        <select name="department_id" id="department_id" required
-                                class="admin-form__select @error('department_id') admin-form__select--error @enderror">
-                            <option value="">-- Chọn phòng ban --</option>
-                            @foreach($departments as $department)
-                                <option value="{{ $department->id }}" {{ old('department_id', $internalDocument->department_id) == $department->id ? 'selected' : '' }}>
-                                    {{ $department->name }}
-                                </option>
-                            @endforeach
-                        </select>
+                        @if(auth()->user()->role == 2 && auth()->user()->department_id)
+                            <!-- Role 2 can only edit documents for their own department -->
+                            <input type="hidden" name="department_id" value="{{ auth()->user()->department_id }}">
+                            <div class="admin-form__readonly">{{ auth()->user()->department->name }}</div>
+                        @else
+                            <!-- Role 0,1 can choose any department -->
+                            <select name="department_id" id="department_id" required
+                                    class="admin-form__select @error('department_id') admin-form__select--error @enderror">
+                                <option value="">-- Chọn phòng ban --</option>
+                                @foreach($departments as $department)
+                                    <option value="{{ $department->id }}" {{ old('department_id', $internalDocument->department_id) == $department->id ? 'selected' : '' }}>
+                                        {{ $department->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        @endif
                         @error('department_id')
                         <div class="admin-form__error">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
 
-                @if($internalDocument->file_name)
+                <!-- New fields section -->
+                <div class="admin-form__row admin-form__row--split">
+                    <div class="admin-form__group">
+                        <label class="admin-form__label">Ký hiệu</label>
+                        <input type="text" name="symbol" value="{{ old('symbol', $internalDocument->symbol) }}" 
+                               class="admin-form__input @error('symbol') admin-form__input--error @enderror"
+                               placeholder="Nhập ký hiệu tài liệu">
+                        @error('symbol')
+                        <div class="admin-form__error">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    
+                    <div class="admin-form__group">
+                        <label class="admin-form__label">Thời gian</label>
+                        <input type="text" name="time_period" value="{{ old('time_period', $internalDocument->time_period) }}" 
+                               class="admin-form__input @error('time_period') admin-form__input--error @enderror"
+                               placeholder="Nhập thời gian">
+                        @error('time_period')
+                        <div class="admin-form__error">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="admin-form__row admin-form__row--split">
+                    <div class="admin-form__group">
+                        <label class="admin-form__label">Số văn bản</label>
+                        <input type="text" name="document_number" value="{{ old('document_number', $internalDocument->document_number) }}" 
+                               class="admin-form__input @error('document_number') admin-form__input--error @enderror"
+                               placeholder="Nhập số văn bản">
+                        @error('document_number')
+                        <div class="admin-form__error">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    
+                    <div class="admin-form__group">
+                        <label class="admin-form__label">Cơ quan ban hành</label>
+                        <input type="text" name="issuing_agency" value="{{ old('issuing_agency', $internalDocument->issuing_agency) }}" 
+                               class="admin-form__input @error('issuing_agency') admin-form__input--error @enderror"
+                               placeholder="Nhập cơ quan ban hành">
+                        @error('issuing_agency')
+                        <div class="admin-form__error">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="admin-form__row">
+                    <div class="admin-form__group">
+                        <label class="admin-form__label">Trích yếu</label>
+                        <textarea name="summary" rows="3" 
+                                  class="admin-form__input @error('summary') admin-form__input--error @enderror"
+                                  placeholder="Nhập trích yếu tài liệu (tùy chọn)">{{ old('summary', $internalDocument->summary) }}</textarea>
+                        @error('summary')
+                        <div class="admin-form__error">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Current Files Section -->
+                @if($internalDocument->pdf_file_name || $internalDocument->word_file_name)
                 <div class="admin-form__row">
                     <div class="admin-form__group">
                         <label class="admin-form__label">File hiện tại</label>
-                        <div class="current-file-info">
-                            <div class="current-file-info__item">
-                                <svg class="current-file-info__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                </svg>
-                                <div class="current-file-info__details">
-                                    <div class="current-file-info__name">{{ $internalDocument->file_name }}</div>
-                                    <div class="current-file-info__meta">{{ $internalDocument->getFormattedFileSize() }} • {{ strtoupper($internalDocument->file_type) }}</div>
-                                </div>
-                                <a href="{{ route('admin.internal-documents.download', $internalDocument) }}" target="_blank" class="current-file-info__download">
-                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        <div class="current-files-info">
+                            @if($internalDocument->pdf_file_name)
+                            <div class="current-file-info">
+                                <div class="current-file-info__item">
+                                    <svg class="current-file-info__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                     </svg>
-                                </a>
+                                    <div class="current-file-info__details">
+                                        <div class="current-file-info__name">{{ $internalDocument->pdf_file_name }}</div>
+                                        <div class="current-file-info__meta">{{ number_format($internalDocument->pdf_file_size / 1024 / 1024, 2) }}MB • PDF</div>
+                                    </div>
+                                    <a href="{{ route('admin.internal-documents.download', [$internalDocument, 'pdf']) }}" class="current-file-info__download">
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                        </svg>
+                                    </a>
+                                </div>
                             </div>
+                            @endif
+                            
+                            @if($internalDocument->word_file_name)
+                            <div class="current-file-info">
+                                <div class="current-file-info__item">
+                                    <svg class="current-file-info__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                    <div class="current-file-info__details">
+                                        <div class="current-file-info__name">{{ $internalDocument->word_file_name }}</div>
+                                        <div class="current-file-info__meta">{{ number_format($internalDocument->word_file_size / 1024 / 1024, 2) }}MB • {{ strtoupper($internalDocument->word_file_type) }}</div>
+                                    </div>
+                                    <a href="{{ route('admin.internal-documents.download', [$internalDocument, 'word']) }}" class="current-file-info__download">
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
                 @endif
 
+                <!-- PDF File Upload -->
                 <div class="admin-form__row">
                     <div class="admin-form__group">
-                        <label class="admin-form__label">File tài liệu {{ $internalDocument->file_name ? '(Tùy chọn - để trống nếu không đổi)' : '(Bắt buộc)' }}</label>
+                        <label class="admin-form__label {{ !$internalDocument->pdf_file_name ? 'admin-form__label--required' : '' }}">File PDF {{ $internalDocument->pdf_file_name ? '(Tùy chọn - để trống nếu không đổi)' : '(Bắt buộc)' }}</label>
                         <div class="admin-file-upload">
-                            <input type="file" name="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt"
-                                   class="admin-file-upload__input @error('file') admin-form__input--error @enderror" 
-                                   id="adminFileInput" {{ !$internalDocument->file_name ? 'required' : '' }}>
-                            <label for="adminFileInput" class="admin-file-upload__label">
+                            <input type="file" name="pdf_file" accept=".pdf"
+                                   class="admin-file-upload__input @error('pdf_file') admin-form__input--error @enderror" 
+                                   id="adminPdfFileInput" {{ !$internalDocument->pdf_file_name ? 'required' : '' }}>
+                            <label for="adminPdfFileInput" class="admin-file-upload__label">
                                 <svg class="admin-file-upload__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                                 </svg>
-                                <span>Chọn file mới hoặc kéo thả vào đây</span>
+                                <span>Chọn file PDF mới hoặc kéo thả vào đây</span>
                             </label>
                         </div>
-                        <small class="admin-form__help">Định dạng hỗ trợ: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT. Kích thước tối đa: 50MB</small>
-                        @error('file')
+                        <small class="admin-form__help">Định dạng: PDF. Kích thước tối đa: 50MB</small>
+                        @error('pdf_file')
+                        <div class="admin-form__error">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Word File Upload -->
+                <div class="admin-form__row">
+                    <div class="admin-form__group">
+                        <label class="admin-form__label">File Word (Tùy chọn)</label>
+                        <div class="admin-file-upload">
+                            <input type="file" name="word_file" accept=".doc,.docx"
+                                   class="admin-file-upload__input @error('word_file') admin-form__input--error @enderror" 
+                                   id="adminWordFileInput">
+                            <label for="adminWordFileInput" class="admin-file-upload__label">
+                                <svg class="admin-file-upload__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                </svg>
+                                <span>Chọn file Word hoặc kéo thả vào đây</span>
+                            </label>
+                        </div>
+                        <small class="admin-form__help">Định dạng: DOC, DOCX. Kích thước tối đa: 50MB</small>
+                        @error('word_file')
                         <div class="admin-form__error">{{ $message }}</div>
                         @enderror
                     </div>
@@ -165,26 +276,41 @@
 </div>
 
 <script>
-// File upload preview
-document.getElementById('adminFileInput').addEventListener('change', function(e) {
-    const label = document.querySelector('.admin-file-upload__label span');
+// PDF File upload preview and validation
+document.getElementById('adminPdfFileInput').addEventListener('change', function(e) {
+    const label = this.parentNode.querySelector('.admin-file-upload__label span');
     if (e.target.files.length > 0) {
-        label.textContent = e.target.files[0].name;
+        const file = e.target.files[0];
+        label.textContent = file.name;
+        
+        // File size validation
+        const maxSize = 50 * 1024 * 1024; // 50MB in bytes
+        if (file.size > maxSize) {
+            alert('Kích thước file PDF không được vượt quá 50MB');
+            this.value = '';
+            label.textContent = 'Chọn file PDF mới hoặc kéo thả vào đây';
+        }
     } else {
-        label.textContent = 'Chọn file mới hoặc kéo thả vào đây';
+        label.textContent = 'Chọn file PDF mới hoặc kéo thả vào đây';
     }
 });
 
-// File size validation
-document.getElementById('adminFileInput').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (file) {
+// Word File upload preview and validation
+document.getElementById('adminWordFileInput').addEventListener('change', function(e) {
+    const label = this.parentNode.querySelector('.admin-file-upload__label span');
+    if (e.target.files.length > 0) {
+        const file = e.target.files[0];
+        label.textContent = file.name;
+        
+        // File size validation
         const maxSize = 50 * 1024 * 1024; // 50MB in bytes
         if (file.size > maxSize) {
-            alert('Kích thước file không được vượt quá 50MB');
+            alert('Kích thước file Word không được vượt quá 50MB');
             this.value = '';
-            document.querySelector('.admin-file-upload__label span').textContent = 'Chọn file mới hoặc kéo thả vào đây';
+            label.textContent = 'Chọn file Word hoặc kéo thả vào đây';
         }
+    } else {
+        label.textContent = 'Chọn file Word hoặc kéo thả vào đây';
     }
 });
 </script>
@@ -194,6 +320,12 @@ document.getElementById('adminFileInput').addEventListener('change', function(e)
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 24px;
+}
+
+.current-files-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .current-file-info {
@@ -245,6 +377,19 @@ document.getElementById('adminFileInput').addEventListener('change', function(e)
 .current-file-info__download svg {
     width: 100%;
     height: 100%;
+}
+
+.admin-form__readonly {
+    padding: 12px 16px;
+    background-color: #f1f3f4;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    color: #374151;
+    font-size: 14px;
+    line-height: 1.5;
+    height: 39.5px;
+    display: flex;
+    align-items: center;
 }
 
 @media (max-width: 768px) {

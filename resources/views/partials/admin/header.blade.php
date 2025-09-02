@@ -7,14 +7,20 @@
             </svg>
         </button>
         <div class="admin-header__logo">
-            <h1 class="admin-header__title">HỆ THỐNG ISO - {{ strtoupper(auth()->user()->getRoleName()) }}</h1>
+            <h1 class="admin-header__title">HỆ THỐNG ISO ({{ strtoupper(auth()->user()->getRoleName()) }})</h1>
         </div>
     </div>
     
     <div class="admin-header__right">
         <div class="admin-header__user">
             <span class="admin-header__user-name">{{ auth()->user()->name }}</span>
-            <span class="admin-header__user-role">{{ auth()->user()->getRoleName() }}</span>
+            <span class="admin-header__user-role">
+                @if(in_array(auth()->user()->role, [2, 3]) && auth()->user()->department)
+                    {{ auth()->user()->department->name }}
+                @else
+                    {{ auth()->user()->getRoleName() }}
+                @endif
+            </span>
         </div>
         <div class="admin-header__actions">
             <form method="POST" action="{{ route('auth.logout') }}" class="admin-header__logout-form">

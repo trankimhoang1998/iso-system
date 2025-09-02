@@ -64,22 +64,54 @@ class IsoDirectiveDocumentController extends Controller
             'description' => 'nullable|string',
             'category_id' => 'required|exists:iso_directive_categories,id',
             'status' => 'nullable|in:draft,approved,archived',
-            'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:51200', // 50MB max
+            'symbol' => 'nullable|string|max:255',
+            'time_period' => 'nullable|string|max:255',
+            'document_number' => 'nullable|string|max:255',
+            'issuing_agency' => 'nullable|string|max:255',
+            'summary' => 'nullable|string|max:1000',
+            'pdf_file' => 'required|file|mimes:pdf|max:51200', // PDF file required, 50MB max
+            'word_file' => 'nullable|file|mimes:doc,docx|max:51200', // Word file optional, 50MB max
         ]);
 
-        $file = $request->file('file');
-        $fileName = time() . '_' . $file->getClientOriginalName();
-        $filePath = $file->storeAs('documents/iso-directive', $fileName, 'public');
+        // Handle PDF file upload (required)
+        $pdfFile = $request->file('pdf_file');
+        $pdfFileName = time() . '_pdf_' . $pdfFile->getClientOriginalName();
+        $pdfFilePath = $pdfFile->storeAs('documents/iso-directive/pdf', $pdfFileName, 'public');
+
+        // Handle Word file upload (optional)
+        $wordFileName = null;
+        $wordFilePath = null;
+        $wordFileType = null;
+        $wordFileSize = null;
+
+        if ($request->hasFile('word_file')) {
+            $wordFile = $request->file('word_file');
+            $wordFileName = time() . '_word_' . $wordFile->getClientOriginalName();
+            $wordFilePath = $wordFile->storeAs('documents/iso-directive/word', $wordFileName, 'public');
+            $wordFileType = $wordFile->getClientOriginalExtension();
+            $wordFileSize = $wordFile->getSize();
+        }
 
         IsoDirectiveDocument::create([
             'title' => $request->title,
             'description' => $request->description,
             'category_id' => $request->category_id,
             'status' => $request->status ?? 'draft',
-            'file_name' => $fileName,
-            'file_path' => $filePath,
-            'file_type' => $file->getClientOriginalExtension(),
-            'file_size' => $file->getSize(),
+            'symbol' => $request->symbol,
+            'time_period' => $request->time_period,
+            'document_number' => $request->document_number,
+            'issuing_agency' => $request->issuing_agency,
+            'summary' => $request->summary,
+            // PDF file fields
+            'pdf_file_name' => $pdfFileName,
+            'pdf_file_path' => $pdfFilePath,
+            'pdf_file_type' => $pdfFile->getClientOriginalExtension(),
+            'pdf_file_size' => $pdfFile->getSize(),
+            // Word file fields
+            'word_file_name' => $wordFileName,
+            'word_file_path' => $wordFilePath,
+            'word_file_type' => $wordFileType,
+            'word_file_size' => $wordFileSize,
             'uploaded_by' => auth()->id(),
         ]);
 
@@ -106,7 +138,13 @@ class IsoDirectiveDocumentController extends Controller
             'description' => 'nullable|string',
             'category_id' => 'required|exists:iso_directive_categories,id',
             'status' => 'nullable|in:draft,approved,archived',
-            'file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:51200', // 50MB max
+            'symbol' => 'nullable|string|max:255',
+            'time_period' => 'nullable|string|max:255',
+            'document_number' => 'nullable|string|max:255',
+            'issuing_agency' => 'nullable|string|max:255',
+            'summary' => 'nullable|string|max:1000',
+            'pdf_file' => 'nullable|file|mimes:pdf|max:51200', // PDF file optional for update, 50MB max
+            'word_file' => 'nullable|file|mimes:doc,docx|max:51200', // Word file optional, 50MB max
         ]);
 
         $updateData = [
@@ -114,22 +152,45 @@ class IsoDirectiveDocumentController extends Controller
             'description' => $request->description,
             'category_id' => $request->category_id,
             'status' => $request->status ?? $isoDirectiveDocument->status,
+            'symbol' => $request->symbol,
+            'time_period' => $request->time_period,
+            'document_number' => $request->document_number,
+            'issuing_agency' => $request->issuing_agency,
+            'summary' => $request->summary,
         ];
 
-        if ($request->hasFile('file')) {
-            // Delete old file
-            if (Storage::disk('public')->exists($isoDirectiveDocument->file_path)) {
-                Storage::disk('public')->delete($isoDirectiveDocument->file_path);
+        // Handle PDF file update
+        if ($request->hasFile('pdf_file')) {
+            // Delete old PDF file
+            if ($isoDirectiveDocument->pdf_file_path && Storage::disk('public')->exists($isoDirectiveDocument->pdf_file_path)) {
+                Storage::disk('public')->delete($isoDirectiveDocument->pdf_file_path);
             }
 
-            $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $filePath = $file->storeAs('documents/iso-directive', $fileName, 'public');
+            $pdfFile = $request->file('pdf_file');
+            $pdfFileName = time() . '_pdf_' . $pdfFile->getClientOriginalName();
+            $pdfFilePath = $pdfFile->storeAs('documents/iso-directive/pdf', $pdfFileName, 'public');
 
-            $updateData['file_name'] = $fileName;
-            $updateData['file_path'] = $filePath;
-            $updateData['file_type'] = $file->getClientOriginalExtension();
-            $updateData['file_size'] = $file->getSize();
+            $updateData['pdf_file_name'] = $pdfFileName;
+            $updateData['pdf_file_path'] = $pdfFilePath;
+            $updateData['pdf_file_type'] = $pdfFile->getClientOriginalExtension();
+            $updateData['pdf_file_size'] = $pdfFile->getSize();
+        }
+
+        // Handle Word file update
+        if ($request->hasFile('word_file')) {
+            // Delete old Word file
+            if ($isoDirectiveDocument->word_file_path && Storage::disk('public')->exists($isoDirectiveDocument->word_file_path)) {
+                Storage::disk('public')->delete($isoDirectiveDocument->word_file_path);
+            }
+
+            $wordFile = $request->file('word_file');
+            $wordFileName = time() . '_word_' . $wordFile->getClientOriginalName();
+            $wordFilePath = $wordFile->storeAs('documents/iso-directive/word', $wordFileName, 'public');
+
+            $updateData['word_file_name'] = $wordFileName;
+            $updateData['word_file_path'] = $wordFilePath;
+            $updateData['word_file_type'] = $wordFile->getClientOriginalExtension();
+            $updateData['word_file_size'] = $wordFile->getSize();
         }
 
         $isoDirectiveDocument->update($updateData);
@@ -140,9 +201,14 @@ class IsoDirectiveDocumentController extends Controller
 
     public function destroy(IsoDirectiveDocument $isoDirectiveDocument)
     {
-        // Delete file from storage
-        if (Storage::disk('public')->exists($isoDirectiveDocument->file_path)) {
-            Storage::disk('public')->delete($isoDirectiveDocument->file_path);
+        // Delete PDF file from storage
+        if ($isoDirectiveDocument->pdf_file_path && Storage::disk('public')->exists($isoDirectiveDocument->pdf_file_path)) {
+            Storage::disk('public')->delete($isoDirectiveDocument->pdf_file_path);
+        }
+
+        // Delete Word file from storage
+        if ($isoDirectiveDocument->word_file_path && Storage::disk('public')->exists($isoDirectiveDocument->word_file_path)) {
+            Storage::disk('public')->delete($isoDirectiveDocument->word_file_path);
         }
 
         $isoDirectiveDocument->delete();
@@ -151,10 +217,16 @@ class IsoDirectiveDocumentController extends Controller
             ->with('success', 'Tài liệu đã được xóa thành công.');
     }
 
-    public function download(IsoDirectiveDocument $isoDirectiveDocument)
+    public function download(IsoDirectiveDocument $isoDirectiveDocument, $type = 'pdf')
     {
-        if (Storage::disk('public')->exists($isoDirectiveDocument->file_path)) {
-            return Storage::disk('public')->download($isoDirectiveDocument->file_path, $isoDirectiveDocument->file_name);
+        if ($type === 'word' && $isoDirectiveDocument->word_file_path) {
+            if (Storage::disk('public')->exists($isoDirectiveDocument->word_file_path)) {
+                return Storage::disk('public')->download($isoDirectiveDocument->word_file_path, $isoDirectiveDocument->word_file_name);
+            }
+        } elseif ($isoDirectiveDocument->pdf_file_path) {
+            if (Storage::disk('public')->exists($isoDirectiveDocument->pdf_file_path)) {
+                return Storage::disk('public')->download($isoDirectiveDocument->pdf_file_path, $isoDirectiveDocument->pdf_file_name);
+            }
         }
 
         return redirect()->route('admin.iso-directive-documents.index')->with('error', 'File không tồn tại!');

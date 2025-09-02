@@ -74,22 +74,102 @@
                     </div>
                 </div>
 
+                <!-- New fields section -->
+                <div class="admin-form__row admin-form__row--split">
+                    <div class="admin-form__group">
+                        <label class="admin-form__label">Ký hiệu</label>
+                        <input type="text" name="symbol" value="{{ old('symbol') }}" 
+                               class="admin-form__input @error('symbol') admin-form__input--error @enderror"
+                               placeholder="Nhập ký hiệu tài liệu">
+                        @error('symbol')
+                        <div class="admin-form__error">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    
+                    <div class="admin-form__group">
+                        <label class="admin-form__label">Thời gian</label>
+                        <input type="text" name="time_period" value="{{ old('time_period') }}" 
+                               class="admin-form__input @error('time_period') admin-form__input--error @enderror"
+                               placeholder="Nhập thời gian">
+                        @error('time_period')
+                        <div class="admin-form__error">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="admin-form__row admin-form__row--split">
+                    <div class="admin-form__group">
+                        <label class="admin-form__label">Số văn bản</label>
+                        <input type="text" name="document_number" value="{{ old('document_number') }}" 
+                               class="admin-form__input @error('document_number') admin-form__input--error @enderror"
+                               placeholder="Nhập số văn bản">
+                        @error('document_number')
+                        <div class="admin-form__error">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    
+                    <div class="admin-form__group">
+                        <label class="admin-form__label">Cơ quan ban hành</label>
+                        <input type="text" name="issuing_agency" value="{{ old('issuing_agency') }}" 
+                               class="admin-form__input @error('issuing_agency') admin-form__input--error @enderror"
+                               placeholder="Nhập cơ quan ban hành">
+                        @error('issuing_agency')
+                        <div class="admin-form__error">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
                 <div class="admin-form__row">
                     <div class="admin-form__group">
-                        <label class="admin-form__label admin-form__label--required">File tài liệu</label>
+                        <label class="admin-form__label">Trích yếu</label>
+                        <textarea name="summary" rows="3" 
+                                  class="admin-form__input @error('summary') admin-form__input--error @enderror"
+                                  placeholder="Nhập trích yếu tài liệu (tùy chọn)">{{ old('summary') }}</textarea>
+                        @error('summary')
+                        <div class="admin-form__error">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- PDF File Upload (Required) -->
+                <div class="admin-form__row">
+                    <div class="admin-form__group">
+                        <label class="admin-form__label admin-form__label--required">File PDF (Bắt buộc)</label>
                         <div class="admin-file-upload">
-                            <input type="file" name="file" required accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt"
-                                   class="admin-file-upload__input @error('file') admin-form__input--error @enderror" 
-                                   id="adminFileInput">
-                            <label for="adminFileInput" class="admin-file-upload__label">
+                            <input type="file" name="pdf_file" accept=".pdf"
+                                   class="admin-file-upload__input @error('pdf_file') admin-form__input--error @enderror" 
+                                   id="adminPdfFileInput" data-required="true">
+                            <label for="adminPdfFileInput" class="admin-file-upload__label">
                                 <svg class="admin-file-upload__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                                 </svg>
-                                <span>Chọn file hoặc kéo thả vào đây</span>
+                                <span>Chọn file PDF hoặc kéo thả vào đây</span>
                             </label>
                         </div>
-                        <small class="admin-form__help">Định dạng hỗ trợ: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT. Kích thước tối đa: 50MB</small>
-                        @error('file')
+                        <small class="admin-form__help">Định dạng: PDF. Kích thước tối đa: 50MB</small>
+                        @error('pdf_file')
+                        <div class="admin-form__error">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Word File Upload (Optional) -->
+                <div class="admin-form__row">
+                    <div class="admin-form__group">
+                        <label class="admin-form__label">File Word (Không bắt buộc)</label>
+                        <div class="admin-file-upload">
+                            <input type="file" name="word_file" accept=".doc,.docx"
+                                   class="admin-file-upload__input @error('word_file') admin-form__input--error @enderror" 
+                                   id="adminWordFileInput">
+                            <label for="adminWordFileInput" class="admin-file-upload__label">
+                                <svg class="admin-file-upload__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                </svg>
+                                <span>Chọn file Word hoặc kéo thả vào đây (tùy chọn)</span>
+                            </label>
+                        </div>
+                        <small class="admin-form__help">Định dạng: DOC, DOCX. Kích thước tối đa: 50MB</small>
+                        @error('word_file')
                         <div class="admin-form__error">{{ $message }}</div>
                         @enderror
                     </div>
@@ -124,25 +204,48 @@
 </div>
 
 <script>
-// File upload preview
-document.getElementById('adminFileInput').addEventListener('change', function(e) {
-    const label = document.querySelector('.admin-file-upload__label span');
+// PDF File upload preview
+document.getElementById('adminPdfFileInput').addEventListener('change', function(e) {
+    const label = document.querySelector('label[for="adminPdfFileInput"] span');
     if (e.target.files.length > 0) {
         label.textContent = e.target.files[0].name;
     } else {
-        label.textContent = 'Chọn file hoặc kéo thả vào đây';
+        label.textContent = 'Chọn file PDF hoặc kéo thả vào đây';
     }
 });
 
-// File size validation
-document.getElementById('adminFileInput').addEventListener('change', function(e) {
+// Word File upload preview
+document.getElementById('adminWordFileInput').addEventListener('change', function(e) {
+    const label = document.querySelector('label[for="adminWordFileInput"] span');
+    if (e.target.files.length > 0) {
+        label.textContent = e.target.files[0].name;
+    } else {
+        label.textContent = 'Chọn file Word hoặc kéo thả vào đây (tùy chọn)';
+    }
+});
+
+// PDF File size validation
+document.getElementById('adminPdfFileInput').addEventListener('change', function(e) {
     const file = e.target.files[0];
     if (file) {
         const maxSize = 50 * 1024 * 1024; // 50MB in bytes
         if (file.size > maxSize) {
-            alert('Kích thước file không được vượt quá 50MB');
+            alert('Kích thước file PDF không được vượt quá 50MB');
             this.value = '';
-            document.querySelector('.admin-file-upload__label span').textContent = 'Chọn file hoặc kéo thả vào đây';
+            document.querySelector('label[for="adminPdfFileInput"] span').textContent = 'Chọn file PDF hoặc kéo thả vào đây';
+        }
+    }
+});
+
+// Word File size validation
+document.getElementById('adminWordFileInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const maxSize = 50 * 1024 * 1024; // 50MB in bytes
+        if (file.size > maxSize) {
+            alert('Kích thước file Word không được vượt quá 50MB');
+            this.value = '';
+            document.querySelector('label[for="adminWordFileInput"] span').textContent = 'Chọn file Word hoặc kéo thả vào đây (tùy chọn)';
         }
     }
 });

@@ -41,12 +41,33 @@ class InternalDocumentController extends Controller
             'category_id' => 'required|exists:internal_document_categories,id',
             'department_id' => 'required|exists:departments,id',
             'status' => 'nullable|in:draft,approved,archived',
-            'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:51200', // 50MB max
+            'symbol' => 'nullable|string|max:255',
+            'time_period' => 'nullable|string|max:255',
+            'document_number' => 'nullable|string|max:255',
+            'issuing_agency' => 'nullable|string|max:255',
+            'summary' => 'nullable|string|max:1000',
+            'pdf_file' => 'required|file|mimes:pdf|max:51200', // PDF file required, 50MB max
+            'word_file' => 'nullable|file|mimes:doc,docx|max:51200', // Word file optional, 50MB max
         ]);
 
-        $file = $request->file('file');
-        $fileName = time() . '_' . $file->getClientOriginalName();
-        $filePath = $file->storeAs('documents/internal', $fileName, 'public');
+        // Handle PDF file upload (required)
+        $pdfFile = $request->file('pdf_file');
+        $pdfFileName = time() . '_pdf_' . $pdfFile->getClientOriginalName();
+        $pdfFilePath = $pdfFile->storeAs('documents/internal/pdf', $pdfFileName, 'public');
+
+        // Handle Word file upload (optional)
+        $wordFileName = null;
+        $wordFilePath = null;
+        $wordFileType = null;
+        $wordFileSize = null;
+
+        if ($request->hasFile('word_file')) {
+            $wordFile = $request->file('word_file');
+            $wordFileName = time() . '_word_' . $wordFile->getClientOriginalName();
+            $wordFilePath = $wordFile->storeAs('documents/internal/word', $wordFileName, 'public');
+            $wordFileType = $wordFile->getClientOriginalExtension();
+            $wordFileSize = $wordFile->getSize();
+        }
 
         InternalDocument::create([
             'title' => $request->title,
@@ -54,10 +75,21 @@ class InternalDocumentController extends Controller
             'category_id' => $request->category_id,
             'department_id' => $request->department_id,
             'status' => $request->status ?? 'draft',
-            'file_name' => $fileName,
-            'file_path' => $filePath,
-            'file_type' => $file->getClientOriginalExtension(),
-            'file_size' => $file->getSize(),
+            'symbol' => $request->symbol,
+            'time_period' => $request->time_period,
+            'document_number' => $request->document_number,
+            'issuing_agency' => $request->issuing_agency,
+            'summary' => $request->summary,
+            // PDF file fields
+            'pdf_file_name' => $pdfFileName,
+            'pdf_file_path' => $pdfFilePath,
+            'pdf_file_type' => $pdfFile->getClientOriginalExtension(),
+            'pdf_file_size' => $pdfFile->getSize(),
+            // Word file fields
+            'word_file_name' => $wordFileName,
+            'word_file_path' => $wordFilePath,
+            'word_file_type' => $wordFileType,
+            'word_file_size' => $wordFileSize,
             'uploaded_by' => auth()->id(),
         ]);
 
@@ -92,7 +124,13 @@ class InternalDocumentController extends Controller
             'category_id' => 'required|exists:internal_document_categories,id',
             'department_id' => 'required|exists:departments,id',
             'status' => 'nullable|in:draft,approved,archived',
-            'file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:51200', // 50MB max
+            'symbol' => 'nullable|string|max:255',
+            'time_period' => 'nullable|string|max:255',
+            'document_number' => 'nullable|string|max:255',
+            'issuing_agency' => 'nullable|string|max:255',
+            'summary' => 'nullable|string|max:1000',
+            'pdf_file' => 'nullable|file|mimes:pdf|max:51200', // PDF file optional for update, 50MB max
+            'word_file' => 'nullable|file|mimes:doc,docx|max:51200', // Word file optional, 50MB max
         ]);
 
         $updateData = [
@@ -101,25 +139,45 @@ class InternalDocumentController extends Controller
             'category_id' => $request->category_id,
             'department_id' => $request->department_id,
             'status' => $request->status ?? $internalDocument->status,
+            'symbol' => $request->symbol,
+            'time_period' => $request->time_period,
+            'document_number' => $request->document_number,
+            'issuing_agency' => $request->issuing_agency,
+            'summary' => $request->summary,
         ];
 
-        // Handle file upload if new file is provided
-        if ($request->hasFile('file')) {
-            // Delete old file if exists
-            if ($internalDocument->file_path && Storage::disk('public')->exists($internalDocument->file_path)) {
-                Storage::disk('public')->delete($internalDocument->file_path);
+        // Handle PDF file update
+        if ($request->hasFile('pdf_file')) {
+            // Delete old PDF file
+            if ($internalDocument->pdf_file_path && Storage::disk('public')->exists($internalDocument->pdf_file_path)) {
+                Storage::disk('public')->delete($internalDocument->pdf_file_path);
             }
 
-            $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $filePath = $file->storeAs('documents/internal', $fileName, 'public');
+            $pdfFile = $request->file('pdf_file');
+            $pdfFileName = time() . '_pdf_' . $pdfFile->getClientOriginalName();
+            $pdfFilePath = $pdfFile->storeAs('documents/internal/pdf', $pdfFileName, 'public');
 
-            $updateData = array_merge($updateData, [
-                'file_name' => $fileName,
-                'file_path' => $filePath,
-                'file_type' => $file->getClientOriginalExtension(),
-                'file_size' => $file->getSize(),
-            ]);
+            $updateData['pdf_file_name'] = $pdfFileName;
+            $updateData['pdf_file_path'] = $pdfFilePath;
+            $updateData['pdf_file_type'] = $pdfFile->getClientOriginalExtension();
+            $updateData['pdf_file_size'] = $pdfFile->getSize();
+        }
+
+        // Handle Word file update
+        if ($request->hasFile('word_file')) {
+            // Delete old Word file
+            if ($internalDocument->word_file_path && Storage::disk('public')->exists($internalDocument->word_file_path)) {
+                Storage::disk('public')->delete($internalDocument->word_file_path);
+            }
+
+            $wordFile = $request->file('word_file');
+            $wordFileName = time() . '_word_' . $wordFile->getClientOriginalName();
+            $wordFilePath = $wordFile->storeAs('documents/internal/word', $wordFileName, 'public');
+
+            $updateData['word_file_name'] = $wordFileName;
+            $updateData['word_file_path'] = $wordFilePath;
+            $updateData['word_file_type'] = $wordFile->getClientOriginalExtension();
+            $updateData['word_file_size'] = $wordFile->getSize();
         }
 
         $internalDocument->update($updateData);
@@ -130,9 +188,14 @@ class InternalDocumentController extends Controller
 
     public function destroy(InternalDocument $internalDocument)
     {
-        // Delete file from storage
-        if ($internalDocument->file_path && Storage::disk('public')->exists($internalDocument->file_path)) {
-            Storage::disk('public')->delete($internalDocument->file_path);
+        // Delete PDF file from storage
+        if ($internalDocument->pdf_file_path && Storage::disk('public')->exists($internalDocument->pdf_file_path)) {
+            Storage::disk('public')->delete($internalDocument->pdf_file_path);
+        }
+
+        // Delete Word file from storage
+        if ($internalDocument->word_file_path && Storage::disk('public')->exists($internalDocument->word_file_path)) {
+            Storage::disk('public')->delete($internalDocument->word_file_path);
         }
 
         $internalDocument->delete();
@@ -141,7 +204,7 @@ class InternalDocumentController extends Controller
             ->with('success', 'Tài liệu đã được xóa thành công.');
     }
 
-    public function download(InternalDocument $internalDocument)
+    public function download(InternalDocument $internalDocument, $type = 'pdf')
     {
         // Check if user can access this document
         $user = auth()->user();
@@ -149,8 +212,14 @@ class InternalDocumentController extends Controller
             abort(404);
         }
         
-        if (Storage::disk('public')->exists($internalDocument->file_path)) {
-            return Storage::disk('public')->download($internalDocument->file_path, $internalDocument->file_name);
+        if ($type === 'word' && $internalDocument->word_file_path) {
+            if (Storage::disk('public')->exists($internalDocument->word_file_path)) {
+                return Storage::disk('public')->download($internalDocument->word_file_path, $internalDocument->word_file_name);
+            }
+        } elseif ($internalDocument->pdf_file_path) {
+            if (Storage::disk('public')->exists($internalDocument->pdf_file_path)) {
+                return Storage::disk('public')->download($internalDocument->pdf_file_path, $internalDocument->pdf_file_name);
+            }
         }
 
         return redirect()->route('admin.internal-documents.index')->with('error', 'File không tồn tại!');

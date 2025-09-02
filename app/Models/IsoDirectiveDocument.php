@@ -12,11 +12,20 @@ class IsoDirectiveDocument extends Model
         'title',
         'description',
         'category_id',
-        'file_name',
-        'file_path',
-        'file_type',
-        'file_size',
+        'pdf_file_name',
+        'pdf_file_path',
+        'pdf_file_type',
+        'pdf_file_size',
+        'word_file_name',
+        'word_file_path',
+        'word_file_type',
+        'word_file_size',
         'status',
+        'symbol',
+        'time_period',
+        'document_number',
+        'issuing_agency',
+        'summary',
         'uploaded_by',
     ];
 
@@ -54,11 +63,38 @@ class IsoDirectiveDocument extends Model
     }
 
     /**
-     * Get file size in human readable format
+     * Get PDF file size in human readable format
+     */
+    public function getFormattedPdfFileSize(): string
+    {
+        return $this->formatFileSize($this->pdf_file_size);
+    }
+
+    /**
+     * Get Word file size in human readable format
+     */
+    public function getFormattedWordFileSize(): string
+    {
+        return $this->formatFileSize($this->word_file_size);
+    }
+
+    /**
+     * Get file size in human readable format (backward compatibility)
      */
     public function getFormattedFileSize(): string
     {
-        $bytes = $this->file_size;
+        return $this->getFormattedPdfFileSize();
+    }
+
+    /**
+     * Format file size helper method
+     */
+    private function formatFileSize(?int $bytes): string
+    {
+        if (!$bytes) {
+            return '0 bytes';
+        }
+        
         if ($bytes >= 1048576) {
             return number_format($bytes / 1048576, 2) . ' MB';
         } elseif ($bytes >= 1024) {
@@ -66,6 +102,38 @@ class IsoDirectiveDocument extends Model
         } else {
             return $bytes . ' bytes';
         }
+    }
+
+    /**
+     * Check if document has PDF file
+     */
+    public function hasPdfFile(): bool
+    {
+        return !empty($this->pdf_file_path);
+    }
+
+    /**
+     * Check if document has Word file
+     */
+    public function hasWordFile(): bool
+    {
+        return !empty($this->word_file_path);
+    }
+
+    /**
+     * Get file path for backward compatibility
+     */
+    public function getFilePathAttribute()
+    {
+        return $this->pdf_file_path;
+    }
+
+    /**
+     * Get file name for backward compatibility
+     */
+    public function getFileNameAttribute()
+    {
+        return $this->pdf_file_name;
     }
 
     /**

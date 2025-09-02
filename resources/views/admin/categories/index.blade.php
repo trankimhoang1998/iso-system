@@ -160,7 +160,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px;
+    padding: 8px;
     border: 1px solid #e5e5e5;
     border-radius: 8px;
     margin-bottom: 12px;
