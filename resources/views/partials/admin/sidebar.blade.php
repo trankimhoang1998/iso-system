@@ -15,7 +15,7 @@
             </li>
             @if(auth()->user()->isAdmin())
             <li class="admin-nav__item">
-                <a href="{{ route('admin.users') }}" 
+                <a href="{{ route('admin.users.index') }}" 
                    class="admin-nav__link @if(request()->routeIs('admin.users*')) admin-nav__link--active @endif"
                    data-tooltip="Quản lý tài khoản">
                     <svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -18,7 +18,7 @@
 
     <!-- Filter Form -->
     <div class="admin-filter">
-        <form method="GET" action="{{ route('admin.users') }}" class="admin-filter__form">
+        <form method="GET" action="{{ route('admin.users.index') }}" class="admin-filter__form">
             <div class="admin-filter__row">
                 <div class="admin-filter__group">
                     <label class="admin-filter__label">Tìm kiếm</label>
@@ -61,7 +61,7 @@
                         </svg>
                         Lọc
                     </button>
-                    <a href="{{ route('admin.users') }}" class="admin-btn admin-btn--secondary">
+                    <a href="{{ route('admin.users.index') }}" class="admin-btn admin-btn--secondary">
                         <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                         </svg>

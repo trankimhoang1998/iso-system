@@ -10,7 +10,7 @@
             <p class="admin-page__subtitle">Cập nhật thông tin tài khoản: {{ $user->name }}</p>
         </div>
         <div class="admin-page__actions">
-            <a href="{{ route('admin.users') }}" class="admin-btn admin-btn--secondary">
+            <a href="{{ route('admin.users.index') }}" class="admin-btn admin-btn--secondary">
                 <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                 </svg>
@@ -92,7 +92,7 @@
             </div>
 
             <div class="admin-form__actions">
-                <a href="{{ route('admin.users') }}" class="admin-btn admin-btn--secondary">Hủy</a>
+                <a href="{{ route('admin.users.index') }}" class="admin-btn admin-btn--secondary">Hủy</a>
                 <button type="submit" class="admin-btn admin-btn--warning">Cập nhật</button>
             </div>
         </form>
