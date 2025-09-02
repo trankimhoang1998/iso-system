@@ -265,33 +265,4 @@ document.getElementById('adminWordFileInput').addEventListener('change', functio
     }
 });
 </script>
-
-<style>
-/* Page-specific styles - file upload styles are reused from documents/create.blade.php */
-.admin-form__row--split {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-}
-
-.admin-form__readonly {
-    padding: 12px 16px;
-    background-color: #f1f3f4;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    color: #374151;
-    font-size: 14px;
-    line-height: 1.5;
-    height: 39.5px;
-    display: flex;
-    align-items: center;
-}
-
-@media (max-width: 768px) {
-    .admin-form__row--split {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-}
-</style>
 @endsection

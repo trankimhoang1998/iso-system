@@ -242,20 +242,4 @@ document.getElementById('adminWordFileInput').addEventListener('change', functio
     }
 });
 </script>
-
-<style>
-/* Page-specific styles - file upload styles are reused from documents/create.blade.php */
-.admin-form__row--split {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-}
-
-@media (max-width: 768px) {
-    .admin-form__row--split {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-}
-</style>
 @endsection

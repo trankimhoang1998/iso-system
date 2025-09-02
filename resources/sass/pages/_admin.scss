@@ -30,29 +30,6 @@
         gap: $spacing-md;
     }
 
-    &__toggle {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        border: none;
-        background: none;
-        color: $primary-color;
-        cursor: pointer;
-        border-radius: 6px;
-        transition: all 0.3s ease;
-
-        &:hover {
-            background: rgba($primary-color, 0.1);
-        }
-
-        &-icon {
-            width: 20px;
-            height: 20px;
-            transition: transform 0.15s ease;
-        }
-    }
 
     &__logo {
         display: flex;
@@ -166,40 +143,7 @@
     }
 
     @include mobile {
-        width: 100%;
-        max-width: 280px;
-        transform: translateX(-100%);
-        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    }
-
-    // Collapsed state
-    .sidebar-collapsed & {
-        transform: translateX(-100%);
-        
-        @include desktop {
-            width: 70px;
-            transform: translateX(0);
-            
-            .admin-nav__link {
-                justify-content: center;
-                padding: 12px;
-                
-                span {
-                    display: none;
-                }
-            }
-        }
-    }
-
-    // Mobile overlay
-    @include mobile {
-        .sidebar-collapsed & {
-            transform: translateX(-100%);
-        }
-        
-        body:not(.sidebar-collapsed) & {
-            transform: translateX(0);
-        }
+        display: none;
     }
 }
 
@@ -216,14 +160,40 @@
         padding: 0;
     }
 
+    &__section {
+        margin: 1rem 0 1rem 0;
+        padding: 0;
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+
+    &__section-title {
+        display: block;
+        padding: 8px 12px;
+        color: #6c757d;
+        font-size: 11px;
+        font-weight: $font-weight-bold;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid #f0f0f0;
+        margin-bottom: $spacing-sm;
+
+        @include mobile {
+            padding: 6px 12px;
+            font-size: 10px;
+        }
+    }
+
     &__link {
         display: flex;
         align-items: center;
-        gap: 12px;
-        padding: 12px $spacing-lg;
+        gap: 8px;
+        padding: 12px 12px;
         color: $gray;
         text-decoration: none;
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 500;
         transition: all 0.3s ease;
         border-left: 3px solid transparent;
@@ -246,38 +216,6 @@
             font-size: 13px;
         }
 
-        // Collapsed sidebar tooltip
-        .sidebar-collapsed & {
-            @include desktop {
-                position: relative;
-                
-                &:hover::after {
-                    content: attr(data-tooltip);
-                    position: absolute;
-                    left: 100%;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    background: $gray;
-                    color: $white;
-                    padding: 6px 8px;
-                    border-radius: 4px;
-                    font-size: 12px;
-                    white-space: nowrap;
-                    margin-left: 10px;
-                    z-index: 1001;
-                    
-                    &::before {
-                        content: '';
-                        position: absolute;
-                        top: 50%;
-                        left: -4px;
-                        transform: translateY(-50%);
-                        border: 4px solid transparent;
-                        border-right-color: $gray;
-                    }
-                }
-            }
-        }
     }
 
     &__icon {
@@ -308,16 +246,6 @@
         padding: $spacing-md;
     }
 
-    // Collapsed sidebar state
-    .sidebar-collapsed & {
-        @include desktop {
-            margin-left: 70px;
-        }
-        
-        @include mobile {
-            margin-left: 0;
-        }
-    }
 }
 
 .admin-content {
@@ -996,34 +924,45 @@
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 2000;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: $spacing-md;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
 
-    &__overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
+    &--active {
+        opacity: 1;
+        visibility: visible;
     }
 
-    &__container {
+    &__content {
         position: relative;
         background: $white;
-        border-radius: 8px;
+        border-radius: 12px;
         width: 100%;
         max-width: 500px;
         max-height: 90vh;
         overflow-y: auto;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        transform: translateY(-20px);
+        transition: transform 0.3s ease;
+
+        .admin-modal--active & {
+            transform: translateY(0);
+        }
+
+        @include mobile {
+            max-width: 95%;
+            margin: $spacing-md;
+        }
     }
 
     &__header {
-        padding: $spacing-md $spacing-lg;
+        padding: $spacing-lg;
         border-bottom: 1px solid #e9ecef;
         display: flex;
         justify-content: space-between;
@@ -1061,6 +1000,50 @@
 
     &__body {
         padding: $spacing-lg;
+    }
+
+    &__message {
+        display: flex;
+        gap: $spacing-md;
+        margin-bottom: $spacing-lg;
+    }
+
+    &__icon {
+        flex-shrink: 0;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &--danger {
+            background: rgba(#dc3545, 0.1);
+            color: #dc3545;
+        }
+
+        svg {
+            width: 24px;
+            height: 24px;
+        }
+    }
+
+    &__message-content {
+        flex: 1;
+    }
+
+    &__message-title {
+        font-size: 16px;
+        font-weight: $font-weight-bold;
+        color: $gray;
+        margin: 0 0 8px 0;
+    }
+
+    &__message-text {
+        font-size: 14px;
+        color: #6c757d;
+        margin: 0;
+        line-height: 1.5;
     }
 }
 
@@ -1454,16 +1437,23 @@
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         
         &__title {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: $font-weight-bold;
             color: $gray;
-            margin: 0 0 $spacing-sm 0;
+            margin: 0 0 $spacing-md 0;
+            padding-bottom: $spacing-sm;
+            border-bottom: 2px solid rgba($primary-color, 0.1);
+            
+            &::before {
+                content: '📎 ';
+                margin-right: 6px;
+            }
         }
         
         &__info {
-            border: 1px solid #e9ecef;
-            border-radius: 6px;
-            padding: $spacing-md;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
         }
     }
     
@@ -1471,28 +1461,70 @@
         display: flex;
         align-items: center;
         gap: $spacing-md;
+        padding: $spacing-md;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        margin-bottom: $spacing-sm;
+        transition: all 0.3s ease;
+        
+        &:hover {
+            background: #f8f9fa;
+            border-color: $primary-color;
+        }
+        
+        &:last-child {
+            margin-bottom: 0;
+        }
         
         &__icon {
-            width: 40px;
-            height: 40px;
+            width: 48px;
+            height: 48px;
             color: $primary-color;
             flex-shrink: 0;
+            
+            &--pdf {
+                color: #dc3545;
+            }
+            
+            &--word {
+                color: #2980b9;
+            }
         }
         
         &__details {
             flex: 1;
+            min-width: 0;
             
             .admin-file-item__name {
                 font-weight: $font-weight-bold;
                 color: $gray;
+                margin-bottom: 4px;
+                word-break: break-all;
+                font-size: 15px;
+            }
+            
+            .admin-file-item__size {
+                font-size: 13px;
+                color: #6c757d;
+                font-weight: 500;
                 margin-bottom: 2px;
             }
             
-            .admin-file-item__size,
             .admin-file-item__type {
-                font-size: 12px;
+                font-size: 11px;
                 color: #6c757d;
+                font-weight: $font-weight-bold;
+                text-transform: uppercase;
+                background: rgba(#6c757d, 0.1);
+                padding: 2px 6px;
+                border-radius: 12px;
+                display: inline-block;
             }
+        }
+        
+        .admin-btn {
+            flex-shrink: 0;
+            margin-left: $spacing-sm;
         }
     }
     
@@ -2253,9 +2285,6 @@
     &--level-4 { background: rgba(#dc3545, 0.1); color: #dc3545; }
 }
 
-.category-level {
-    @extend .admin-category-level;
-}
 
 // Empty State Messages
 .admin-empty-state {
@@ -2295,11 +2324,6 @@
     }
 }
 
-.admin-no-documents,
-.admin-no-categories,
-.admin-empty-message {
-    @extend .admin-empty-state;
-}
 
 // Responsive adjustments
 @include mobile {
@@ -2355,129 +2379,6 @@
     }
 }
 
-// Admin Modal
-.admin-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-
-    &--active {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    &__content {
-        background: $white;
-        border-radius: 12px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-        max-width: 500px;
-        width: 90%;
-        max-height: 90vh;
-        overflow-y: auto;
-        transform: translateY(-20px);
-        transition: transform 0.3s ease;
-
-        .admin-modal--active & {
-            transform: translateY(0);
-        }
-
-        @include mobile {
-            max-width: 95%;
-            margin: $spacing-md;
-        }
-    }
-
-    &__header {
-        padding: $spacing-lg;
-        border-bottom: 1px solid #e9ecef;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    &__title {
-        font-size: 18px;
-        font-weight: $font-weight-bold;
-        color: $gray;
-        margin: 0;
-    }
-
-    &__close {
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 4px;
-        color: #6c757d;
-        transition: color 0.3s ease;
-
-        &:hover {
-            color: $gray;
-        }
-
-        svg {
-            width: 20px;
-            height: 20px;
-        }
-    }
-
-    &__body {
-        padding: $spacing-lg;
-    }
-
-    &__message {
-        display: flex;
-        gap: $spacing-md;
-        margin-bottom: $spacing-lg;
-    }
-
-    &__icon {
-        flex-shrink: 0;
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        &--danger {
-            background: rgba(#dc3545, 0.1);
-            color: #dc3545;
-        }
-
-        svg {
-            width: 24px;
-            height: 24px;
-        }
-    }
-
-    &__message-content {
-        flex: 1;
-    }
-
-    &__message-title {
-        font-size: 16px;
-        font-weight: $font-weight-bold;
-        color: $gray;
-        margin: 0 0 8px 0;
-    }
-
-    &__message-text {
-        font-size: 14px;
-        color: #6c757d;
-        margin: 0;
-        line-height: 1.5;
-    }
-}
 
 // Order Badge
 .admin-order-badge {
@@ -2513,5 +2414,389 @@
         font-size: 14px;
         line-height: 1.6;
         color: #495057;
+    }
+}
+
+// ===============================================
+// File Upload & Document Edit Styles
+// ===============================================
+
+// Current Files Info Display
+.current-files-info {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+}
+
+.current-file-info {
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    overflow: hidden;
+    background: $white;
+    
+    &__item {
+        display: flex;
+        align-items: center;
+        padding: $spacing-md;
+        gap: $spacing-md;
+        
+        &:hover {
+            background: #f8f9fa;
+        }
+    }
+    
+    &__icon {
+        width: 32px;
+        height: 32px;
+        color: $primary-color;
+        flex-shrink: 0;
+        
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    }
+    
+    &__details {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    &__name {
+        font-size: 14px;
+        font-weight: $font-weight-bold;
+        color: $gray;
+        margin: 0 0 4px 0;
+        word-break: break-all;
+    }
+    
+    &__meta {
+        font-size: 12px;
+        color: #6c757d;
+        font-weight: 500;
+    }
+    
+    &__download {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border: none;
+        background: rgba($primary-color, 0.1);
+        color: $primary-color;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        flex-shrink: 0;
+        
+        &:hover {
+            background: $primary-color;
+            color: $white;
+        }
+        
+        svg {
+            width: 16px;
+            height: 16px;
+        }
+    }
+}
+
+// Readonly Form Field
+.admin-form__readonly {
+    padding: 10px 12px;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    font-size: 14px;
+    color: $gray;
+    font-weight: 500;
+}
+
+// File Type Labels for Action Buttons
+.admin-file-type-label {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    background: $white;
+    color: $gray;
+    font-size: 8px;
+    font-weight: $font-weight-bold;
+    text-transform: uppercase;
+    padding: 2px 4px;
+    border-radius: 2px;
+    border: 1px solid currentColor;
+    line-height: 1;
+    letter-spacing: 0.2px;
+}
+
+// Enhanced Action Button with File Type
+.admin-table__action-btn {
+    &--word {
+        background: rgba(41, 128, 185, 0.1);
+        color: #2980b9;
+        position: relative;
+        
+        &:hover {
+            background: #2980b9;
+            color: $white;
+            
+            .admin-file-type-label {
+                background: $white;
+                color: #2980b9;
+            }
+        }
+        
+        .admin-file-type-label {
+            color: #2980b9;
+            border-color: #2980b9;
+        }
+    }
+}
+
+// Enhanced Document Type Badges
+.admin-document-type-badge {
+    &--internal {
+        background: rgba(142, 68, 173, 0.1);
+        color: #8e44ad;
+    }
+    
+    &--iso-directive {
+        background: rgba(230, 126, 34, 0.1);
+        color: #e67e22;
+    }
+    
+    &--iso-system {
+        background: rgba(52, 152, 219, 0.1);
+        color: #3498db;
+    }
+    
+    &--management {
+        background: rgba(46, 204, 113, 0.1);
+        color: #2ecc71;
+    }
+}
+
+// ===============================================
+// Categories Simple Style (Used in Category Index Pages)
+// ===============================================
+
+.admin-categories-simple {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+}
+
+.admin-category-simple-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-md;
+    background: $white;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    
+    &:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-color: $primary-color;
+    }
+    
+    &__content {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        flex: 1;
+        min-width: 0;
+    }
+    
+    &__icon {
+        width: 20px;
+        height: 20px;
+        color: $primary-color;
+        flex-shrink: 0;
+        
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    }
+    
+    &__info {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    &__name {
+        font-size: 16px;
+        font-weight: $font-weight-bold;
+        color: $gray;
+        margin: 0 0 4px 0;
+        word-break: break-word;
+        
+        a {
+            color: inherit;
+            text-decoration: none;
+            
+            &:hover {
+                color: $primary-color;
+            }
+        }
+    }
+    
+    &__description {
+        font-size: 14px;
+        color: #6c757d;
+        margin: 0;
+        line-height: 1.4;
+        word-break: break-word;
+    }
+    
+    &__meta {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        margin-right: $spacing-md;
+        
+        @include mobile {
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+    }
+    
+    &__count {
+        font-size: 13px;
+        color: #6c757d;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+    
+    &__actions {
+        display: flex;
+        gap: 6px;
+        flex-shrink: 0;
+        
+        @include mobile {
+            flex-direction: column;
+            gap: 4px;
+        }
+    }
+    
+    // Child category style
+    &--child {
+        background: #f8f9fa;
+        border-left: 3px solid $primary-color;
+        margin-left: $spacing-lg;
+        
+        @include mobile {
+            margin-left: $spacing-md;
+        }
+        
+        .admin-category-simple-item__name {
+            font-size: 15px;
+        }
+    }
+}
+
+// Empty State Button
+.admin-empty-state__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: $primary-color;
+    color: $white;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: $font-weight-bold;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin-top: $spacing-md;
+    
+    &:hover {
+        background: $primary-dark;
+        color: $white;
+        text-decoration: none;
+    }
+    
+    svg {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+// ===============================================
+// Category Simple Item Styles (Missing CSS)
+// ===============================================
+
+.admin-categories-simple {
+    padding: $spacing-md;
+}
+
+.admin-category-simple-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-sm $spacing-md;
+    background: $white;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    margin-bottom: 1px;
+    transition: all 0.3s ease;
+    
+    &:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-color: $primary-color;
+    }
+    
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.admin-category-simple-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.admin-category-simple-name {
+    font-size: 15px;
+    font-weight: $font-weight-bold;
+    color: $gray;
+    margin: 0;
+    word-break: break-word;
+    line-height: 1.3;
+}
+
+.admin-category-simple-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+    margin-left: $spacing-sm;
+}
+
+// Small button variant
+.admin-btn--small {
+    padding: 6px 8px;
+    font-size: 12px;
+    min-width: 32px;
+    height: 32px;
+    
+    .admin-btn__icon {
+        width: 14px;
+        height: 14px;
+    }
+    
+    @include mobile {
+        padding: 4px 6px;
+        min-width: 28px;
+        height: 28px;
+        
+        .admin-btn__icon {
+            width: 12px;
+            height: 12px;
+        }
     }
 }

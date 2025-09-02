@@ -118,7 +118,7 @@
                         <div class="admin-file-item__type">{{ strtoupper($isoSystemDocument->word_file_type) }}</div>
                     </div>
                     <a href="{{ route('admin.iso-system-documents.download', [$isoSystemDocument, 'word']) }}"
-                       class="admin-btn admin-btn--sm admin-btn--info">
+                       class="admin-btn admin-btn--sm admin-btn--primary">
                         <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                         </svg>
@@ -176,37 +176,4 @@
         @endif
     </div>
 </div>
-
-<style>
-.admin-file-item__icon--pdf {
-    color: #dc2626; /* Red for PDF */
-}
-
-.admin-file-item__icon--word {
-    color: #2563eb; /* Blue for Word */
-}
-
-.admin-document-file__info {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.admin-page__actions {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-}
-
-.admin-btn--info {
-    background-color: #3b82f6;
-    color: white;
-    border: 1px solid #3b82f6;
-}
-
-.admin-btn--info:hover {
-    background-color: #2563eb;
-    border-color: #2563eb;
-}
-</style>
 @endsection

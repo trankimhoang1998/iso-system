@@ -7,8 +7,7 @@
                    class="admin-nav__link @if(request()->routeIs('admin.dashboard')) admin-nav__link--active @endif"
                    data-tooltip="Tổng quan">
                     <svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v10H8V5z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                     </svg>
                     <span>Tổng quan</span>
                 </a>
@@ -19,7 +18,7 @@
                    class="admin-nav__link @if(request()->routeIs('admin.users*')) admin-nav__link--active @endif"
                    data-tooltip="Quản lý tài khoản">
                     <svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                     </svg>
                     <span>Quản lý tài khoản</span>
                 </a>
@@ -45,7 +44,8 @@
                    class="admin-nav__link @if(request()->routeIs('admin.iso-directive-categories*')) admin-nav__link--active @endif"
                    data-tooltip="Danh mục Ban chỉ đạo ISO">
                     <svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 12 2 2 4-4"></path>
                     </svg>
                     <span>Danh mục Ban chỉ đạo ISO</span>
                 </a>
@@ -65,7 +65,8 @@
                    class="admin-nav__link @if(request()->routeIs('admin.internal-document-categories*')) admin-nav__link--active @endif"
                    data-tooltip="Danh mục tài liệu nội bộ">
                     <svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 10h12M6 14h12M6 18h7"></path>
                     </svg>
                     <span>Danh mục tài liệu nội bộ</span>
                 </a>
@@ -75,7 +76,8 @@
                    class="admin-nav__link @if(request()->routeIs('admin.management-document-categories*')) admin-nav__link--active @endif"
                    data-tooltip="Danh mục văn bản quản lý">
                     <svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path>
                     </svg>
                     <span>Danh mục văn bản quản lý</span>
                 </a>
@@ -91,7 +93,7 @@
                    class="admin-nav__link @if(request()->routeIs('admin.iso-directive-documents*')) admin-nav__link--active @endif"
                    data-tooltip="Tài liệu Ban chỉ đạo ISO">
                     <svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
                     </svg>
                     <span>Tài liệu Ban chỉ đạo ISO</span>
                 </a>
@@ -130,26 +132,6 @@
     </nav>
 </aside>
 
-<style>
-/* Section titles */
-.admin-nav__section {
-    padding: 16px 20px 8px 20px !important;
-    border: none !important;
-    list-style: none !important;
-}
-
-.admin-nav__section-title {
-    font-size: 13px !important;
-    font-weight: 600 !important;
-    color: #666666 !important;
-    display: block !important;
-}
-
-/* Add some spacing after section titles */
-.admin-nav__section + .admin-nav__item {
-    margin-top: 4px !important;
-}
-</style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

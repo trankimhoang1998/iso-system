@@ -16,6 +16,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             DepartmentSeeder::class,
             UserSeeder::class,
+            IsoDirectiveCategoriesSeeder::class,
+            IsoSystemCategoriesSeeder::class,
+            InternalDocumentCategoriesSeeder::class,
         ]);
     }
 }

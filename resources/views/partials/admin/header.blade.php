@@ -1,11 +1,6 @@
 <!-- Admin Header -->
 <header class="admin-header">
     <div class="admin-header__left">
-        <button class="admin-header__toggle" id="sidebarToggle" type="button">
-            <svg class="admin-header__toggle-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-        </button>
         <div class="admin-header__logo">
             <h1 class="admin-header__title">HỆ THỐNG ISO ({{ strtoupper(auth()->user()->getRoleName()) }})</h1>
         </div>

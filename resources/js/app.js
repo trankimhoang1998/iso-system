@@ -1,7 +1,6 @@
 import './bootstrap';
 import { MobileNavigation } from './modules/navigation.js';
 import { DropdownManager } from './modules/dropdown.js';
-import { SidebarToggle } from './modules/sidebar.js';
 
 /**
  * Application Entry Point
@@ -13,9 +12,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize dropdown manager
     new DropdownManager();
-    
-    // Initialize sidebar toggle
-    new SidebarToggle();
     
     console.log('Application modules initialized successfully');
 });

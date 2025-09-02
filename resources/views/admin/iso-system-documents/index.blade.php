@@ -248,46 +248,4 @@ window.addEventListener('click', function(e) {
     }
 });
 </script>
-
-<style>
-.admin-file-type-label {
-    position: absolute;
-    bottom: -18px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    background: #3b82f6;
-    color: white;
-    padding: 2px 6px;
-    border-radius: 4px;
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
-}
-
-.admin-table__action-btn {
-    position: relative;
-}
-
-.admin-table__action-btn:hover .admin-file-type-label {
-    opacity: 1;
-}
-
-.admin-table__action-btn--word .admin-file-type-label {
-    background: #16a34a;
-}
-
-.admin-table__action-btn--download {
-    margin-right: 4px;
-}
-
-.admin-table__actions {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-</style>
 @endsection
