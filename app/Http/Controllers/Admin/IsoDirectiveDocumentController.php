@@ -45,15 +45,15 @@ class IsoDirectiveDocumentController extends Controller
         // Preserve query parameters in pagination links
         $documents->appends($request->all());
 
-        // Get all categories for filter
-        $categories = IsoDirectiveCategory::orderBy('name')->get();
+        // Get all categories for filter with hierarchical structure
+        $categories = IsoDirectiveCategory::getFlatList();
 
         return view('admin.iso-directive-documents.index', compact('documents', 'categories'));
     }
 
     public function create()
     {
-        $categories = IsoDirectiveCategory::orderBy('name')->get();
+        $categories = IsoDirectiveCategory::getFlatList();
         return view('admin.iso-directive-documents.create', compact('categories'));
     }
 
@@ -127,7 +127,7 @@ class IsoDirectiveDocumentController extends Controller
 
     public function edit(IsoDirectiveDocument $isoDirectiveDocument)
     {
-        $categories = IsoDirectiveCategory::orderBy('name')->get();
+        $categories = IsoDirectiveCategory::getFlatList();
         return view('admin.iso-directive-documents.edit', compact('isoDirectiveDocument', 'categories'));
     }
 

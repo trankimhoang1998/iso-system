@@ -45,14 +45,14 @@ class ManagementDocumentController extends Controller
         // Preserve query parameters in pagination links
         $documents->appends($request->all());
 
-        // Get all categories for filter
-        $categories = ManagementDocumentCategory::orderBy('name')->get();
+        // Get all categories for filter with hierarchical structure
+        $categories = ManagementDocumentCategory::getFlatList();
         return view('admin.management-documents.index', compact('documents', 'categories'));
     }
 
     public function create()
     {
-        $categories = ManagementDocumentCategory::orderBy('name')->get();
+        $categories = ManagementDocumentCategory::getFlatList();
         return view('admin.management-documents.create', compact('categories'));
     }
 
@@ -126,7 +126,7 @@ class ManagementDocumentController extends Controller
 
     public function edit(ManagementDocument $managementDocument)
     {
-        $categories = ManagementDocumentCategory::orderBy('name')->get();
+        $categories = ManagementDocumentCategory::getFlatList();
         return view('admin.management-documents.edit', compact('managementDocument', 'categories'));
     }
 

@@ -2533,10 +2533,13 @@
 
 // Enhanced Action Button with File Type
 .admin-table__action-btn {
+    &--download {
+        position: relative;
+    }
+    
     &--word {
         background: rgba(41, 128, 185, 0.1);
         color: #2980b9;
-        position: relative;
         
         &:hover {
             background: #2980b9;

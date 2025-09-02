@@ -1,8 +1,7 @@
 @extends('layouts.auth')
 
 @section('title', 'Đăng nhập - Hệ thống ISO')
-@section('card-title', 'ĐĂNG NHẬP HỆ THỐNG')
-@section('role-badge', 'ISO SYSTEM')
+@section('card-title', 'ĐĂNG NHẬP')
 
 @section('content')
 <form method="POST" action="{{ route('auth.login') }}" class="auth-form">

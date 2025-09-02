@@ -9,9 +9,9 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Redirect all authenticated users to admin dashboard
+        // Display home page for authenticated users (any role can access)
         if (Auth::check()) {
-            return redirect()->route('admin.dashboard');
+            return view('home');
         }
         
         // If not logged in, redirect to login

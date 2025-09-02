@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 
 class InternalDocumentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $query = InternalDocument::with(['category', 'department']);
 
@@ -21,14 +21,37 @@ class InternalDocumentController extends Controller
             $query->where('department_id', $user->department_id);
         }
 
-        $documents = $query->orderBy('created_at', 'desc')->paginate(15);
+        // Apply filters
+        if ($request->filled('search')) {
+            $query->where(function($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->search . '%')
+                  ->orWhere('description', 'like', '%' . $request->search . '%');
+            });
+        }
 
-        return view('admin.internal-documents.index', compact('documents'));
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('uploader')) {
+            $query->where('uploaded_by', 'like', '%' . $request->uploader . '%');
+        }
+
+        $documents = $query->orderBy('created_at', 'desc')->paginate(15);
+        
+        // Load categories with hierarchical structure for filter dropdown
+        $categories = InternalDocumentCategory::getFlatList();
+
+        return view('admin.internal-documents.index', compact('documents', 'categories'));
     }
 
     public function create()
     {
-        $categories = InternalDocumentCategory::orderBy('name')->get();
+        $categories = InternalDocumentCategory::getFlatList();
         $departments = Department::orderBy('name')->get();
         return view('admin.internal-documents.create', compact('categories', 'departments'));
     }
@@ -111,7 +134,7 @@ class InternalDocumentController extends Controller
 
     public function edit(InternalDocument $internalDocument)
     {
-        $categories = InternalDocumentCategory::orderBy('name')->get();
+        $categories = InternalDocumentCategory::getFlatList();
         $departments = Department::orderBy('name')->get();
         return view('admin.internal-documents.edit', compact('internalDocument', 'categories', 'departments'));
     }

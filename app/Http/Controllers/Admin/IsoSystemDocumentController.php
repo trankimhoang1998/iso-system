@@ -52,15 +52,15 @@ class IsoSystemDocumentController extends Controller
         // Preserve query parameters in pagination links
         $documents->appends($request->all());
 
-        // Get all categories for filter
-        $categories = IsoSystemCategory::orderBy('name')->get();
+        // Get all categories for filter with hierarchical structure
+        $categories = IsoSystemCategory::getFlatList();
 
         return view('admin.iso-system-documents.index', compact('documents', 'categories'));
     }
 
     public function create()
     {
-        $categories = IsoSystemCategory::orderBy('name')->get();
+        $categories = IsoSystemCategory::getFlatList();
         $departments = Department::orderBy('name')->get();
         return view('admin.iso-system-documents.create', compact('categories', 'departments'));
     }
@@ -143,7 +143,7 @@ class IsoSystemDocumentController extends Controller
 
     public function edit(IsoSystemDocument $isoSystemDocument)
     {
-        $categories = IsoSystemCategory::orderBy('name')->get();
+        $categories = IsoSystemCategory::getFlatList();
         $departments = Department::orderBy('name')->get();
         return view('admin.iso-system-documents.edit', compact('isoSystemDocument', 'categories', 'departments'));
     }
