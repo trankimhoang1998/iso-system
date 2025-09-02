@@ -17,9 +17,6 @@
                autofocus 
                autocomplete="email"
                class="auth-form__input @error('email') auth-form__input--error @enderror">
-        @error('email')
-            <div class="auth-form__error">{{ $message }}</div>
-        @enderror
     </div>
 
     <div class="auth-form__group">
@@ -30,20 +27,8 @@
                required 
                autocomplete="current-password"
                class="auth-form__input @error('password') auth-form__input--error @enderror">
-        @error('password')
-            <div class="auth-form__error">{{ $message }}</div>
-        @enderror
     </div>
-
-
-    @if ($errors->any())
-        <div class="auth-form__errors">
-            @foreach ($errors->all() as $error)
-                <div class="auth-form__error">{{ $error }}</div>
-            @endforeach
-        </div>
-    @endif
-
+    
     <button type="submit" class="auth-form__button">
         ĐĂNG NHẬP
     </button>
