@@ -34,6 +34,11 @@ class IsoSystemDocumentController extends Controller
             $query->where('status', $request->status);
         }
 
+        // Department filter (for search/filter)
+        if ($request->filled('department_id')) {
+            $query->where('department_id', $request->department_id);
+        }
+
         // Department filter for roles 2,3 - only see documents from their department
         $user = auth()->user();
         if (in_array($user->role, [2, 3]) && $user->department_id) {
@@ -54,8 +59,11 @@ class IsoSystemDocumentController extends Controller
 
         // Get all categories for filter with hierarchical structure
         $categories = IsoSystemCategory::getFlatList();
+        
+        // Get all departments for filter
+        $departments = Department::orderBy('name')->get();
 
-        return view('admin.iso-system-documents.index', compact('documents', 'categories'));
+        return view('admin.iso-system-documents.index', compact('documents', 'categories', 'departments'));
     }
 
     public function create()

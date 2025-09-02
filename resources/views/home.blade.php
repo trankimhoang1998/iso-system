@@ -16,26 +16,22 @@
                             <label for="process-type" class="search-form__label">Chọn loại quy trình</label>
                             <select id="process-type" class="search-form__select">
                                 <option value="">-- Chọn loại quy trình --</option>
-                                <option value="hanh-chinh">Thủ tục hành chính</option>
-                                <option value="nghiep-vu">Quy trình nghiệp vụ</option>
-                                <option value="quan-ly">Quy trình quản lý</option>
-                                <option value="ky-thuat">Quy trình kỹ thuật</option>
+                                <option value="he-thong">Quy trình hệ thống</option>
+                                <option value="tac-nghiep">Quy trình tác nghiệp</option>
                             </select>
                         </div>
                         <div class="search-form__group">
                             <label for="department" class="search-form__label">Chọn cơ quan, phân xưởng</label>
                             <select id="department" class="search-form__select">
                                 <option value="">-- Chọn cơ quan, phân xưởng --</option>
-                                <option value="van-phong">Văn phòng</option>
-                                <option value="ke-toan">Phòng kế toán</option>
-                                <option value="nhan-su">Phòng nhân sự</option>
-                                <option value="ky-thuat">Phòng kỹ thuật</option>
-                                <option value="san-xuat">Phân xưởng sản xuất</option>
-                                <option value="chat-luong">Phòng chất lượng</option>
+                                <option value="tat-ca">Tất cả</option>
+                                @foreach($departments ?? [] as $department)
+                                    <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="search-form__group">
-                            <button type="button" class="search-form__btn">Tìm kiếm</button>
+                            <button type="button" class="search-form__btn" onclick="searchProcess()">Tìm kiếm</button>
                         </div>
                     </div>
                 </div>
@@ -266,4 +262,44 @@
         </div>
     </div>
 </div>
+
+<script>
+function searchProcess() {
+    const processType = document.getElementById('process-type').value;
+    const department = document.getElementById('department').value;
+    
+    if (!processType) {
+        alert('Vui lòng chọn loại quy trình!');
+        return;
+    }
+    
+    let url = '/admin/iso-system-documents';
+    let params = [];
+    
+    // Xác định category_id dựa trên loại quy trình
+    if (processType === 'he-thong') {
+        @if($processCategories['he_thong_id'])
+            params.push('category_id={{ $processCategories["he_thong_id"] }}');
+        @endif
+    } else if (processType === 'tac-nghiep') {
+        @if($processCategories['tac_nghiep_id'])
+            params.push('category_id={{ $processCategories["tac_nghiep_id"] }}');
+        @endif
+    }
+    
+    // Thêm department filter nếu có chọn
+    if (department && department !== 'tat-ca' && department !== '') {
+        params.push('department_id=' + encodeURIComponent(department));
+    }
+    
+    // Tạo URL với parameters
+    if (params.length > 0) {
+        url += '?' + params.join('&');
+    }
+    
+    // Chuyển đến trang tài liệu ISO
+    window.location.href = url;
+}
+</script>
+
 @endsection

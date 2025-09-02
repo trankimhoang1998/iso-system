@@ -51,6 +51,17 @@
                     </select>
                 </div>
                 <div class="admin-filter__group">
+                    <label class="admin-filter__label">Phòng ban</label>
+                    <select name="department_id" class="admin-filter__select">
+                        <option value="">Tất cả</option>
+                        @foreach($departments ?? [] as $department)
+                            <option value="{{ $department->id }}" {{ request('department_id') == $department->id ? 'selected' : '' }}>
+                                {{ $department->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="admin-filter__group">
                     <label class="admin-filter__label">Người tải lên</label>
                     <input type="text" name="uploader" value="{{ request('uploader') }}" 
                            placeholder="Tên người tải lên..." class="admin-filter__input">
