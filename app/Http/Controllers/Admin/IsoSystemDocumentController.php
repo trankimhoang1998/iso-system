@@ -29,11 +29,6 @@ class IsoSystemDocumentController extends Controller
             $query->where('category_id', $request->category_id);
         }
 
-        // Status filter
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-
         // Department filter (for search/filter)
         if ($request->filled('department_id')) {
             $query->where('department_id', $request->department_id);
@@ -43,13 +38,6 @@ class IsoSystemDocumentController extends Controller
         $user = auth()->user();
         if (in_array($user->role, [2, 3]) && $user->department_id) {
             $query->where('department_id', $user->department_id);
-        }
-
-        // Uploader filter
-        if ($request->filled('uploader')) {
-            $query->whereHas('uploader', function($q) use ($request) {
-                $q->where('name', 'like', "%{$request->uploader}%");
-            });
         }
 
         $documents = $query->orderBy('created_at', 'desc')->paginate(15);

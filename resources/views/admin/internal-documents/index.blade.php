@@ -42,18 +42,15 @@
                     </select>
                 </div>
                 <div class="admin-filter__group">
-                    <label class="admin-filter__label">Trạng thái</label>
-                    <select name="status" class="admin-filter__select">
+                    <label class="admin-filter__label">Phòng ban</label>
+                    <select name="department_id" class="admin-filter__select">
                         <option value="">Tất cả</option>
-                        <option value="draft" {{ request('status') == 'draft' ? 'selected' : '' }}>Bản nháp</option>
-                        <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Đã phê duyệt</option>
-                        <option value="archived" {{ request('status') == 'archived' ? 'selected' : '' }}>Lưu trữ</option>
+                        @foreach($departments ?? [] as $department)
+                            <option value="{{ $department->id }}" {{ request('department_id') == $department->id ? 'selected' : '' }}>
+                                {{ $department->name }}
+                            </option>
+                        @endforeach
                     </select>
-                </div>
-                <div class="admin-filter__group">
-                    <label class="admin-filter__label">Người tải lên</label>
-                    <input type="text" name="uploader" value="{{ request('uploader') }}" 
-                           placeholder="Tên người tải lên..." class="admin-filter__input">
                 </div>
                 <div class="admin-filter__actions">
                     <button type="submit" class="admin-btn admin-btn--primary">
@@ -102,9 +99,13 @@
                         </div>
                     </td>
                     <td class="admin-table__cell">
-                        <span class="admin-document-type-badge admin-document-type-badge--internal">
-                            {{ $document->category->name ?? 'Không có danh mục' }}
-                        </span>
+                        @if($document->category)
+                            <span class="admin-document-type-badge admin-document-type-badge--internal">
+                                {{ $document->category->name }}
+                            </span>
+                        @else
+                            _
+                        @endif
                     </td>
                     <td class="admin-table__cell">{{ $document->department->name ?? 'N/A' }}</td>
                     <td class="admin-table__cell">{{ $document->symbol ?: '_' }}</td>

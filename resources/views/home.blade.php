@@ -37,164 +37,80 @@
                 </div>
             </section>
 
-            <!-- System Process Section -->
-            <section class="system-process">
-                <h2 class="system-process__title">QUY TRÌNH HỆ THỐNG (Quy trình của BCĐ)</h2>
-                <div class="system-process__content">
-                    <div class="process-grid">
-                        <div class="process-item">
-                            <div class="process-item__header">
-                                <h3 class="process-item__title">Quy trình quản lý chất lượng</h3>
-                            </div>
-                            <div class="process-item__content">
-                                <p>Quy trình đảm bảo chất lượng sản phẩm và dịch vụ theo tiêu chuẩn ISO 9001:2015</p>
-                                <a href="#" class="process-item__link">Xem chi tiết →</a>
-                            </div>
-                        </div>
-                        
-                        <div class="process-item">
-                            <div class="process-item__header">
-                                <h3 class="process-item__title">Quy trình đánh giá nội bộ</h3>
-                            </div>
-                            <div class="process-item__content">
-                                <p>Quy trình kiểm tra và đánh giá hoạt động nội bộ của tổ chức</p>
-                                <a href="#" class="process-item__link">Xem chi tiết →</a>
-                            </div>
-                        </div>
-                        
-                        <div class="process-item">
-                            <div class="process-item__header">
-                                <h3 class="process-item__title">Quy trình cải tiến liên tục</h3>
-                            </div>
-                            <div class="process-item__content">
-                                <p>Quy trình cải thiện và nâng cao hiệu quả hoạt động của hệ thống</p>
-                                <a href="#" class="process-item__link">Xem chi tiết →</a>
-                            </div>
-                        </div>
-                        
-                        <div class="process-item">
-                            <div class="process-item__header">
-                                <h3 class="process-item__title">Quy trình xử lý khiếu nại</h3>
-                            </div>
-                            <div class="process-item__content">
-                                <p>Quy trình tiếp nhận và giải quyết khiếu nại của khách hàng</p>
-                                <a href="#" class="process-item__link">Xem chi tiết →</a>
-                            </div>
-                        </div>
-                    </div>
+            <!-- Quality Manual Section -->
+            <section class="quality-manual">
+                <h2 class="quality-manual__title">SỔ TAY CHẤT LƯỢNG</h2>
+                <div class="quality-manual__content">
+                    <p class="quality-manual__text">
+                        Sổ tay chất lượng là tài liệu tổng quát về Hệ thống quản lý chất lượng của Nhà máy A31, xác định phạm vi áp dụng; chính sách và mục tiêu chất lượng; giới thiệu hoạt động và cơ cấu tổ chức, chức năng nhiệm vụ của Nhà máy; nêu quan điểm của lãnh đạo, chỉ huy Nhà máy đối với việc tuân thủ các yêu cầu của Hệ thống quản lý chất lượng theo TCVN ISO 9001:2015; danh mục các quy trình, thủ tục đã ban hành trong Nhà máy để lãnh đạo, chỉ huy và cán bộ chủ chốt của cơ quan, đơn vị trực thuộc triển khai thực hiện, làm cơ sở điều hành Hệ thống quản lý chất lượng của Nhà máy A31.
+                    </p>
+                    <a href="/admin/iso-system-documents?category_id=1" class="quality-manual__link"><strong>Xem thêm...</strong></a>
                 </div>
             </section>
 
-            <!-- Operational Process Section -->
-            <section class="operational-process">
-                <h2 class="operational-process__title">QUY TRÌNH TÁC NGHIỆP (Quy trình áp dụng chung, có sự phối hợp giữa các đơn vị)</h2>
-                <div class="operational-process__content">
-                    <div class="process-grid">
-                        <div class="process-item">
-                            <div class="process-item__header">
-                                <h3 class="process-item__title">Quy trình phối hợp liên ngành</h3>
+            <!-- Process Sections -->
+            <section class="process-sections">
+                <div class="process-sections__grid">
+                    <!-- System Process -->
+                    <div class="process-section">
+                        <h2 class="process-section__title">QUY TRÌNH HỆ THỐNG</h2>
+                        <div class="process-section__content">
+                            <div class="process-list">
+                                <div class="process-list__item">
+                                    <span class="process-list__code">QT-HT-01</span>
+                                    <span class="process-list__name">Quy trình quản lý chất lượng</span>
+                                </div>
+                                <div class="process-list__item">
+                                    <span class="process-list__code">QT-HT-02</span>
+                                    <span class="process-list__name">Quy trình đánh giá nội bộ</span>
+                                </div>
+                                <div class="process-list__item">
+                                    <span class="process-list__code">QT-HT-03</span>
+                                    <span class="process-list__name">Quy trình cải tiến liên tục</span>
+                                </div>
+                                <div class="process-list__item">
+                                    <span class="process-list__code">QT-HT-04</span>
+                                    <span class="process-list__name">Quy trình xử lý khiếu nại</span>
+                                </div>
+                                <div class="process-list__item">
+                                    <span class="process-list__code">QT-HT-05</span>
+                                    <span class="process-list__name">Quy trình quản lý tài liệu</span>
+                                </div>
                             </div>
-                            <div class="process-item__content">
-                                <p>Quy trình phối hợp công việc giữa các phòng ban và đơn vị trong tổ chức</p>
-                                <a href="#" class="process-item__link">Xem chi tiết →</a>
-                            </div>
-                        </div>
-                        
-                        <div class="process-item">
-                            <div class="process-item__header">
-                                <h3 class="process-item__title">Quy trình xử lý công việc</h3>
-                            </div>
-                            <div class="process-item__content">
-                                <p>Quy trình xử lý và giải quyết các công việc chung của toàn đơn vị</p>
-                                <a href="#" class="process-item__link">Xem chi tiết →</a>
-                            </div>
-                        </div>
-                        
-                        <div class="process-item">
-                            <div class="process-item__header">
-                                <h3 class="process-item__title">Quy trình báo cáo định kỳ</h3>
-                            </div>
-                            <div class="process-item__content">
-                                <p>Quy trình lập và báo cáo các hoạt động định kỳ theo quy định</p>
-                                <a href="#" class="process-item__link">Xem chi tiết →</a>
-                            </div>
-                        </div>
-                        
-                        <div class="process-item">
-                            <div class="process-item__header">
-                                <h3 class="process-item__title">Quy trình quản lý tài liệu</h3>
-                            </div>
-                            <div class="process-item__content">
-                                <p>Quy trình quản lý và lưu trữ tài liệu chung của đơn vị</p>
-                                <a href="#" class="process-item__link">Xem chi tiết →</a>
-                            </div>
-                        </div>
-                        
-                        <div class="process-item">
-                            <div class="process-item__header">
-                                <h3 class="process-item__title">Quy trình đào tạo chung</h3>
-                            </div>
-                            <div class="process-item__content">
-                                <p>Quy trình đào tạo và nâng cao năng lực cho cán bộ công chức</p>
-                                <a href="#" class="process-item__link">Xem chi tiết →</a>
-                            </div>
-                        </div>
-                        
-                        <div class="process-item">
-                            <div class="process-item__header">
-                                <h3 class="process-item__title">Quy trình kiểm soát chất lượng</h3>
-                            </div>
-                            <div class="process-item__content">
-                                <p>Quy trình kiểm soát và đảm bảo chất lượng công việc liên đơn vị</p>
-                                <a href="#" class="process-item__link">Xem chi tiết →</a>
+                            <div class="process-section__footer">
+                                <a href="/admin/iso-system-documents?category_id=2" class="process-section__link"><strong>Xem thêm...</strong></a>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
-
-            <!-- Internal Process Section -->
-            <section class="internal-process">
-                <h2 class="internal-process__title">QUY TRÌNH NỘI BỘ (Chỉ áp dụng nội bộ trong cơ quan, phân xưởng)</h2>
-                <div class="internal-process__content">
-                    <div class="process-grid">
-                        <div class="process-item">
-                            <div class="process-item__header">
-                                <h3 class="process-item__title">Quy trình nội bộ văn phòng</h3>
+                    
+                    <!-- Operational Process -->
+                    <div class="process-section">
+                        <h2 class="process-section__title">QUY TRÌNH TÁC NGHIỆP</h2>
+                        <div class="process-section__content">
+                            <div class="process-list">
+                                <div class="process-list__item">
+                                    <span class="process-list__code">QT-NV-01</span>
+                                    <span class="process-list__name">Quy trình sản xuất chính</span>
+                                </div>
+                                <div class="process-list__item">
+                                    <span class="process-list__code">QT-NV-02</span>
+                                    <span class="process-list__name">Quy trình kiểm tra chất lượng</span>
+                                </div>
+                                <div class="process-list__item">
+                                    <span class="process-list__code">QT-NV-03</span>
+                                    <span class="process-list__name">Quy trình bảo trì thiết bị</span>
+                                </div>
+                                <div class="process-list__item">
+                                    <span class="process-list__code">QT-NV-04</span>
+                                    <span class="process-list__name">Quy trình an toàn lao động</span>
+                                </div>
+                                <div class="process-list__item">
+                                    <span class="process-list__code">QT-NV-05</span>
+                                    <span class="process-list__name">Quy trình giao nhận sản phẩm</span>
+                                </div>
                             </div>
-                            <div class="process-item__content">
-                                <p>Các quy trình làm việc nội bộ riêng của từng phòng ban trong đơn vị</p>
-                                <a href="#" class="process-item__link">Xem chi tiết →</a>
-                            </div>
-                        </div>
-                        
-                        <div class="process-item">
-                            <div class="process-item__header">
-                                <h3 class="process-item__title">Quy trình chuyên môn kỹ thuật</h3>
-                            </div>
-                            <div class="process-item__content">
-                                <p>Quy trình kỹ thuật chuyên ngành áp dụng riêng trong từng phân xưởng</p>
-                                <a href="#" class="process-item__link">Xem chi tiết →</a>
-                            </div>
-                        </div>
-                        
-                        <div class="process-item">
-                            <div class="process-item__header">
-                                <h3 class="process-item__title">Quy trình quản lý nhân sự nội bộ</h3>
-                            </div>
-                            <div class="process-item__content">
-                                <p>Quy trình quản lý và phân công công việc nội bộ từng bộ phận</p>
-                                <a href="#" class="process-item__link">Xem chi tiết →</a>
-                            </div>
-                        </div>
-                        
-                        <div class="process-item">
-                            <div class="process-item__header">
-                                <h3 class="process-item__title">Quy trình kiểm tra nội bộ</h3>
-                            </div>
-                            <div class="process-item__content">
-                                <p>Quy trình tự kiểm tra và đánh giá công việc trong nội bộ đơn vị</p>
-                                <a href="#" class="process-item__link">Xem chi tiết →</a>
+                            <div class="process-section__footer">
+                                <a href="/admin/iso-system-documents?category_id=3" class="process-section__link"><strong>Xem thêm...</strong></a>
                             </div>
                         </div>
                     </div>
@@ -204,34 +120,6 @@
 
         <!-- Right Column - Sidebar -->
         <div class="home-layout__right">
-            <!-- New Process Section -->
-            <section class="new-process">
-                <h2 class="new-process__title">QUY TRÌNH MỚI</h2>
-                <div class="new-process__content">
-                    <div class="news-list">
-                        <div class="news-item">
-                            <div class="news-item__date">28/08/2024</div>
-                            <a href="#" class="news-item__title">Quy trình mới về quản lý chất lượng ISO 9001:2015</a>
-                        </div>
-                        <div class="news-item">
-                            <div class="news-item__date">25/08/2024</div>
-                            <a href="#" class="news-item__title">Cập nhật quy trình đánh giá nội bộ</a>
-                        </div>
-                        <div class="news-item">
-                            <div class="news-item__date">22/08/2024</div>
-                            <a href="#" class="news-item__title">Quy trình mới về xử lý khiếu nại khách hàng</a>
-                        </div>
-                        <div class="news-item">
-                            <div class="news-item__date">20/08/2024</div>
-                            <a href="#" class="news-item__title">Hướng dẫn quy trình cải tiến liên tục</a>
-                        </div>
-                    </div>
-                    <div class="new-process__footer">
-                        <a href="#" class="new-process__more">Xem tất cả →</a>
-                    </div>
-                </div>
-            </section>
-
             <!-- Notifications Section -->
             <section class="notifications">
                 <h2 class="notifications__title">THÔNG BÁO</h2>
@@ -255,7 +143,35 @@
                         </div>
                     </div>
                     <div class="notifications__footer">
-                        <a href="#" class="notifications__more">Xem tất cả →</a>
+                        <a href="/admin/management-documents" class="notifications__more">Xem tất cả →</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- New Process Section -->
+            <section class="new-process">
+                <h2 class="new-process__title">QUY TRÌNH MỚI</h2>
+                <div class="new-process__content">
+                    <div class="news-list">
+                        <div class="news-item">
+                            <div class="news-item__date">28/08/2024</div>
+                            <a href="#" class="news-item__title">Quy trình mới về quản lý chất lượng ISO 9001:2015</a>
+                        </div>
+                        <div class="news-item">
+                            <div class="news-item__date">25/08/2024</div>
+                            <a href="#" class="news-item__title">Cập nhật quy trình đánh giá nội bộ</a>
+                        </div>
+                        <div class="news-item">
+                            <div class="news-item__date">22/08/2024</div>
+                            <a href="#" class="news-item__title">Quy trình mới về xử lý khiếu nại khách hàng</a>
+                        </div>
+                        <div class="news-item">
+                            <div class="news-item__date">20/08/2024</div>
+                            <a href="#" class="news-item__title">Hướng dẫn quy trình cải tiến liên tục</a>
+                        </div>
+                    </div>
+                    <div class="new-process__footer">
+                        <a href="/admin/iso-system-documents" class="new-process__more">Xem tất cả →</a>
                     </div>
                 </div>
             </section>
@@ -278,13 +194,9 @@ function searchProcess() {
     
     // Xác định category_id dựa trên loại quy trình
     if (processType === 'he-thong') {
-        @if($processCategories['he_thong_id'])
-            params.push('category_id={{ $processCategories["he_thong_id"] }}');
-        @endif
+        params.push('category_id=2'); // Quy trình hệ thống
     } else if (processType === 'tac-nghiep') {
-        @if($processCategories['tac_nghiep_id'])
-            params.push('category_id={{ $processCategories["tac_nghiep_id"] }}');
-        @endif
+        params.push('category_id=3'); // Quy trình tác nghiệp
     }
     
     // Thêm department filter nếu có chọn

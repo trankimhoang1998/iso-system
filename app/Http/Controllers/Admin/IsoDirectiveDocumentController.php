@@ -28,18 +28,6 @@ class IsoDirectiveDocumentController extends Controller
             $query->where('category_id', $request->category_id);
         }
 
-        // Status filter
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-
-        // Uploader filter
-        if ($request->filled('uploader')) {
-            $query->whereHas('uploader', function($q) use ($request) {
-                $q->where('name', 'like', "%{$request->uploader}%");
-            });
-        }
-
         $documents = $query->orderBy('created_at', 'desc')->paginate(15);
         
         // Preserve query parameters in pagination links

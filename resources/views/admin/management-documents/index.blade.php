@@ -41,20 +41,6 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="admin-filter__group">
-                    <label class="admin-filter__label">Trạng thái</label>
-                    <select name="status" class="admin-filter__select">
-                        <option value="">Tất cả</option>
-                        <option value="draft" {{ request('status') == 'draft' ? 'selected' : '' }}>Bản nháp</option>
-                        <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Đã phê duyệt</option>
-                        <option value="archived" {{ request('status') == 'archived' ? 'selected' : '' }}>Lưu trữ</option>
-                    </select>
-                </div>
-                <div class="admin-filter__group">
-                    <label class="admin-filter__label">Người tải lên</label>
-                    <input type="text" name="uploader" value="{{ request('uploader') }}" 
-                           placeholder="Tên người tải lên..." class="admin-filter__input">
-                </div>
                 <div class="admin-filter__actions">
                     <button type="submit" class="admin-btn admin-btn--primary">
                         <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,9 +87,13 @@
                         </div>
                     </td>
                     <td class="admin-table__cell">
-                        <span class="admin-document-type-badge admin-document-type-badge--management">
-                            {{ $document->category->name ?? 'Không có danh mục' }}
-                        </span>
+                        @if($document->category)
+                            <span class="admin-document-type-badge admin-document-type-badge--management">
+                                {{ $document->category->name }}
+                            </span>
+                        @else
+                            _
+                        @endif
                     </td>
                     <td class="admin-table__cell">{{ $document->symbol ?: '_' }}</td>
                     <td class="admin-table__cell">{{ $document->time_period ?: '_' }}</td>

@@ -58,8 +58,8 @@
 
                 <div class="admin-form__row">
                     <div class="admin-form__group">
-                        <label class="admin-form__label admin-form__label--required">Danh mục</label>
-                        <select name="category_id" id="category_id" required
+                        <label class="admin-form__label">Danh mục</label>
+                        <select name="category_id" id="category_id"
                                 class="admin-form__select @error('category_id') admin-form__select--error @enderror">
                             <option value="">-- Chọn danh mục --</option>
                             @foreach($categories as $category)

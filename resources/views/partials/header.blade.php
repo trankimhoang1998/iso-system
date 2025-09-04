@@ -18,6 +18,11 @@
                         <span class="nav__arrow">▼</span>
                     </a>
                     <ul class="nav__dropdown" id="dropdown-ban-chi-dao">
+                        <li class="nav__dropdown-item">
+                            <a href="/admin/iso-directive-documents" class="nav__dropdown-link">
+                                TẤT CẢ TÀI LIỆU
+                            </a>
+                        </li>
                         @php
                             $isoDirectiveCategories = \App\Models\IsoDirectiveCategory::getFlatList();
                         @endphp

@@ -33,20 +33,20 @@ class InternalDocumentController extends Controller
             $query->where('category_id', $request->category_id);
         }
 
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-
-        if ($request->filled('uploader')) {
-            $query->where('uploaded_by', 'like', '%' . $request->uploader . '%');
+        // Department filter (for search/filter)
+        if ($request->filled('department_id')) {
+            $query->where('department_id', $request->department_id);
         }
 
         $documents = $query->orderBy('created_at', 'desc')->paginate(15);
         
         // Load categories with hierarchical structure for filter dropdown
         $categories = InternalDocumentCategory::getFlatList();
+        
+        // Get all departments for filter
+        $departments = Department::orderBy('name')->get();
 
-        return view('admin.internal-documents.index', compact('documents', 'categories'));
+        return view('admin.internal-documents.index', compact('documents', 'categories', 'departments'));
     }
 
     public function create()

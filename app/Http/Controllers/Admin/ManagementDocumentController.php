@@ -28,17 +28,6 @@ class ManagementDocumentController extends Controller
             $query->where('category_id', $request->category_id);
         }
 
-        // Status filter
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-
-        // Uploader filter
-        if ($request->filled('uploader')) {
-            $query->whereHas('uploader', function($q) use ($request) {
-                $q->where('name', 'like', "%{$request->uploader}%");
-            });
-        }
 
         $documents = $query->orderBy('created_at', 'desc')->paginate(15);
         
@@ -61,7 +50,7 @@ class ManagementDocumentController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'category_id' => 'required|exists:management_document_categories,id',
+            'category_id' => 'nullable|exists:management_document_categories,id',
             'status' => 'nullable|in:draft,approved,archived',
             'symbol' => 'nullable|string|max:255',
             'time_period' => 'nullable|string|max:255',
@@ -135,7 +124,7 @@ class ManagementDocumentController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'category_id' => 'required|exists:management_document_categories,id',
+            'category_id' => 'nullable|exists:management_document_categories,id',
             'status' => 'nullable|in:draft,approved,archived',
             'symbol' => 'nullable|string|max:255',
             'time_period' => 'nullable|string|max:255',
