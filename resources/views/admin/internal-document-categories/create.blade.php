@@ -26,7 +26,7 @@
             <div class="admin-form__row">
                 <div class="admin-form__group admin-form__group--full">
                     <label for="name" class="admin-form__label">Tên danh mục <span class="admin-form__required">*</span></label>
-                    <input type="text" id="name" name="name" class="admin-form__input @error('name') admin-form__input--error @enderror" value="{{ old('name') }}" required>
+                    <input type="text" id="name" name="name" class="admin-form__input @error('name') admin-form__input--error @enderror" value="{{ old('name') }}">
                     @error('name')
                         <span class="admin-form__error">{{ $message }}</span>
                     @enderror

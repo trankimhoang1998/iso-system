@@ -108,8 +108,7 @@
                     <input type="text" 
                            name="name" 
                            class="admin-form__input" 
-                           placeholder="Nhập tên phân xưởng..."
-                           required>
+                           placeholder="Nhập tên phân xưởng...">
                     <div class="admin-form__error" id="createNameError"></div>
                 </div>
                 <div class="admin-form__actions">
@@ -147,8 +146,7 @@
                            id="editName"
                            name="name" 
                            class="admin-form__input" 
-                           placeholder="Nhập tên phân xưởng..."
-                           required>
+                           placeholder="Nhập tên phân xưởng...">
                     <div class="admin-form__error" id="editNameError"></div>
                 </div>
                 <div class="admin-form__actions">
@@ -199,6 +197,7 @@ function clearErrors() {
 // Handle Create Form
 document.getElementById('createForm').addEventListener('submit', function(e) {
     e.preventDefault();
+    clearErrors();
     
     const formData = new FormData(this);
     
@@ -209,61 +208,89 @@ document.getElementById('createForm').addEventListener('submit', function(e) {
             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         }
     })
-    .then(response => response.json())
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else if (response.status === 422) {
+            return response.json().then(data => Promise.reject(data));
+        }
+        throw new Error('Network response was not ok');
+    })
     .then(data => {
         if (data.success) {
             toastr.success(data.message);
             closeCreateModal();
             location.reload();
-        } else {
-            if (data.errors) {
-                for (let field in data.errors) {
-                    const errorElement = document.getElementById('create' + field.charAt(0).toUpperCase() + field.slice(1) + 'Error');
-                    if (errorElement) {
-                        errorElement.textContent = data.errors[field][0];
-                    }
-                }
-            }
         }
     })
     .catch(error => {
-        toastr.error('Có lỗi xảy ra. Vui lòng thử lại!');
+        if (error.errors) {
+            // Handle validation errors
+            for (let field in error.errors) {
+                const errorElement = document.getElementById('create' + field.charAt(0).toUpperCase() + field.slice(1) + 'Error');
+                if (errorElement) {
+                    errorElement.textContent = error.errors[field][0];
+                    // Add error class to input
+                    const inputElement = document.querySelector('#createForm input[name="' + field + '"]');
+                    if (inputElement) {
+                        inputElement.classList.add('admin-form__input--error');
+                    }
+                }
+            }
+        } else {
+            toastr.error('Có lỗi xảy ra. Vui lòng thử lại!');
+        }
     });
 });
 
 // Handle Edit Form
 document.getElementById('editForm').addEventListener('submit', function(e) {
     e.preventDefault();
+    clearErrors();
     
     const id = document.getElementById('editId').value;
     const formData = new FormData(this);
+    formData.append('_method', 'PUT');
     
-    fetch(`/departments/${id}`, {
+    fetch('{{ route("admin.departments.update", "__ID__") }}'.replace('__ID__', id), {
         method: 'POST',
         body: formData,
         headers: {
             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         }
     })
-    .then(response => response.json())
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else if (response.status === 422) {
+            return response.json().then(data => Promise.reject(data));
+        }
+        throw new Error('Network response was not ok');
+    })
     .then(data => {
         if (data.success) {
             toastr.success(data.message);
             closeEditModal();
             location.reload();
-        } else {
-            if (data.errors) {
-                for (let field in data.errors) {
-                    const errorElement = document.getElementById('edit' + field.charAt(0).toUpperCase() + field.slice(1) + 'Error');
-                    if (errorElement) {
-                        errorElement.textContent = data.errors[field][0];
-                    }
-                }
-            }
         }
     })
     .catch(error => {
-        toastr.error('Có lỗi xảy ra. Vui lòng thử lại!');
+        if (error.errors) {
+            // Handle validation errors
+            for (let field in error.errors) {
+                const errorElement = document.getElementById('edit' + field.charAt(0).toUpperCase() + field.slice(1) + 'Error');
+                if (errorElement) {
+                    errorElement.textContent = error.errors[field][0];
+                    // Add error class to input
+                    const inputElement = document.querySelector('#editForm input[name="' + field + '"]');
+                    if (inputElement) {
+                        inputElement.classList.add('admin-form__input--error');
+                    }
+                }
+            }
+        } else {
+            toastr.error('Có lỗi xảy ra. Vui lòng thử lại!');
+        }
     });
 });
 

@@ -26,7 +26,7 @@
             
             <div class="admin-form__group">
                 <label class="admin-form__label admin-form__label--required">Họ và tên</label>
-                <input type="text" name="name" value="{{ old('name', $user->name) }}" required 
+                <input type="text" name="name" value="{{ old('name', $user->name) }}"
                        class="admin-form__input @error('name') admin-form__input--error @enderror">
                 @error('name')
                 <div class="admin-form__error">{{ $message }}</div>
@@ -35,7 +35,7 @@
 
             <div class="admin-form__group">
                 <label class="admin-form__label admin-form__label--required">Email</label>
-                <input type="email" name="email" value="{{ old('email', $user->email) }}" required 
+                <input type="email" name="email" value="{{ old('email', $user->email) }}"
                        class="admin-form__input @error('email') admin-form__input--error @enderror">
                 @error('email')
                 <div class="admin-form__error">{{ $message }}</div>
@@ -53,7 +53,7 @@
 
             <div class="admin-form__group">
                 <label class="admin-form__label admin-form__label--required">Phân quyền</label>
-                <select name="role" id="role" required 
+                <select name="role" id="role"
                         class="admin-form__select @error('role') admin-form__select--error @enderror" 
                         onchange="toggleDepartmentField()">
                     <option value="">-- Chọn phân quyền --</option>
@@ -112,10 +112,8 @@ function toggleDepartmentField() {
         // Show department field for roles 2 (Cơ quan - Phân xưởng) and 3 (Người sử dụng)
         if (role == '2' || role == '3') {
             departmentGroup.style.display = 'block';
-            departmentSelect.setAttribute('required', 'required');
         } else {
             departmentGroup.style.display = 'none';
-            departmentSelect.removeAttribute('required');
             departmentSelect.value = ''; // Clear selection when hidden
         }
     }

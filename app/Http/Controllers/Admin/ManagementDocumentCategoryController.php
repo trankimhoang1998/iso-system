@@ -29,6 +29,11 @@ class ManagementDocumentCategoryController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:management_document_categories,id',
+        ], [
+            'name.required' => 'Tên danh mục là bắt buộc.',
+            'name.string' => 'Tên danh mục phải là chuỗi văn bản.',
+            'name.max' => 'Tên danh mục không được vượt quá 255 ký tự.',
+            'parent_id.exists' => 'Danh mục cha được chọn không hợp lệ.',
         ]);
 
         ManagementDocumentCategory::create([
@@ -52,6 +57,11 @@ class ManagementDocumentCategoryController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:management_document_categories,id',
+        ], [
+            'name.required' => 'Tên danh mục là bắt buộc.',
+            'name.string' => 'Tên danh mục phải là chuỗi văn bản.',
+            'name.max' => 'Tên danh mục không được vượt quá 255 ký tự.',
+            'parent_id.exists' => 'Danh mục cha được chọn không hợp lệ.',
         ]);
 
         $managementDocumentCategory->update([

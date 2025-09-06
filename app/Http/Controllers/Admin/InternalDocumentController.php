@@ -77,6 +77,32 @@ class InternalDocumentController extends Controller
             'summary' => 'nullable|string|max:1000',
             'pdf_file' => 'required|file|mimes:pdf|max:51200', // PDF file required, 50MB max
             'word_file' => 'nullable|file|mimes:doc,docx|max:51200', // Word file optional, 50MB max
+        ], [
+            'title.required' => 'Tiêu đề tài liệu là bắt buộc.',
+            'title.string' => 'Tiêu đề tài liệu phải là chuỗi văn bản.',
+            'title.max' => 'Tiêu đề tài liệu không được vượt quá 255 ký tự.',
+            'category_id.required' => 'Danh mục là bắt buộc.',
+            'category_id.exists' => 'Danh mục được chọn không hợp lệ.',
+            'department_id.required' => 'Phòng ban là bắt buộc.',
+            'department_id.exists' => 'Phòng ban được chọn không hợp lệ.',
+            'status.in' => 'Trạng thái được chọn không hợp lệ.',
+            'symbol.string' => 'Ký hiệu phải là chuỗi văn bản.',
+            'symbol.max' => 'Ký hiệu không được vượt quá 255 ký tự.',
+            'issued_year.integer' => 'Năm ban hành tài liệu phải là số nguyên.',
+            'issued_year.digits' => 'Năm ban hành tài liệu phải có đúng 4 chữ số.',
+            'document_number.string' => 'Số văn bản phải là chuỗi văn bản.',
+            'document_number.max' => 'Số văn bản không được vượt quá 255 ký tự.',
+            'issuing_agency.string' => 'Cơ quan ban hành phải là chuỗi văn bản.',
+            'issuing_agency.max' => 'Cơ quan ban hành không được vượt quá 255 ký tự.',
+            'summary.string' => 'Trích yếu phải là chuỗi văn bản.',
+            'summary.max' => 'Trích yếu không được vượt quá 1000 ký tự.',
+            'pdf_file.required' => 'File PDF là bắt buộc.',
+            'pdf_file.file' => 'PDF phải là một file.',
+            'pdf_file.mimes' => 'File PDF phải có định dạng: pdf.',
+            'pdf_file.max' => 'File PDF không được vượt quá 50MB.',
+            'word_file.file' => 'Word phải là một file.',
+            'word_file.mimes' => 'File Word phải có định dạng: doc, docx.',
+            'word_file.max' => 'File Word không được vượt quá 50MB.',
         ]);
 
         // Handle PDF file upload (required)
@@ -165,6 +191,31 @@ class InternalDocumentController extends Controller
             'summary' => 'nullable|string|max:1000',
             'pdf_file' => 'nullable|file|mimes:pdf|max:51200', // PDF file optional for update, 50MB max
             'word_file' => 'nullable|file|mimes:doc,docx|max:51200', // Word file optional, 50MB max
+        ], [
+            'title.required' => 'Tiêu đề tài liệu là bắt buộc.',
+            'title.string' => 'Tiêu đề tài liệu phải là chuỗi văn bản.',
+            'title.max' => 'Tiêu đề tài liệu không được vượt quá 255 ký tự.',
+            'category_id.required' => 'Danh mục là bắt buộc.',
+            'category_id.exists' => 'Danh mục được chọn không hợp lệ.',
+            'department_id.required' => 'Phòng ban là bắt buộc.',
+            'department_id.exists' => 'Phòng ban được chọn không hợp lệ.',
+            'status.in' => 'Trạng thái được chọn không hợp lệ.',
+            'symbol.string' => 'Ký hiệu phải là chuỗi văn bản.',
+            'symbol.max' => 'Ký hiệu không được vượt quá 255 ký tự.',
+            'issued_year.integer' => 'Năm ban hành tài liệu phải là số nguyên.',
+            'issued_year.digits' => 'Năm ban hành tài liệu phải có đúng 4 chữ số.',
+            'document_number.string' => 'Số văn bản phải là chuỗi văn bản.',
+            'document_number.max' => 'Số văn bản không được vượt quá 255 ký tự.',
+            'issuing_agency.string' => 'Cơ quan ban hành phải là chuỗi văn bản.',
+            'issuing_agency.max' => 'Cơ quan ban hành không được vượt quá 255 ký tự.',
+            'summary.string' => 'Trích yếu phải là chuỗi văn bản.',
+            'summary.max' => 'Trích yếu không được vượt quá 1000 ký tự.',
+            'pdf_file.file' => 'PDF phải là một file.',
+            'pdf_file.mimes' => 'File PDF phải có định dạng: pdf.',
+            'pdf_file.max' => 'File PDF không được vượt quá 50MB.',
+            'word_file.file' => 'Word phải là một file.',
+            'word_file.mimes' => 'File Word phải có định dạng: doc, docx.',
+            'word_file.max' => 'File Word không được vượt quá 50MB.',
         ]);
 
         $updateData = [
