@@ -37,11 +37,8 @@
             @endforelse
         </div>
 
-        <!-- Pagination -->
         @if($categories->hasPages())
-        <div class="admin-pagination">
-            {{ $categories->links() }}
-        </div>
+            {{ $categories->links('components.pagination') }}
         @endif
     </div>
 </div>

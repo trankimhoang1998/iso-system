@@ -10,6 +10,9 @@
     <!-- Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body class="admin-layout">
@@ -24,7 +27,9 @@
     </button>
 
     <div class="admin-container">
-        @include('partials.admin.sidebar')
+        @unless(request()->is('trang-chu'))
+            @include('partials.admin.sidebar')
+        @endunless
 
         <!-- Admin Main Content -->
         <main class="admin-main">
@@ -39,6 +44,9 @@
     <!-- jQuery and Toastr JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     
     <script>
         // Configure Toastr

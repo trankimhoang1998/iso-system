@@ -26,7 +26,6 @@
             <table class="admin-table">
                 <thead class="admin-table__head">
                     <tr class="admin-table__row">
-                        <th class="admin-table__header">STT</th>
                         <th class="admin-table__header">Tên phân xưởng</th>
                         <th class="admin-table__header admin-table__header--actions">Thao tác</th>
                     </tr>
@@ -34,7 +33,6 @@
                 <tbody class="admin-table__body">
                     @forelse($departments as $index => $department)
                         <tr class="admin-table__row">
-                            <td class="admin-table__cell">{{ $index + 1 }}</td>
                             <td class="admin-table__cell">
                                 <div class="admin-table__main-content">
                                     <span class="admin-table__title">{{ $department->name }}</span>

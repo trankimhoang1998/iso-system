@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Văn bản hệ thống ISO - Admin')
+@section('title', 'Tài liệu hệ thống ISO')
 
 @section('content')
 <div class="admin-page">
@@ -211,7 +211,12 @@
 <script>
 function openDeleteModal(documentId, documentTitle) {
     document.getElementById('deleteDocumentName').textContent = documentTitle;
-    document.getElementById('deleteForm').action = `/admin/iso-system-documents/${documentId}`;
+    const currentCategoryId = '{{ request("category_id") }}';
+    let deleteUrl = `/iso-system-documents/${documentId}`;
+    if (currentCategoryId) {
+        deleteUrl += `?redirect_category=${currentCategoryId}`;
+    }
+    document.getElementById('deleteForm').action = deleteUrl;
     document.getElementById('deleteModal').classList.add('admin-modal--active');
 }
 

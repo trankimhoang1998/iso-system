@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', $internalDocument->title . ' - Chi tiết tài liệu - Admin')
+@section('title', 'Chi tiết tài liệu - Nội bộ')
 
 @section('content')
 <div class="admin-page">

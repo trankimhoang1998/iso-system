@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Thêm tài liệu nội bộ - Admin')
+@section('title', 'Thêm tài liệu - Nội bộ')
 
 @section('content')
 <div class="admin-page">
@@ -82,7 +82,7 @@
                         @else
                             <!-- Role 0,1 can choose any department -->
                             <select name="department_id" id="department_id"
-                                    class="admin-form__select @error('department_id') admin-form__select--error @enderror">
+                                    class="admin-form__select select2 @error('department_id') admin-form__select--error @enderror">
                                 <option value="">-- Chọn phòng ban --</option>
                                 @foreach($departments as $department)
                                     <option value="{{ $department->id }}" {{ old('department_id') == $department->id ? 'selected' : '' }}>
@@ -111,9 +111,12 @@
                     
                     <div class="admin-form__group">
                         <label class="admin-form__label">Năm ban hành tài liệu</label>
-                        <input type="number" name="issued_year" value="{{ old('issued_year') }}" 
-                               class="admin-form__input @error('issued_year') admin-form__input--error @enderror"
-                               placeholder="Ví dụ: 2024" min="1900" max="{{ date('Y') + 10 }}">
+                        <select name="issued_year" id="issued_year" class="admin-form__select select2 @error('issued_year') admin-form__select--error @enderror">
+                            <option value="">-- Chọn năm --</option>
+                            @for($year = date('Y'); $year >= 1900; $year--)
+                                <option value="{{ $year }}" {{ old('issued_year') == $year ? 'selected' : '' }}>{{ $year }}</option>
+                            @endfor
+                        </select>
                         @error('issued_year')
                         <div class="admin-form__error">{{ $message }}</div>
                         @enderror
@@ -262,6 +265,29 @@ document.getElementById('adminWordFileInput').addEventListener('change', functio
         }
     } else {
         label.textContent = 'Chọn file Word hoặc kéo thả vào đây';
+    }
+});
+
+// Initialize Select2 for dropdowns
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof $ !== 'undefined' && $.fn.select2) {
+        // Year dropdown
+        $('#issued_year').select2({
+            placeholder: '-- Chọn năm --',
+            allowClear: true,
+            width: '100%',
+            dropdownCssClass: 'select2-dropdown-small',
+            containerCssClass: 'select2-container-small'
+        });
+        
+        // Department dropdown
+        $('#department_id').select2({
+            placeholder: '-- Chọn phòng ban --',
+            allowClear: true,
+            width: '100%',
+            dropdownCssClass: 'select2-dropdown-small',
+            containerCssClass: 'select2-container-small'
+        });
     }
 });
 </script>

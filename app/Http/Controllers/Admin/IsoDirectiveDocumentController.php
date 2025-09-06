@@ -250,7 +250,7 @@ class IsoDirectiveDocumentController extends Controller
             ->with('success', 'Tài liệu đã được cập nhật thành công.');
     }
 
-    public function destroy(IsoDirectiveDocument $isoDirectiveDocument)
+    public function destroy(Request $request, IsoDirectiveDocument $isoDirectiveDocument)
     {
         // Delete PDF file from storage
         if ($isoDirectiveDocument->pdf_file_path && Storage::disk('public')->exists($isoDirectiveDocument->pdf_file_path)) {
@@ -264,7 +264,13 @@ class IsoDirectiveDocumentController extends Controller
 
         $isoDirectiveDocument->delete();
 
-        return redirect()->route('admin.iso-directive-documents.index')
+        // Redirect back to the same category if specified
+        $redirectUrl = route('admin.iso-directive-documents.index');
+        if ($request->has('redirect_category')) {
+            $redirectUrl .= '?category_id=' . $request->redirect_category;
+        }
+
+        return redirect($redirectUrl)
             ->with('success', 'Tài liệu đã được xóa thành công.');
     }
 

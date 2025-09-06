@@ -59,7 +59,7 @@
     &__label {
         font-weight: $font-weight-bold;
         color: $gray;
-        font-size: 13px;
+        font-size: 15px;
         margin-bottom: 2px;
     }
 
@@ -154,7 +154,7 @@
 
     &__text {
         color: $gray;
-        font-size: 13px;
+        font-size: 15px;
         line-height: 1.6;
         margin: 0 0 $spacing-md 0;
         text-align: justify;
@@ -166,7 +166,7 @@
 
     &__link {
         color: $primary-color;
-        font-size: 13px;
+        font-size: 15px;
         text-decoration: none;
         transition: color 0.3s ease;
 
@@ -235,7 +235,7 @@
 
     &__link {
         color: $primary-color;
-        font-size: 13px;
+        font-size: 15px;
         text-decoration: none;
         transition: color 0.3s ease;
 
@@ -269,12 +269,12 @@
     &__code {
         background-color: $primary-color;
         color: $white;
-        font-size: 11px;
+        font-size: 15px;
         font-weight: $font-weight-bold;
         padding: 4px 8px;
         border-radius: 3px;
-        min-width: 70px;
         text-align: center;
+        white-space: nowrap;
 
         @include mobile {
             font-size: 10px;
@@ -285,7 +285,7 @@
 
     &__name {
         color: $gray;
-        font-size: 13px;
+        font-size: 15px;
         line-height: 1.4;
 
         @include mobile {
@@ -366,11 +366,12 @@
 
     &__footer {
         text-align: center;
+        margin-top: 1.5rem;
     }
 
     &__more {
         color: $primary-color;
-        font-size: 12px;
+        font-size: 15px;
         font-weight: $font-weight-bold;
         text-decoration: none;
         transition: color 0.3s ease;
@@ -420,11 +421,12 @@
 
     &__footer {
         text-align: center;
+        margin-top: 1.5rem;
     }
 
     &__more {
         color: $primary-color;
-        font-size: 12px;
+        font-size: 15px;
         font-weight: $font-weight-bold;
         text-decoration: none;
         transition: color 0.3s ease;
@@ -457,7 +459,7 @@
     }
 
     &__date {
-        font-size: 11px;
+        font-size: 13px;
         color: #888;
         font-weight: $font-weight-bold;
         margin-bottom: 4px;
@@ -469,7 +471,7 @@
 
     &__title {
         color: $gray;
-        font-size: 12px;
+        font-size: 15px;
         line-height: 1.4;
         text-decoration: none;
         transition: color 0.3s ease;

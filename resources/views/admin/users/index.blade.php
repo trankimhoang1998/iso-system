@@ -76,7 +76,6 @@
         <table class="admin-table">
             <thead class="admin-table__head">
                 <tr>
-                    <th class="admin-table__header">ID</th>
                     <th class="admin-table__header">Tên</th>
                     <th class="admin-table__header">Email</th>
                     <th class="admin-table__header">Phân quyền</th>
@@ -89,7 +88,6 @@
             <tbody class="admin-table__body">
                 @foreach($users as $user)
                 <tr class="admin-table__row">
-                    <td class="admin-table__cell">{{ $user->id }}</td>
                     <td class="admin-table__cell">
                         <div class="admin-user-info">
                             <div class="admin-user-info__name">{{ $user->name }}</div>

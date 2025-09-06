@@ -242,7 +242,7 @@ class ManagementDocumentController extends Controller
             ->with('success', 'Tài liệu đã được cập nhật thành công.');
     }
 
-    public function destroy(ManagementDocument $managementDocument)
+    public function destroy(Request $request, ManagementDocument $managementDocument)
     {
         // Delete PDF file from storage
         if ($managementDocument->pdf_file_path && Storage::disk('public')->exists($managementDocument->pdf_file_path)) {
@@ -256,7 +256,13 @@ class ManagementDocumentController extends Controller
 
         $managementDocument->delete();
 
-        return redirect()->route('admin.management-documents.index')
+        // Redirect back to the same category if specified
+        $redirectUrl = route('admin.management-documents.index');
+        if ($request->has('redirect_category')) {
+            $redirectUrl .= '?category_id=' . $request->redirect_category;
+        }
+        
+        return redirect($redirectUrl)
             ->with('success', 'Tài liệu đã được xóa thành công.');
     }
 

@@ -273,7 +273,7 @@
 
     &__subtitle {
         color: #6c757d;
-        font-size: 14px;
+        font-size: 18px;
         margin: 0;
     }
 
@@ -478,7 +478,7 @@
     padding: 10px 16px;
     border: none;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: $font-weight-bold;
     text-decoration: none;
     cursor: pointer;
@@ -600,7 +600,7 @@
 
     &__label {
         color: $gray;
-        font-size: 13px;
+        font-size: 15px;
         font-weight: $font-weight-bold;
         margin-bottom: 6px;
         text-transform: uppercase;
@@ -695,7 +695,7 @@
         text-align: left;
         font-weight: $font-weight-bold;
         color: $gray;
-        font-size: 13px;
+        font-size: 15px;
         text-transform: uppercase;
         letter-spacing: 0.3px;
 
@@ -716,7 +716,7 @@
 
     &__cell {
         padding: 12px 16px;
-        font-size: 14px;
+        font-size: 15px;
         color: $gray;
         vertical-align: middle;
 
@@ -1068,79 +1068,6 @@
     }
 }
 
-// Admin Form
-.admin-form {
-    &__group {
-        margin-bottom: $spacing-md;
-    }
-
-    &__label {
-        display: block;
-        color: $gray;
-        font-size: 13px;
-        font-weight: $font-weight-bold;
-        margin-bottom: 6px;
-        text-transform: uppercase;
-        letter-spacing: 0.3px;
-
-        &--required::after {
-            content: ' *';
-            color: #dc3545;
-        }
-    }
-
-    &__input,
-    &__select {
-        width: 100%;
-        padding: 10px 12px;
-        border: 1px solid #ced4da;
-        border-radius: 4px;
-        font-size: 14px;
-        color: $gray;
-        background: $white;
-        transition: all 0.3s ease;
-
-        &:focus {
-            outline: none;
-            border-color: $primary-color;
-            box-shadow: 0 0 0 2px rgba(70, 130, 180, 0.1);
-        }
-
-        &--error {
-            border-color: #dc3545;
-            background-color: rgba(220, 53, 69, 0.05);
-            
-            &:focus {
-                border-color: #dc3545;
-                box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.1);
-            }
-        }
-    }
-
-    &__error {
-        color: #dc3545;
-        font-size: 12px;
-        margin-top: 4px;
-        font-weight: 500;
-    }
-
-    &__help {
-        color: #6c757d;
-        font-size: 11px;
-        margin-top: 4px;
-        font-style: italic;
-    }
-
-    &__actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: $spacing-sm;
-        margin-top: $spacing-lg;
-        padding-top: $spacing-md;
-        border-top: 1px solid #e9ecef;
-    }
-}
-
 // Screen Reader Only
 .sr-only {
     position: absolute;
@@ -1338,7 +1265,7 @@
         }
         
         &__label {
-            font-size: 12px;
+            font-size: 15px;
             font-weight: $font-weight-bold;
             color: #6c757d;
             text-transform: uppercase;
@@ -1581,7 +1508,7 @@
         gap: 4px;
         
         &__label {
-            font-size: 12px;
+            font-size: 15px;
             font-weight: $font-weight-bold;
             color: #6c757d;
             text-transform: uppercase;
@@ -1680,7 +1607,7 @@
 
     &__label {
         color: $gray;
-        font-size: 13px;
+        font-size: 15px;
         font-weight: $font-weight-bold;
         margin-bottom: 6px;
         text-transform: uppercase;
@@ -2823,4 +2750,86 @@
             height: 12px;
         }
     }
+}
+
+// ===============================================
+// Select2 Styling for Admin Forms
+// ===============================================
+
+// Select2 Year Dropdown Styling - Based on Home Page
+.select2-dropdown-small .select2-results__options {
+    max-height: 150px !important;
+    overflow-y: auto !important;
+}
+
+.select2-container-small .select2-selection--single {
+    height: 38px !important;
+    border: 1px solid #e9ecef !important;
+    border-radius: 4px !important;
+}
+
+.select2-container-small .select2-selection--single .select2-selection__rendered {
+    line-height: 36px !important;
+    padding: 8px 12px !important;
+    font-size: 13px !important;
+    color: #666 !important;
+}
+
+.select2-container-small .select2-selection--single .select2-selection__arrow {
+    height: 36px !important;
+}
+
+// Target Select2 container with actual generated classes
+.admin-form__group .select2-container.select2-container--default {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+}
+
+.admin-form__group .select2-container.select2-container--default .select2-selection.select2-selection--single {
+    height: 38px !important;
+    width: 100% !important;
+    line-height: 36px !important;
+    box-sizing: border-box !important;
+}
+
+.admin-form__group .select2-container.select2-container--default .select2-selection__rendered {
+    line-height: 36px !important;
+    padding-left: 12px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    font-size: 13px !important;
+    color: #666666 !important;
+}
+
+.admin-form__group .select2-container.select2-container--default .select2-selection__arrow {
+    height: 36px !important;
+}
+
+.admin-form__group .select2-container--default .select2-selection--single .select2-selection__placeholder {
+    font-size: 13px !important;
+    color: #666666 !important;
+}
+
+.admin-form__group .select2-container--default .select2-selection--single .select2-selection__clear {
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    right: 0 !important;
+    line-height: 1 !important;
+}
+
+.select2-dropdown-small {
+    border: 1px solid #e9ecef !important;
+    border-radius: 4px !important;
+}
+
+.select2-dropdown-small .select2-results__option {
+    padding: 8px 12px !important;
+    font-size: 13px !important;
+}
+
+// General Select2 default styling
+.select2-container--default .select2-selection--single {
+    border: 1px solid #e9ecef !important;
 }

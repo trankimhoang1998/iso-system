@@ -41,7 +41,7 @@ class UserController extends Controller
             $query->where('department_id', $request->department);
         }
 
-        $users = $query->orderBy('created_at', 'desc')->paginate(20);
+        $users = $query->orderBy('id')->paginate(20);
         
         // Preserve query parameters in pagination links
         $users->appends($request->all());

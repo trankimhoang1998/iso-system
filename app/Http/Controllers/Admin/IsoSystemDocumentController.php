@@ -256,7 +256,7 @@ class IsoSystemDocumentController extends Controller
             ->with('success', 'Tài liệu đã được cập nhật thành công.');
     }
 
-    public function destroy(IsoSystemDocument $isoSystemDocument)
+    public function destroy(Request $request, IsoSystemDocument $isoSystemDocument)
     {
         // Delete PDF file from storage
         if ($isoSystemDocument->pdf_file_path && Storage::disk('public')->exists($isoSystemDocument->pdf_file_path)) {
@@ -270,7 +270,13 @@ class IsoSystemDocumentController extends Controller
 
         $isoSystemDocument->delete();
 
-        return redirect()->route('admin.iso-system-documents.index')
+        // Redirect back to the same category if specified
+        $redirectUrl = route('admin.iso-system-documents.index');
+        if ($request->has('redirect_category')) {
+            $redirectUrl .= '?category_id=' . $request->redirect_category;
+        }
+        
+        return redirect($redirectUrl)
             ->with('success', 'Tài liệu đã được xóa thành công.');
     }
 

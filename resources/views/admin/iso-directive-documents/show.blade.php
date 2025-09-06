@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', $isoDirectiveDocument->title . ' - Chi tiết văn bản - Admin')
+@section('title', 'Chi tiết văn bản - Ban chỉ đạo ISO')
 
 @section('content')
 <div class="admin-page">

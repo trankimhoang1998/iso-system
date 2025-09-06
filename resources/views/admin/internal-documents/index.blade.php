@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Tài liệu nội bộ - Admin')
+@section('title', 'Tài liệu nội bộ')
 
 @section('content')
 <div class="admin-page">
@@ -203,7 +203,12 @@
 <script>
 function openDeleteModal(documentId, documentTitle) {
     document.getElementById('deleteDocumentName').textContent = documentTitle;
-    document.getElementById('deleteForm').action = `/admin/internal-documents/${documentId}`;
+    const currentCategoryId = '{{ request("category_id") }}';
+    let deleteUrl = `/internal-documents/${documentId}`;
+    if (currentCategoryId) {
+        deleteUrl += `?redirect_category=${currentCategoryId}`;
+    }
+    document.getElementById('deleteForm').action = deleteUrl;
     document.getElementById('deleteModal').classList.add('admin-modal--active');
 }
 

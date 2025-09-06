@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Thêm văn bản chỉ đạo ISO - Admin')
+@section('title', 'Thêm văn bản - Ban chỉ đạo ISO')
 
 @section('content')
 <div class="admin-page">
@@ -88,9 +88,12 @@
                     
                     <div class="admin-form__group">
                         <label class="admin-form__label">Năm ban hành tài liệu</label>
-                        <input type="number" name="issued_year" value="{{ old('issued_year') }}" 
-                               class="admin-form__input @error('issued_year') admin-form__input--error @enderror"
-                               placeholder="Ví dụ: 2024" min="1900" max="{{ date('Y') + 10 }}">
+                        <select name="issued_year" id="issued_year" class="admin-form__select select2 @error('issued_year') admin-form__select--error @enderror">
+                            <option value="">-- Chọn năm --</option>
+                            @for($year = date('Y'); $year >= 1900; $year--)
+                                <option value="{{ $year }}" {{ old('issued_year') == $year ? 'selected' : '' }}>{{ $year }}</option>
+                            @endfor
+                        </select>
                         @error('issued_year')
                         <div class="admin-form__error">{{ $message }}</div>
                         @enderror
@@ -249,6 +252,19 @@ document.getElementById('adminWordFileInput').addEventListener('change', functio
             document.querySelector('label[for="adminWordFileInput"] span').textContent = 'Chọn file Word hoặc kéo thả vào đây (tùy chọn)';
             return false;
         }
+    }
+});
+
+// Initialize Select2 for year dropdown
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof $ !== 'undefined' && $.fn.select2) {
+        $('#issued_year').select2({
+            placeholder: '-- Chọn năm --',
+            allowClear: true,
+            width: '100%',
+            dropdownCssClass: 'select2-dropdown-small',
+            containerCssClass: 'select2-container-small'
+        });
     }
 });
 </script>

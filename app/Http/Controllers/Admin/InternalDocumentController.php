@@ -276,7 +276,7 @@ class InternalDocumentController extends Controller
             ->with('success', 'Tài liệu đã được cập nhật thành công.');
     }
 
-    public function destroy(InternalDocument $internalDocument)
+    public function destroy(Request $request, InternalDocument $internalDocument)
     {
         // Delete PDF file from storage
         if ($internalDocument->pdf_file_path && Storage::disk('public')->exists($internalDocument->pdf_file_path)) {
@@ -290,7 +290,13 @@ class InternalDocumentController extends Controller
 
         $internalDocument->delete();
 
-        return redirect()->route('admin.internal-documents.index')
+        // Redirect back to the same category if specified
+        $redirectUrl = route('admin.internal-documents.index');
+        if ($request->has('redirect_category')) {
+            $redirectUrl .= '?category_id=' . $request->redirect_category;
+        }
+        
+        return redirect($redirectUrl)
             ->with('success', 'Tài liệu đã được xóa thành công.');
     }
 

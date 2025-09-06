@@ -23,63 +23,73 @@
         <form method="POST" action="{{ route('admin.users.store') }}" class="admin-form">
             @csrf
             
-            <div class="admin-form__group">
-                <label class="admin-form__label admin-form__label--required">Họ và tên</label>
-                <input type="text" name="name" value="{{ old('name') }}"
-                       class="admin-form__input @error('name') admin-form__input--error @enderror">
-                @error('name')
-                <div class="admin-form__error">{{ $message }}</div>
-                @enderror
+            <div class="admin-form__row">
+                <div class="admin-form__group">
+                    <label class="admin-form__label admin-form__label--required">Họ và tên</label>
+                    <input type="text" name="name" value="{{ old('name') }}"
+                           class="admin-form__input @error('name') admin-form__input--error @enderror">
+                    @error('name')
+                    <div class="admin-form__error">{{ $message }}</div>
+                    @enderror
+                </div>
             </div>
 
-            <div class="admin-form__group">
-                <label class="admin-form__label admin-form__label--required">Email</label>
-                <input type="email" name="email" value="{{ old('email') }}"
-                       class="admin-form__input @error('email') admin-form__input--error @enderror">
-                @error('email')
-                <div class="admin-form__error">{{ $message }}</div>
-                @enderror
+            <div class="admin-form__row">
+                <div class="admin-form__group">
+                    <label class="admin-form__label admin-form__label--required">Email</label>
+                    <input type="email" name="email" value="{{ old('email') }}"
+                           class="admin-form__input @error('email') admin-form__input--error @enderror">
+                    @error('email')
+                    <div class="admin-form__error">{{ $message }}</div>
+                    @enderror
+                </div>
             </div>
 
-            <div class="admin-form__group">
-                <label class="admin-form__label admin-form__label--required">Mật khẩu</label>
-                <input type="password" name="password"
-                       class="admin-form__input @error('password') admin-form__input--error @enderror">
-                @error('password')
-                <div class="admin-form__error">{{ $message }}</div>
-                @enderror
+            <div class="admin-form__row">
+                <div class="admin-form__group">
+                    <label class="admin-form__label admin-form__label--required">Mật khẩu</label>
+                    <input type="password" name="password"
+                           class="admin-form__input @error('password') admin-form__input--error @enderror">
+                    @error('password')
+                    <div class="admin-form__error">{{ $message }}</div>
+                    @enderror
+                </div>
             </div>
 
-            <div class="admin-form__group">
-                <label class="admin-form__label admin-form__label--required">Phân quyền</label>
-                <select name="role" id="role"
-                        class="admin-form__select @error('role') admin-form__select--error @enderror" 
-                        onchange="toggleDepartmentField()">
-                    <option value="">-- Chọn phân quyền --</option>
-                    <option value="0" {{ old('role') == '0' ? 'selected' : '' }}>Admin</option>
-                    <option value="1" {{ old('role') == '1' ? 'selected' : '' }}>Ban ISO</option>
-                    <option value="2" {{ old('role') == '2' ? 'selected' : '' }}>Cơ quan - Phân xưởng</option>
-                    <option value="3" {{ old('role') == '3' ? 'selected' : '' }}>Người sử dụng</option>
-                </select>
-                @error('role')
-                <div class="admin-form__error">{{ $message }}</div>
-                @enderror
+            <div class="admin-form__row">
+                <div class="admin-form__group">
+                    <label class="admin-form__label admin-form__label--required">Phân quyền</label>
+                    <select name="role" id="role"
+                            class="admin-form__select @error('role') admin-form__select--error @enderror" 
+                            onchange="toggleDepartmentField()">
+                        <option value="">-- Chọn phân quyền --</option>
+                        <option value="0" {{ old('role') == '0' ? 'selected' : '' }}>Admin</option>
+                        <option value="1" {{ old('role') == '1' ? 'selected' : '' }}>Ban ISO</option>
+                        <option value="2" {{ old('role') == '2' ? 'selected' : '' }}>Cơ quan - Phân xưởng</option>
+                        <option value="3" {{ old('role') == '3' ? 'selected' : '' }}>Người sử dụng</option>
+                    </select>
+                    @error('role')
+                    <div class="admin-form__error">{{ $message }}</div>
+                    @enderror
+                </div>
             </div>
 
-            <div class="admin-form__group" id="department_group" style="display: none;">
-                <label class="admin-form__label admin-form__label--required">Phân xưởng</label>
-                <select name="department_id" id="department_id" 
-                        class="admin-form__select @error('department_id') admin-form__select--error @enderror">
-                    <option value="">-- Chọn phân xưởng --</option>
-                    @foreach($departments as $department)
-                        <option value="{{ $department->id }}" {{ old('department_id') == $department->id ? 'selected' : '' }}>
-                            {{ $department->name }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('department_id')
-                <div class="admin-form__error">{{ $message }}</div>
-                @enderror
+            <div class="admin-form__row" id="department_group" style="display: none;">
+                <div class="admin-form__group">
+                    <label class="admin-form__label admin-form__label--required">Phân xưởng</label>
+                    <select name="department_id" id="department_id" 
+                            class="admin-form__select @error('department_id') admin-form__select--error @enderror">
+                        <option value="">-- Chọn phân xưởng --</option>
+                        @foreach($departments as $department)
+                            <option value="{{ $department->id }}" {{ old('department_id') == $department->id ? 'selected' : '' }}>
+                                {{ $department->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('department_id')
+                    <div class="admin-form__error">{{ $message }}</div>
+                    @enderror
+                </div>
             </div>
 
             <div class="admin-form__actions">
