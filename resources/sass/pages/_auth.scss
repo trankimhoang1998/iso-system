@@ -3,7 +3,7 @@
 
 // Auth Body - Blue Gradient Background like in image
 .auth-body {
-    background: linear-gradient(135deg, #4dd0e1 0%, #00bcd4 25%, #0097a7 75%, #006064 100%);
+    background: linear-gradient(135deg, $auth-gradient-1 0%, $auth-gradient-2 25%, $auth-gradient-3 75%, $auth-gradient-4 100%);
     background-attachment: fixed;
     min-height: 100vh;
     position: relative;
@@ -54,14 +54,14 @@
     text-align: center;
     
     .auth-main-title {
-        color: #e53935;
+        color: $auth-error;
         font-size: 24px;
         font-weight: bold;
         margin-bottom: 10px;
     }
     
     .auth-sub-title {
-        color: #1976d2;
+        color: $auth-link;
         font-size: 20px;
         font-weight: bold;
     }
@@ -133,7 +133,7 @@
         font-size: 16px;
         font-weight: bold;
         margin-bottom: 10px;
-        color: #fff;
+        color: $white;
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         display: flex;
         align-items: center;
@@ -142,7 +142,7 @@
             content: '';
             width: 8px;
             height: 8px;
-            background: #4caf50;
+            background: $auth-success;
             border-radius: 50%;
             margin-right: 10px;
             flex-shrink: 0;
@@ -257,9 +257,9 @@
     font-size: 13px;
 
     &--error {
-        background-color: #fee;
-        border: 1px solid #fcc;
-        color: #c33;
+        background-color: $auth-error-bg;
+        border: 1px solid $auth-error-border;
+        color: $auth-error-text;
     }
 
     &__list {
@@ -301,7 +301,7 @@
     &__input, &__select {
         width: 100%;
         padding: 12px 15px;
-        border: 2px solid #e0e0e0;
+        border: 2px solid $border-lighter;
         border-radius: 6px;
         font-size: 14px;
         color: $gray;
@@ -319,7 +319,7 @@
         }
 
         &--error {
-            border-color: #dc3545;
+            border-color: $danger-color;
             background: rgba(220, 53, 69, 0.05);
         }
     }
@@ -329,7 +329,7 @@
     }
 
     &__error {
-        color: #dc3545;
+        color: $danger-color;
         font-size: 12px;
         margin-top: 4px;
         font-weight: 500;
@@ -345,7 +345,7 @@
 
     &__help {
         font-size: 12px;
-        color: #6c757d;
+        color: $text-muted;
         margin-top: 4px;
         line-height: 1.4;
     }
@@ -509,7 +509,7 @@
         min-width: 60px;
 
         &--admin {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            background: linear-gradient(135deg, $auth-danger-bg, $auth-danger-dark);
             color: $white;
         }
 
@@ -518,7 +518,7 @@
     &__desc {
         flex: 1;
         font-size: 12px;
-        color: #555;
+        color: $text-dark;
         line-height: 1.4;
         font-weight: 500;
     }

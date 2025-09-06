@@ -3,7 +3,7 @@
 
 // Admin Layout
 .admin-layout {
-    background: #f8f9fa;
+    background: $bg-light;
     font-family: $font-family;
     min-height: 100vh;
 }
@@ -82,7 +82,7 @@
 .admin-sidebar {
     width: 250px;
     background: $white;
-    border-right: 1px solid #e9ecef;
+    border-right: 1px solid $bg-gray;
     padding: $spacing-lg 0;
     flex-shrink: 0;
     overflow-y: auto;
@@ -131,12 +131,12 @@
     &__section-title {
         display: block;
         padding: 8px 12px;
-        color: #6c757d;
+        color: $text-muted;
         font-size: 13px;
         font-weight: $font-weight-bold;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        border-bottom: 1px solid #f0f0f0;
+        border-bottom: 1px solid $bg-gray-light;
         margin-bottom: $spacing-sm;
 
         @include mobile {
@@ -160,7 +160,7 @@
         position: relative;
 
         &:hover {
-            background: #f8f9fa;
+            background: $bg-light;
             color: $primary-color;
         }
 
@@ -182,11 +182,11 @@
         .admin-nav__link {
             padding-left: 24px;
             font-size: 15px;
-            background: #f8f9fa;
-            border-left: 3px solid #e9ecef;
+            background: $bg-light;
+            border-left: 3px solid $bg-gray;
 
             &:hover {
-                background: #e9ecef;
+                background: $bg-gray;
                 border-left-color: $primary-color;
             }
 
@@ -227,7 +227,12 @@
     @include mobile {
         padding: $spacing-md;
     }
-
+    
+    .container {
+        @include mobile {
+            padding: unset;
+        }
+    }
 }
 
 .admin-content {
@@ -272,7 +277,7 @@
     }
 
     &__subtitle {
-        color: #6c757d;
+        color: $text-muted;
         font-size: 18px;
         margin: 0;
     }
@@ -299,15 +304,15 @@
     font-size: 14px;
 
     &--success {
-        background: #d4edda;
-        border: 1px solid #c3e6cb;
-        color: #155724;
+        background: $alert-success-bg;
+        border: 1px solid $alert-success-border;
+        color: $alert-success-text;
     }
 
     &--error {
-        background: #f8d7da;
-        border: 1px solid #f5c6cb;
-        color: #721c24;
+        background: $alert-danger-bg;
+        border: 1px solid $alert-danger-border;
+        color: $alert-danger-text;
     }
 }
 
@@ -356,22 +361,22 @@
 
         &--success {
             background: rgba(40, 167, 69, 0.1);
-            color: #28a745;
+            color: $success-color;
         }
 
         &--info {
             background: rgba(23, 162, 184, 0.1);
-            color: #17a2b8;
+            color: $info-color;
         }
 
         &--warning {
             background: rgba(255, 193, 7, 0.1);
-            color: #ffc107;
+            color: $warning-color;
         }
 
         &--secondary {
             background: rgba(108, 117, 125, 0.1);
-            color: #6c757d;
+            color: $text-muted;
         }
 
         @include mobile {
@@ -401,7 +406,7 @@
     }
 
     &__label {
-        color: #6c757d;
+        color: $text-muted;
         font-size: 13px;
         font-weight: 500;
 
@@ -443,7 +448,7 @@
     }
 
     &__description {
-        color: #6c757d;
+        color: $text-muted;
         font-size: 14px;
         margin: 0 0 $spacing-md 0;
         line-height: 1.5;
@@ -499,38 +504,38 @@
     }
 
     &--secondary {
-        background: #6c757d;
+        background: $text-muted;
         color: $white;
 
         &:hover {
-            background: #5a6268;
+            background: $gray-800;
         }
     }
 
     &--warning {
-        background: #ffc107;
-        color: #212529;
+        background: $warning-color;
+        color: $text-primary;
 
         &:hover {
-            background: #e0a800;
+            background: $warning-dark;
         }
     }
 
     &--danger {
-        background: #dc3545;
+        background: $danger-color;
         color: $white;
 
         &:hover {
-            background: #c82333;
+            background: $danger-dark;
         }
     }
 
     &--success {
-        background: #28a745;
+        background: $success-color;
         color: $white;
 
         &:hover {
-            background: #218838;
+            background: $success-dark;
         }
     }
 
@@ -615,7 +620,7 @@
     &__input,
     &__select {
         padding: 8px 12px;
-        border: 1px solid #ced4da;
+        border: 1px solid $gray-400;
         border-radius: 4px;
         font-size: 14px;
         color: $gray;
@@ -630,7 +635,7 @@
         }
 
         &::placeholder {
-            color: #6c757d;
+            color: $text-muted;
             font-size: 13px;
         }
 
@@ -686,8 +691,8 @@
     border-collapse: collapse;
 
     &__head {
-        background: #e9ecef;
-        border-bottom: 1px solid #dee2e6;
+        background: $bg-gray;
+        border-bottom: 1px solid $gray-300;
     }
 
     &__header {
@@ -706,11 +711,11 @@
     }
 
     &__row {
-        border-bottom: 1px solid #f8f9fa;
+        border-bottom: 1px solid $bg-light;
         transition: background-color 0.3s ease;
 
         &:hover {
-            background: #f8f9fa;
+            background: $bg-light;
         }
     }
 
@@ -759,50 +764,50 @@
 
         &--edit {
             background: rgba(23, 162, 184, 0.1);
-            color: #17a2b8;
+            color: $info-color;
 
             &:hover {
-                background: #17a2b8;
+                background: $info-color;
                 color: $white;
             }
         }
 
         &--delete {
             background: rgba(220, 53, 69, 0.1);
-            color: #dc3545;
+            color: $danger-color;
 
             &:hover {
-                background: #dc3545;
+                background: $danger-color;
                 color: $white;
             }
         }
 
         &--download {
             background: rgba(108, 117, 125, 0.1);
-            color: #6c757d;
+            color: $text-muted;
 
             &:hover {
-                background: #6c757d;
+                background: $text-muted;
                 color: $white;
             }
         }
 
         &--approve {
             background: rgba(40, 167, 69, 0.1);
-            color: #28a745;
+            color: $success-color;
 
             &:hover {
-                background: #28a745;
+                background: $success-color;
                 color: $white;
             }
         }
 
         &--revoke {
             background: rgba(255, 193, 7, 0.1);
-            color: #ffc107;
+            color: $warning-color;
 
             &:hover {
-                background: #ffc107;
+                background: $warning-color;
                 color: $white;
             }
         }
@@ -831,7 +836,7 @@
 
     &--role-0 {
         background: rgba(220, 53, 69, 0.1);
-        color: #dc3545;
+        color: $danger-color;
     }
 
     &--role-1 {
@@ -841,12 +846,12 @@
 
     &--role-2 {
         background: rgba(255, 193, 7, 0.1);
-        color: #ffc107;
+        color: $warning-color;
     }
 
     &--role-3 {
         background: rgba(108, 117, 125, 0.1);
-        color: #6c757d;
+        color: $text-muted;
     }
 }
 
@@ -865,17 +870,17 @@
 
     &--active {
         background: rgba(40, 167, 69, 0.1);
-        color: #28a745;
+        color: $success-color;
     }
 
     &--inactive {
         background: rgba(220, 53, 69, 0.1);
-        color: #dc3545;
+        color: $danger-color;
     }
 
     &--warning {
         background: rgba(255, 193, 7, 0.1);
-        color: #ffc107;
+        color: $warning-color;
     }
 }
 
@@ -894,7 +899,7 @@
 
     &--policy {
         background: rgba(220, 53, 69, 0.1);
-        color: #dc3545;
+        color: $danger-color;
     }
 
     &--procedure {
@@ -904,22 +909,22 @@
 
     &--form {
         background: rgba(40, 167, 69, 0.1);
-        color: #28a745;
+        color: $success-color;
     }
 
     &--manual {
         background: rgba(255, 193, 7, 0.1);
-        color: #ffc107;
+        color: $warning-color;
     }
 
     &--report {
         background: rgba(23, 162, 184, 0.1);
-        color: #17a2b8;
+        color: $info-color;
     }
 
     &--other {
         background: rgba(108, 117, 125, 0.1);
-        color: #6c757d;
+        color: $text-muted;
     }
 }
 
@@ -933,7 +938,7 @@
 
     &__description {
         font-size: 12px;
-        color: #6c757d;
+        color: $text-muted;
         font-style: italic;
     }
 }
@@ -984,7 +989,7 @@
 
     &__header {
         padding: $spacing-lg;
-        border-bottom: 1px solid #e9ecef;
+        border-bottom: 1px solid $bg-gray;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -1006,7 +1011,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #6c757d;
+        color: $text-muted;
         transition: color 0.3s ease;
 
         &:hover {
@@ -1039,8 +1044,8 @@
         justify-content: center;
 
         &--danger {
-            background: rgba(#dc3545, 0.1);
-            color: #dc3545;
+            background: $danger-bg-alpha;
+            color: $danger-color;
         }
 
         svg {
@@ -1062,7 +1067,7 @@
 
     &__message-text {
         font-size: 14px;
-        color: #6c757d;
+        color: $text-muted;
         margin: 0;
         line-height: 1.5;
     }
@@ -1114,7 +1119,7 @@
                 min-width: 40px;
                 height: 40px;
                 padding: 8px 12px;
-                border: 1px solid #e9ecef;
+                border: 1px solid $bg-gray;
                 background: $white;
                 color: $gray;
                 text-decoration: none;
@@ -1124,7 +1129,7 @@
                 transition: all 0.3s ease;
 
                 &:hover {
-                    background: #f8f9fa;
+                    background: $bg-light;
                     border-color: $primary-color;
                     color: $primary-color;
                 }
@@ -1154,15 +1159,15 @@
             }
 
             &.disabled .page-link {
-                background: #f8f9fa;
-                border-color: #e9ecef;
-                color: #6c757d;
+                background: $bg-light;
+                border-color: $bg-gray;
+                color: $text-muted;
                 cursor: not-allowed;
 
                 &:hover {
-                    background: #f8f9fa;
-                    border-color: #e9ecef;
-                    color: #6c757d;
+                    background: $bg-light;
+                    border-color: $bg-gray;
+                    color: $text-muted;
                 }
             }
         }
@@ -1170,7 +1175,7 @@
 
     // Pagination info
     &__info {
-        color: #6c757d;
+        color: $text-muted;
         font-size: 14px;
         margin-top: $spacing-sm;
         text-align: center;
@@ -1209,9 +1214,9 @@
         align-items: center;
         justify-content: center;
         padding: $spacing-lg;
-        border: 2px dashed #e9ecef;
+        border: 2px dashed $bg-gray;
         border-radius: 8px;
-        background: #f8f9fa;
+        background: $bg-light;
         cursor: pointer;
         transition: all 0.3s ease;
         text-align: center;
@@ -1225,7 +1230,7 @@
     &__icon {
         width: 32px;
         height: 32px;
-        color: #6c757d;
+        color: $text-muted;
         margin-bottom: 8px;
     }
 
@@ -1267,7 +1272,7 @@
         &__label {
             font-size: 15px;
             font-weight: $font-weight-bold;
-            color: #6c757d;
+            color: $text-muted;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -1296,7 +1301,7 @@
         &__content {
             font-size: 14px;
             line-height: 1.6;
-            color: #495057;
+            color: $text-secondary;
         }
     }
     
@@ -1365,7 +1370,7 @@
         &__label {
             font-size: 12px;
             font-weight: $font-weight-bold;
-            color: #6c757d;
+            color: $text-muted;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -1410,13 +1415,13 @@
         align-items: center;
         gap: $spacing-md;
         padding: $spacing-md;
-        border: 1px solid #e9ecef;
+        border: 1px solid $bg-gray;
         border-radius: 8px;
         margin-bottom: $spacing-sm;
         transition: all 0.3s ease;
         
         &:hover {
-            background: #f8f9fa;
+            background: $bg-light;
             border-color: $primary-color;
         }
         
@@ -1431,11 +1436,11 @@
             flex-shrink: 0;
             
             &--pdf {
-                color: #dc3545;
+                color: $danger-color;
             }
             
             &--word {
-                color: #2980b9;
+                color: $blue-primary;
             }
         }
         
@@ -1453,17 +1458,17 @@
             
             .admin-file-item__size {
                 font-size: 13px;
-                color: #6c757d;
+                color: $text-muted;
                 font-weight: 500;
                 margin-bottom: 2px;
             }
             
             .admin-file-item__type {
                 font-size: 11px;
-                color: #6c757d;
+                color: $text-muted;
                 font-weight: $font-weight-bold;
                 text-transform: uppercase;
-                background: rgba(#6c757d, 0.1);
+                background: $gray-bg-alpha;
                 padding: 2px 6px;
                 border-radius: 12px;
                 display: inline-block;
@@ -1510,7 +1515,7 @@
         &__label {
             font-size: 15px;
             font-weight: $font-weight-bold;
-            color: #6c757d;
+            color: $text-muted;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -1542,11 +1547,11 @@
         }
         
         &--current {
-            color: #6c757d;
+            color: $text-muted;
             cursor: default;
             
             &:hover {
-                color: #6c757d;
+                color: $text-muted;
             }
         }
     }
@@ -1554,7 +1559,7 @@
     &__separator {
         width: 16px;
         height: 16px;
-        color: #6c757d;
+        color: $text-muted;
         flex-shrink: 0;
     }
 }
@@ -1622,7 +1627,7 @@
     &__input, &__select, &__textarea {
         width: 100%;
         padding: 10px 12px;
-        border: 1px solid #e9ecef;
+        border: 1px solid $bg-gray;
         border-radius: 6px;
         font-size: 14px;
         color: $gray;
@@ -1637,7 +1642,7 @@
         }
 
         &::placeholder {
-            color: #6c757d;
+            color: $text-muted;
             font-size: 13px;
         }
     }
@@ -1667,7 +1672,7 @@
 
     &__help {
         font-size: 12px;
-        color: #6c757d;
+        color: $text-muted;
         margin-top: 4px;
         line-height: 1.4;
 
@@ -1685,7 +1690,7 @@
         flex-shrink: 0;
         margin-top: $spacing-lg;
         padding-top: $spacing-md;
-        border-top: 1px solid #e9ecef;
+        border-top: 1px solid $bg-gray;
 
         .admin-btn {
             min-width: 120px;
@@ -1718,7 +1723,7 @@
     &__checkbox {
         width: 16px;
         height: 16px;
-        border: 2px solid #ced4da;
+        border: 2px solid $gray-400;
         border-radius: 3px;
         background: $white;
         cursor: pointer;
@@ -1737,9 +1742,9 @@
     &__current-file {
         margin-bottom: $spacing-md;
         padding: $spacing-md;
-        background: #f8f9fa;
+        background: $bg-light;
         border-radius: 6px;
-        border: 1px solid #e9ecef;
+        border: 1px solid $bg-gray;
     }
 }
 
@@ -1766,7 +1771,7 @@
         
         .admin-current-file__size {
             font-size: 12px;
-            color: #6c757d;
+            color: $text-muted;
         }
     }
 }
@@ -1788,7 +1793,7 @@
         align-items: center;
         padding: $spacing-md;
         background: $white;
-        border: 1px solid #e9ecef;
+        border: 1px solid $bg-gray;
         border-radius: 8px;
         transition: all 0.3s ease;
         
@@ -1849,7 +1854,7 @@
     
     &__description {
         font-size: 14px;
-        color: #6c757d;
+        color: $text-muted;
         margin: 0;
         line-height: 1.4;
     }
@@ -1869,7 +1874,7 @@
     
     &__count {
         font-size: 13px;
-        color: #6c757d;
+        color: $text-muted;
         font-weight: 500;
         white-space: nowrap;
     }
@@ -1890,7 +1895,7 @@
         margin-bottom: $spacing-sm;
         
         .admin-category-item__content {
-            background: #f8f9fa;
+            background: $bg-light;
             border-left: 3px solid $primary-color;
         }
         
@@ -1904,7 +1909,7 @@
     margin-left: 30px;
     margin-top: $spacing-sm;
     padding-left: $spacing-md;
-    border-left: 2px solid #e9ecef;
+    border-left: 2px solid $bg-gray;
     
     @include mobile {
         margin-left: $spacing-sm;
@@ -1942,7 +1947,7 @@
     &__meta-label {
         font-size: 12px;
         font-weight: $font-weight-bold;
-        color: #6c757d;
+        color: $text-muted;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
@@ -1963,7 +1968,7 @@
         &-content {
             font-size: 14px;
             line-height: 1.6;
-            color: #495057;
+            color: $text-secondary;
         }
     }
     
@@ -1996,7 +2001,7 @@
         margin-top: $spacing-md;
         text-align: center;
         padding-top: $spacing-md;
-        border-top: 1px solid #e9ecef;
+        border-top: 1px solid $bg-gray;
     }
     
     &__info {
@@ -2020,8 +2025,8 @@
 }
 
 .admin-category-child-card {
-    background: #f8f9fa;
-    border: 1px solid #e9ecef;
+    background: $bg-light;
+    border: 1px solid $bg-gray;
     border-radius: 8px;
     padding: $spacing-md;
     transition: all 0.3s ease;
@@ -2056,7 +2061,7 @@
     
     &__description {
         font-size: 13px;
-        color: #6c757d;
+        color: $text-muted;
         line-height: 1.4;
         margin: 0 0 $spacing-sm 0;
     }
@@ -2067,12 +2072,12 @@
         align-items: center;
         margin-top: $spacing-sm;
         padding-top: $spacing-sm;
-        border-top: 1px solid #e9ecef;
+        border-top: 1px solid $bg-gray;
     }
     
     &__count {
         font-size: 12px;
-        color: #6c757d;
+        color: $text-muted;
         font-weight: 500;
     }
     
@@ -2093,12 +2098,12 @@
     display: flex;
     align-items: center;
     padding: $spacing-md;
-    border: 1px solid #e9ecef;
+    border: 1px solid $bg-gray;
     border-radius: 6px;
     transition: all 0.3s ease;
     
     &:hover {
-        background: #f8f9fa;
+        background: $bg-light;
         border-color: $primary-color;
     }
     
@@ -2144,7 +2149,7 @@
     
     &__date {
         font-size: 12px;
-        color: #6c757d;
+        color: $text-muted;
         font-weight: 500;
     }
     
@@ -2191,7 +2196,7 @@
     &__label {
         font-size: 12px;
         font-weight: $font-weight-bold;
-        color: #6c757d;
+        color: $text-muted;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
@@ -2227,10 +2232,10 @@
     letter-spacing: 0.3px;
     white-space: nowrap;
     
-    &--level-1 { background: rgba(#28a745, 0.1); color: #28a745; }
-    &--level-2 { background: rgba(#17a2b8, 0.1); color: #17a2b8; }
-    &--level-3 { background: rgba(#ffc107, 0.1); color: #e0a800; }
-    &--level-4 { background: rgba(#dc3545, 0.1); color: #dc3545; }
+    &--level-1 { background: $success-bg-alpha; color: $success-color; }
+    &--level-2 { background: $info-bg-alpha; color: $info-color; }
+    &--level-3 { background: $warning-bg-alpha; color: $warning-dark; }
+    &--level-4 { background: $danger-bg-alpha; color: $danger-color; }
 }
 
 
@@ -2238,14 +2243,14 @@
 .admin-empty-state {
     text-align: center;
     padding: $spacing-xl $spacing-md;
-    color: #6c757d;
+    color: $text-muted;
     font-size: 14px;
     
     &__icon {
         width: 48px;
         height: 48px;
         margin: 0 auto $spacing-md auto;
-        color: #dee2e6;
+        color: $gray-300;
         
         svg {
             width: 100%;
@@ -2256,13 +2261,13 @@
     &__title {
         font-size: 16px;
         font-weight: $font-weight-bold;
-        color: #495057;
+        color: $text-secondary;
         margin: 0 0 $spacing-sm 0;
     }
     
     &__description {
         font-size: 14px;
-        color: #6c757d;
+        color: $text-muted;
         line-height: 1.5;
         margin: 0;
     }
@@ -2361,7 +2366,7 @@
     &__content {
         font-size: 14px;
         line-height: 1.6;
-        color: #495057;
+        color: $text-secondary;
     }
 }
 
@@ -2377,7 +2382,7 @@
 }
 
 .current-file-info {
-    border: 1px solid #e9ecef;
+    border: 1px solid $bg-gray;
     border-radius: 8px;
     overflow: hidden;
     background: $white;
@@ -2389,7 +2394,7 @@
         gap: $spacing-md;
         
         &:hover {
-            background: #f8f9fa;
+            background: $bg-light;
         }
     }
     
@@ -2420,7 +2425,7 @@
     
     &__meta {
         font-size: 12px;
-        color: #6c757d;
+        color: $text-muted;
         font-weight: 500;
     }
     
@@ -2454,8 +2459,8 @@
 // Readonly Form Field
 .admin-form__readonly {
     padding: 10px 12px;
-    background: #f8f9fa;
-    border: 1px solid #e9ecef;
+    background: $bg-light;
+    border: 1px solid $bg-gray;
     border-radius: 6px;
     font-size: 14px;
     color: $gray;
@@ -2487,21 +2492,21 @@
     
     &--word {
         background: rgba(41, 128, 185, 0.1);
-        color: #2980b9;
+        color: $blue-primary;
         
         &:hover {
-            background: #2980b9;
+            background: $blue-primary;
             color: $white;
             
             .admin-file-type-label {
                 background: $white;
-                color: #2980b9;
+                color: $blue-primary;
             }
         }
         
         .admin-file-type-label {
-            color: #2980b9;
-            border-color: #2980b9;
+            color: $blue-primary;
+            border-color: $blue-primary;
         }
     }
 }
@@ -2510,22 +2515,22 @@
 .admin-document-type-badge {
     &--internal {
         background: rgba(142, 68, 173, 0.1);
-        color: #8e44ad;
+        color: $purple;
     }
     
     &--iso-directive {
         background: rgba(230, 126, 34, 0.1);
-        color: #e67e22;
+        color: $orange;
     }
     
     &--iso-system {
         background: rgba(52, 152, 219, 0.1);
-        color: #3498db;
+        color: $blue-light;
     }
     
     &--management {
         background: rgba(46, 204, 113, 0.1);
-        color: #2ecc71;
+        color: $green-light;
     }
 }
 
@@ -2545,7 +2550,7 @@
     justify-content: space-between;
     padding: $spacing-md;
     background: $white;
-    border: 1px solid #e9ecef;
+    border: 1px solid $bg-gray;
     border-radius: 8px;
     transition: all 0.3s ease;
     
@@ -2598,7 +2603,7 @@
     
     &__description {
         font-size: 14px;
-        color: #6c757d;
+        color: $text-muted;
         margin: 0;
         line-height: 1.4;
         word-break: break-word;
@@ -2619,7 +2624,7 @@
     
     &__count {
         font-size: 13px;
-        color: #6c757d;
+        color: $text-muted;
         font-weight: 500;
         white-space: nowrap;
     }
@@ -2637,7 +2642,7 @@
     
     // Child category style
     &--child {
-        background: #f8f9fa;
+        background: $bg-light;
         border-left: 3px solid $primary-color;
         margin-left: $spacing-lg;
         
@@ -2692,7 +2697,7 @@
     justify-content: space-between;
     padding: $spacing-sm $spacing-md;
     background: $white;
-    border: 1px solid #e9ecef;
+    border: 1px solid $bg-gray;
     border-radius: 6px;
     margin-bottom: 1px;
     transition: all 0.3s ease;
@@ -2764,7 +2769,7 @@
 
 .select2-container-small .select2-selection--single {
     height: 38px !important;
-    border: 1px solid #e9ecef !important;
+    border: 1px solid $bg-gray !important;
     border-radius: 4px !important;
 }
 
@@ -2772,7 +2777,7 @@
     line-height: 36px !important;
     padding: 8px 12px !important;
     font-size: 13px !important;
-    color: #666 !important;
+    color: $gray !important;
 }
 
 .select2-container-small .select2-selection--single .select2-selection__arrow {
@@ -2799,7 +2804,7 @@
     padding-top: 0 !important;
     padding-bottom: 0 !important;
     font-size: 13px !important;
-    color: #666666 !important;
+    color: $gray !important;
 }
 
 .admin-form__group .select2-container.select2-container--default .select2-selection__arrow {
@@ -2808,7 +2813,7 @@
 
 .admin-form__group .select2-container--default .select2-selection--single .select2-selection__placeholder {
     font-size: 13px !important;
-    color: #666666 !important;
+    color: $gray !important;
 }
 
 .admin-form__group .select2-container--default .select2-selection--single .select2-selection__clear {
@@ -2820,7 +2825,7 @@
 }
 
 .select2-dropdown-small {
-    border: 1px solid #e9ecef !important;
+    border: 1px solid $bg-gray !important;
     border-radius: 4px !important;
 }
 
@@ -2831,5 +2836,5 @@
 
 // General Select2 default styling
 .select2-container--default .select2-selection--single {
-    border: 1px solid #e9ecef !important;
+    border: 1px solid $bg-gray !important;
 }

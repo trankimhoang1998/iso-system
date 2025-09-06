@@ -115,6 +115,14 @@
                     }
                 }
             }
+
+            &--user {
+                margin-left: 50px;
+
+                @include mobile { 
+                    margin-left: unset;
+                }
+            }
         }
 
         &__arrow {
@@ -194,7 +202,7 @@
         }
 
         &__dropdown-item {
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid $bg-gray-light;
 
             &:last-child {
                 border-bottom: none;
