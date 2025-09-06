@@ -34,10 +34,10 @@ class IsoSystemDocumentController extends Controller
             $query->where('department_id', $request->department_id);
         }
 
-        // Year filter based on time_period
+        // Year filter based on issued_year
         if ($request->filled('year')) {
             $year = $request->year;
-            $query->where('time_period', 'like', "%{$year}%");
+            $query->where('issued_year', $year);
         }
 
         // Department filter for roles 2,3 - only see documents from their department
@@ -55,7 +55,7 @@ class IsoSystemDocumentController extends Controller
         $categories = IsoSystemCategory::getFlatList();
         
         // Get all departments for filter
-        $departments = Department::orderBy('name')->get();
+        $departments = Department::orderBy('id')->get();
 
         return view('admin.iso-system-documents.index', compact('documents', 'categories', 'departments'));
     }
@@ -63,7 +63,7 @@ class IsoSystemDocumentController extends Controller
     public function create()
     {
         $categories = IsoSystemCategory::getFlatList();
-        $departments = Department::orderBy('name')->get();
+        $departments = Department::orderBy('id')->get();
         return view('admin.iso-system-documents.create', compact('categories', 'departments'));
     }
 
@@ -76,7 +76,7 @@ class IsoSystemDocumentController extends Controller
             'department_id' => 'required|exists:departments,id',
             'status' => 'nullable|in:draft,approved,archived',
             'symbol' => 'nullable|string|max:255',
-            'time_period' => 'nullable|string|max:255',
+            'issued_year' => 'nullable|integer|digits:4',
             'document_number' => 'nullable|string|max:255',
             'issuing_agency' => 'nullable|string|max:255',
             'summary' => 'nullable|string|max:1000',
@@ -110,7 +110,7 @@ class IsoSystemDocumentController extends Controller
             'department_id' => $request->department_id,
             'status' => $request->status ?? 'draft',
             'symbol' => $request->symbol,
-            'time_period' => $request->time_period,
+            'issued_year' => $request->issued_year,
             'document_number' => $request->document_number,
             'issuing_agency' => $request->issuing_agency,
             'summary' => $request->summary,
@@ -127,7 +127,12 @@ class IsoSystemDocumentController extends Controller
             'uploaded_by' => auth()->id(),
         ]);
 
-        return redirect()->route('admin.iso-system-documents.index')
+        $redirectUrl = route('admin.iso-system-documents.index');
+        if ($request->category_id) {
+            $redirectUrl .= '?category_id=' . $request->category_id;
+        }
+        
+        return redirect($redirectUrl)
             ->with('success', 'Tài liệu đã được tạo thành công.');
     }
 
@@ -146,7 +151,7 @@ class IsoSystemDocumentController extends Controller
     public function edit(IsoSystemDocument $isoSystemDocument)
     {
         $categories = IsoSystemCategory::getFlatList();
-        $departments = Department::orderBy('name')->get();
+        $departments = Department::orderBy('id')->get();
         return view('admin.iso-system-documents.edit', compact('isoSystemDocument', 'categories', 'departments'));
     }
 
@@ -159,7 +164,7 @@ class IsoSystemDocumentController extends Controller
             'department_id' => 'required|exists:departments,id',
             'status' => 'nullable|in:draft,approved,archived',
             'symbol' => 'nullable|string|max:255',
-            'time_period' => 'nullable|string|max:255',
+            'issued_year' => 'nullable|integer|digits:4',
             'document_number' => 'nullable|string|max:255',
             'issuing_agency' => 'nullable|string|max:255',
             'summary' => 'nullable|string|max:1000',
@@ -174,7 +179,7 @@ class IsoSystemDocumentController extends Controller
             'department_id' => $request->department_id,
             'status' => $request->status ?? $isoSystemDocument->status,
             'symbol' => $request->symbol,
-            'time_period' => $request->time_period,
+            'issued_year' => $request->issued_year,
             'document_number' => $request->document_number,
             'issuing_agency' => $request->issuing_agency,
             'summary' => $request->summary,
@@ -216,7 +221,12 @@ class IsoSystemDocumentController extends Controller
 
         $isoSystemDocument->update($updateData);
 
-        return redirect()->route('admin.iso-system-documents.index')
+        $redirectUrl = route('admin.iso-system-documents.index');
+        if ($request->category_id) {
+            $redirectUrl .= '?category_id=' . $request->category_id;
+        }
+        
+        return redirect($redirectUrl)
             ->with('success', 'Tài liệu đã được cập nhật thành công.');
     }
 

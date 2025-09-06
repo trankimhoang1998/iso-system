@@ -132,8 +132,8 @@
                     <span class="admin-info-item__value">{{ $managementDocument->symbol ?: '_' }}</span>
                 </div>
                 <div class="admin-info-item">
-                    <span class="admin-info-item__label">Thời gian:</span>
-                    <span class="admin-info-item__value">{{ $managementDocument->time_period ?: '_' }}</span>
+                    <span class="admin-info-item__label">Năm ban hành tài liệu:</span>
+                    <span class="admin-info-item__value">{{ $managementDocument->issued_year ?: '_' }}</span>
                 </div>
                 <div class="admin-info-item">
                     <span class="admin-info-item__label">Số văn bản:</span>

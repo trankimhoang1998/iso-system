@@ -21,7 +21,7 @@ class ManagementDocument extends Model
         'word_file_size',
         'status',
         'symbol',
-        'time_period',
+        'issued_year',
         'document_number',
         'issuing_agency',
         'summary',

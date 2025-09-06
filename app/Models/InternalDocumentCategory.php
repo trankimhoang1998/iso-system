@@ -35,7 +35,7 @@ class InternalDocumentCategory extends Model
     {
         $categories = self::with('children.children.children')
             ->whereNull('parent_id')
-            ->orderBy('name')
+            ->orderBy('id')
             ->get();
 
         $result = [];

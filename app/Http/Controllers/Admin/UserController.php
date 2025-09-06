@@ -47,7 +47,7 @@ class UserController extends Controller
         $users->appends($request->all());
 
         // Get departments for the department selection dropdown
-        $departments = Department::orderBy('name')->get();
+        $departments = Department::orderBy('id')->get();
 
         return view('admin.users.index', compact('users', 'departments'));
     }
@@ -57,7 +57,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $departments = Department::orderBy('name')->get();
+        $departments = Department::orderBy('id')->get();
         return view('admin.users.create', compact('departments'));
     }
 
@@ -116,7 +116,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $departments = Department::orderBy('name')->get();
+        $departments = Department::orderBy('id')->get();
         return view('admin.users.edit', compact('user', 'departments'));
     }
 

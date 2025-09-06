@@ -26,7 +26,7 @@ return new class extends Migration
             $table->integer('word_file_size')->nullable();
             $table->enum('status', ['draft', 'approved', 'archived'])->default('draft');
             $table->string('symbol')->nullable()->comment('Ký hiệu');
-            $table->string('time_period')->nullable()->comment('Thời gian');
+            $table->year('issued_year')->nullable()->comment('Năm ban hành tài liệu');
             $table->string('document_number')->nullable()->comment('Số văn bản');
             $table->string('issuing_agency')->nullable()->comment('Cơ quan ban hành');
             $table->string('summary')->nullable()->comment('Trích yếu');

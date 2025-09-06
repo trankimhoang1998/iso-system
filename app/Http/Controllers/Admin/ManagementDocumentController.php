@@ -53,7 +53,7 @@ class ManagementDocumentController extends Controller
             'category_id' => 'nullable|exists:management_document_categories,id',
             'status' => 'nullable|in:draft,approved,archived',
             'symbol' => 'nullable|string|max:255',
-            'time_period' => 'nullable|string|max:255',
+            'issued_year' => 'nullable|integer|digits:4',
             'document_number' => 'nullable|string|max:255',
             'issuing_agency' => 'nullable|string|max:255',
             'summary' => 'nullable|string|max:1000',
@@ -86,7 +86,7 @@ class ManagementDocumentController extends Controller
             'category_id' => $request->category_id,
             'status' => $request->status ?? 'draft',
             'symbol' => $request->symbol,
-            'time_period' => $request->time_period,
+            'issued_year' => $request->issued_year,
             'document_number' => $request->document_number,
             'issuing_agency' => $request->issuing_agency,
             'summary' => $request->summary,
@@ -103,7 +103,12 @@ class ManagementDocumentController extends Controller
             'uploaded_by' => auth()->id(),
         ]);
 
-        return redirect()->route('admin.management-documents.index')
+        $redirectUrl = route('admin.management-documents.index');
+        if ($request->category_id) {
+            $redirectUrl .= '?category_id=' . $request->category_id;
+        }
+        
+        return redirect($redirectUrl)
             ->with('success', 'Tài liệu đã được tạo thành công.');
     }
 
@@ -127,7 +132,7 @@ class ManagementDocumentController extends Controller
             'category_id' => 'nullable|exists:management_document_categories,id',
             'status' => 'nullable|in:draft,approved,archived',
             'symbol' => 'nullable|string|max:255',
-            'time_period' => 'nullable|string|max:255',
+            'issued_year' => 'nullable|integer|digits:4',
             'document_number' => 'nullable|string|max:255',
             'issuing_agency' => 'nullable|string|max:255',
             'summary' => 'nullable|string|max:1000',
@@ -141,7 +146,7 @@ class ManagementDocumentController extends Controller
             'category_id' => $request->category_id,
             'status' => $request->status ?? $managementDocument->status,
             'symbol' => $request->symbol,
-            'time_period' => $request->time_period,
+            'issued_year' => $request->issued_year,
             'document_number' => $request->document_number,
             'issuing_agency' => $request->issuing_agency,
             'summary' => $request->summary,
@@ -183,7 +188,12 @@ class ManagementDocumentController extends Controller
 
         $managementDocument->update($updateData);
 
-        return redirect()->route('admin.management-documents.index')
+        $redirectUrl = route('admin.management-documents.index');
+        if ($request->category_id) {
+            $redirectUrl .= '?category_id=' . $request->category_id;
+        }
+        
+        return redirect($redirectUrl)
             ->with('success', 'Tài liệu đã được cập nhật thành công.');
     }
 

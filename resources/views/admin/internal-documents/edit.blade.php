@@ -36,7 +36,7 @@
                 <div class="admin-form__row">
                     <div class="admin-form__group">
                         <label class="admin-form__label admin-form__label--required">Tiêu đề tài liệu</label>
-                        <input type="text" name="title" value="{{ old('title', $internalDocument->title) }}" required 
+                        <input type="text" name="title" value="{{ old('title', $internalDocument->title) }}" 
                                class="admin-form__input @error('title') admin-form__input--error @enderror"
                                placeholder="Nhập tiêu đề tài liệu nội bộ">
                         @error('title')
@@ -60,7 +60,7 @@
                 <div class="admin-form__row admin-form__row--split">
                     <div class="admin-form__group">
                         <label class="admin-form__label admin-form__label--required">Danh mục</label>
-                        <select name="category_id" id="category_id" required
+                        <select name="category_id" id="category_id"
                                 class="admin-form__select @error('category_id') admin-form__select--error @enderror">
                             <option value="">-- Chọn danh mục --</option>
                             @foreach($categories as $category)
@@ -82,7 +82,7 @@
                             <div class="admin-form__readonly">{{ auth()->user()->department->name }}</div>
                         @else
                             <!-- Role 0,1 can choose any department -->
-                            <select name="department_id" id="department_id" required
+                            <select name="department_id" id="department_id"
                                     class="admin-form__select @error('department_id') admin-form__select--error @enderror">
                                 <option value="">-- Chọn phòng ban --</option>
                                 @foreach($departments as $department)
@@ -111,11 +111,11 @@
                     </div>
                     
                     <div class="admin-form__group">
-                        <label class="admin-form__label">Thời gian</label>
-                        <input type="text" name="time_period" value="{{ old('time_period', $internalDocument->time_period) }}" 
-                               class="admin-form__input @error('time_period') admin-form__input--error @enderror"
-                               placeholder="Nhập thời gian">
-                        @error('time_period')
+                        <label class="admin-form__label">Năm ban hành tài liệu</label>
+                        <input type="number" name="issued_year" value="{{ old('issued_year', $internalDocument->issued_year) }}" 
+                               class="admin-form__input @error('issued_year') admin-form__input--error @enderror"
+                               placeholder="Ví dụ: 2024" min="1900" max="{{ date('Y') + 10 }}">
+                        @error('issued_year')
                         <div class="admin-form__error">{{ $message }}</div>
                         @enderror
                     </div>
@@ -210,7 +210,7 @@
                         <div class="admin-file-upload">
                             <input type="file" name="pdf_file" accept=".pdf"
                                    class="admin-file-upload__input @error('pdf_file') admin-form__input--error @enderror" 
-                                   id="adminPdfFileInput" {{ !$internalDocument->pdf_file_name ? 'required' : '' }}>
+                                   id="adminPdfFileInput">
                             <label for="adminPdfFileInput" class="admin-file-upload__label">
                                 <svg class="admin-file-upload__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
@@ -289,6 +289,7 @@ document.getElementById('adminPdfFileInput').addEventListener('change', function
             alert('Kích thước file PDF không được vượt quá 50MB');
             this.value = '';
             label.textContent = 'Chọn file PDF mới hoặc kéo thả vào đây';
+            return false;
         }
     } else {
         label.textContent = 'Chọn file PDF mới hoặc kéo thả vào đây';

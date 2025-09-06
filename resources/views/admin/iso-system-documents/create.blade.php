@@ -35,7 +35,7 @@
                 <div class="admin-form__row">
                     <div class="admin-form__group">
                         <label class="admin-form__label admin-form__label--required">Tiêu đề văn bản</label>
-                        <input type="text" name="title" value="{{ old('title') }}" required 
+                        <input type="text" name="title" value="{{ old('title') }}" 
                                class="admin-form__input @error('title') admin-form__input--error @enderror"
                                placeholder="Nhập tiêu đề văn bản hệ thống ISO">
                         @error('title')
@@ -59,7 +59,7 @@
                 <div class="admin-form__row admin-form__row--split">
                     <div class="admin-form__group">
                         <label class="admin-form__label admin-form__label--required">Danh mục</label>
-                        <select name="category_id" id="category_id" required
+                        <select name="category_id" id="category_id"
                                 class="admin-form__select @error('category_id') admin-form__select--error @enderror">
                             <option value="">-- Chọn danh mục --</option>
                             @foreach($categories as $category)
@@ -75,7 +75,7 @@
                     
                     <div class="admin-form__group">
                         <label class="admin-form__label admin-form__label--required">Phòng ban</label>
-                        <select name="department_id" id="department_id" required
+                        <select name="department_id" id="department_id"
                                 class="admin-form__select @error('department_id') admin-form__select--error @enderror">
                             <option value="">-- Chọn phòng ban --</option>
                             @foreach($departments as $department)
@@ -103,11 +103,11 @@
                     </div>
                     
                     <div class="admin-form__group">
-                        <label class="admin-form__label">Thời gian</label>
-                        <input type="text" name="time_period" value="{{ old('time_period') }}" 
-                               class="admin-form__input @error('time_period') admin-form__input--error @enderror"
-                               placeholder="Nhập thời gian">
-                        @error('time_period')
+                        <label class="admin-form__label">Năm ban hành tài liệu</label>
+                        <input type="number" name="issued_year" value="{{ old('issued_year') }}" 
+                               class="admin-form__input @error('issued_year') admin-form__input--error @enderror"
+                               placeholder="Ví dụ: 2024" min="1900" max="{{ date('Y') + 10 }}">
+                        @error('issued_year')
                         <div class="admin-form__error">{{ $message }}</div>
                         @enderror
                     </div>
@@ -152,7 +152,7 @@
                     <div class="admin-form__group">
                         <label class="admin-form__label admin-form__label--required">File PDF</label>
                         <div class="admin-file-upload">
-                            <input type="file" name="pdf_file" required accept=".pdf"
+                            <input type="file" name="pdf_file" accept=".pdf"
                                    class="admin-file-upload__input @error('pdf_file') admin-form__input--error @enderror" 
                                    id="adminPdfFileInput">
                             <label for="adminPdfFileInput" class="admin-file-upload__label">
@@ -233,6 +233,7 @@ document.getElementById('adminPdfFileInput').addEventListener('change', function
             alert('Kích thước file PDF không được vượt quá 50MB');
             this.value = '';
             label.textContent = 'Chọn file PDF hoặc kéo thả vào đây';
+            return false;
         }
     } else {
         label.textContent = 'Chọn file PDF hoặc kéo thả vào đây';
@@ -252,6 +253,7 @@ document.getElementById('adminWordFileInput').addEventListener('change', functio
             alert('Kích thước file Word không được vượt quá 50MB');
             this.value = '';
             label.textContent = 'Chọn file Word hoặc kéo thả vào đây';
+            return false;
         }
     } else {
         label.textContent = 'Chọn file Word hoặc kéo thả vào đây';

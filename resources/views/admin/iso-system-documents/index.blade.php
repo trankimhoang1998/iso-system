@@ -6,7 +6,6 @@
 <div class="admin-page">
     <div class="admin-page__header">
         <div>
-            <h1 class="admin-page__title">Văn bản hệ thống ISO</h1>
             <p class="admin-page__subtitle">Quản lý văn bản hệ thống ISO của hệ thống</p>
         </div>
         @if(in_array(auth()->user()->role, [0, 1]))
@@ -31,7 +30,7 @@
                            placeholder="Tiêu đề hoặc mô tả..." class="admin-filter__input">
                 </div>
                 <div class="admin-filter__group">
-                    <label class="admin-filter__label">Năm ban hành</label>
+                    <label class="admin-filter__label">Năm ban hành tài liệu</label>
                     <input type="text" name="year" value="{{ request('year') }}" 
                            placeholder="Ví dụ: 2024" class="admin-filter__input">
                 </div>
@@ -68,22 +67,18 @@
         <table class="admin-table">
             <thead class="admin-table__head">
                 <tr>
-                    <th class="admin-table__header">ID</th>
-                    <th class="admin-table__header">Tiêu đề</th>
-                    <th class="admin-table__header">Danh mục</th>
-                    <th class="admin-table__header">Phòng ban</th>
                     <th class="admin-table__header">Ký hiệu</th>
-                    <th class="admin-table__header">Thời gian</th>
-                    <th class="admin-table__header">Số văn bản</th>
-                    <th class="admin-table__header">Cơ quan ban hành</th>
-                    <th class="admin-table__header">Trích yếu</th>
-                    <th class="admin-table__header">Thao tác</th>
+                    <th class="admin-table__header">Tên tài liệu</th>
+                    <th class="admin-table__header">Thời gian ban hành</th>
+                    <th class="admin-table__header">Cập nhật mới nhất</th>
+                    <th class="admin-table__header">Đơn vị áp dụng</th>
+                    <th class="admin-table__header">Xem/tải xuống</th>
                 </tr>
             </thead>
             <tbody class="admin-table__body">
                 @forelse($documents as $document)
                 <tr class="admin-table__row">
-                    <td class="admin-table__cell">{{ $document->id }}</td>
+                    <td class="admin-table__cell">{{ $document->symbol ?: '_' }}</td>
                     <td class="admin-table__cell">
                         <div class="admin-document-info">
                             <div class="admin-document-info__title">{{ $document->title }}</div>
@@ -92,21 +87,9 @@
                             @endif
                         </div>
                     </td>
-                    <td class="admin-table__cell">
-                        @if($document->category)
-                            <span class="admin-document-type-badge admin-document-type-badge--iso-system">
-                                {{ $document->category->name }}
-                            </span>
-                        @else
-                            _
-                        @endif
-                    </td>
+                    <td class="admin-table__cell">{{ $document->issued_year ?: '_' }}</td>
+                    <td class="admin-table__cell">{{ $document->updated_at->format('d/m/Y H:i') }}</td>
                     <td class="admin-table__cell">{{ $document->department->name ?? 'N/A' }}</td>
-                    <td class="admin-table__cell">{{ $document->symbol ?: '_' }}</td>
-                    <td class="admin-table__cell">{{ $document->time_period ?: '_' }}</td>
-                    <td class="admin-table__cell">{{ $document->document_number ?: '_' }}</td>
-                    <td class="admin-table__cell">{{ $document->issuing_agency ?: '_' }}</td>
-                    <td class="admin-table__cell">{{ $document->summary ? Str::limit($document->summary, 50) : '_' }}</td>
                     <td class="admin-table__cell">
                         <div class="admin-table__actions">
                             <a href="{{ route('admin.iso-system-documents.show', $document) }}" 
@@ -158,7 +141,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="10" class="admin-table__empty">
+                    <td colspan="6" class="admin-table__empty">
                         <div class="admin-empty-state">
                             <svg class="admin-empty-state__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>

@@ -86,7 +86,7 @@ class ManagementDocumentCategoryController extends Controller
             })
             ->with('children.children.children')
             ->whereNull('parent_id')
-            ->orderBy('name')
+            ->orderBy('id')
             ->get();
 
         $result = collect();

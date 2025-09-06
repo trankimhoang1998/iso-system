@@ -28,10 +28,10 @@ class IsoDirectiveDocumentController extends Controller
             $query->where('category_id', $request->category_id);
         }
 
-        // Year filter based on time_period
+        // Year filter based on issued_year
         if ($request->filled('year')) {
             $year = $request->year;
-            $query->where('time_period', 'like', "%{$year}%");
+            $query->where('issued_year', $year);
         }
 
         $documents = $query->orderBy('created_at', 'desc')->paginate(15);
@@ -59,7 +59,7 @@ class IsoDirectiveDocumentController extends Controller
             'category_id' => 'required|exists:iso_directive_categories,id',
             'status' => 'nullable|in:draft,approved,archived',
             'symbol' => 'nullable|string|max:255',
-            'time_period' => 'nullable|string|max:255',
+            'issued_year' => 'nullable|integer|digits:4',
             'document_number' => 'nullable|string|max:255',
             'issuing_agency' => 'nullable|string|max:255',
             'summary' => 'nullable|string|max:1000',
@@ -92,7 +92,7 @@ class IsoDirectiveDocumentController extends Controller
             'category_id' => $request->category_id,
             'status' => $request->status ?? 'draft',
             'symbol' => $request->symbol,
-            'time_period' => $request->time_period,
+            'issued_year' => $request->issued_year,
             'document_number' => $request->document_number,
             'issuing_agency' => $request->issuing_agency,
             'summary' => $request->summary,
@@ -109,7 +109,12 @@ class IsoDirectiveDocumentController extends Controller
             'uploaded_by' => auth()->id(),
         ]);
 
-        return redirect()->route('admin.iso-directive-documents.index')
+        $redirectUrl = route('admin.iso-directive-documents.index');
+        if ($request->category_id) {
+            $redirectUrl .= '?category_id=' . $request->category_id;
+        }
+        
+        return redirect($redirectUrl)
             ->with('success', 'Tài liệu đã được tạo thành công.');
     }
 
@@ -133,7 +138,7 @@ class IsoDirectiveDocumentController extends Controller
             'category_id' => 'required|exists:iso_directive_categories,id',
             'status' => 'nullable|in:draft,approved,archived',
             'symbol' => 'nullable|string|max:255',
-            'time_period' => 'nullable|string|max:255',
+            'issued_year' => 'nullable|integer|digits:4',
             'document_number' => 'nullable|string|max:255',
             'issuing_agency' => 'nullable|string|max:255',
             'summary' => 'nullable|string|max:1000',
@@ -147,7 +152,7 @@ class IsoDirectiveDocumentController extends Controller
             'category_id' => $request->category_id,
             'status' => $request->status ?? $isoDirectiveDocument->status,
             'symbol' => $request->symbol,
-            'time_period' => $request->time_period,
+            'issued_year' => $request->issued_year,
             'document_number' => $request->document_number,
             'issuing_agency' => $request->issuing_agency,
             'summary' => $request->summary,
@@ -189,7 +194,12 @@ class IsoDirectiveDocumentController extends Controller
 
         $isoDirectiveDocument->update($updateData);
 
-        return redirect()->route('admin.iso-directive-documents.index')
+        $redirectUrl = route('admin.iso-directive-documents.index');
+        if ($request->category_id) {
+            $redirectUrl .= '?category_id=' . $request->category_id;
+        }
+        
+        return redirect($redirectUrl)
             ->with('success', 'Tài liệu đã được cập nhật thành công.');
     }
 

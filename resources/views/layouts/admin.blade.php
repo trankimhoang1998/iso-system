@@ -16,6 +16,13 @@
     @include('partials.banner')
     @include('partials.header')
 
+    <!-- Admin Mobile Toggle -->
+    <button class="admin-mobile-toggle" id="adminMobileToggle">
+        <span class="hamburger"></span>
+        <span class="hamburger"></span>
+        <span class="hamburger"></span>
+    </button>
+
     <div class="admin-container">
         @include('partials.admin.sidebar')
 
@@ -26,6 +33,8 @@
             </div>
         </main>
     </div>
+
+    @include('partials.footer')
 
     <!-- jQuery and Toastr JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

@@ -6,8 +6,27 @@
 <div class="admin-page">
     <div class="admin-page__header">
         <div>
-            <h1 class="admin-page__title">Văn bản chỉ đạo ISO</h1>
-            <p class="admin-page__subtitle">Quản lý văn bản chỉ đạo ISO của hệ thống</p>
+            <p class="admin-page__subtitle">
+                @php
+                    $categoryDescriptions = [
+                        1 => 'Quản lý các quyết định ban hành tài liệu thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia ISO TCVN 9001:2015 của Nhà máy A31',
+                        2 => 'Quản lý các quyết định công bố Hệ thống quản lý chất lượng của Nhà máy A31 phù hợp tiêu chuẩn quốc gia ISO TCVN 9001:2015',
+                        3 => 'Quản lý các quyết định thành lập Ban Chỉ đạo Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia ISO TCVN 9001:2015 (gọi tắt là Ban Chỉ đạo ISO)',
+                        4 => 'Quản lý các Chính sách chất lượng, Mục tiêu chất lượng của Nhà máy A31 theo Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia ISO TCVN 9001:2015',
+                        5 => 'Quản lý Hồ sơ thực hiện Quy trình kiểm soát thông tin dạng văn bản thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia ISO TCVN 9001:2015',
+                        6 => 'Quản lý Hồ sơ thực hiện Quy trình Đánh giá nội bộ thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia ISO TCVN 9001:2015',
+                        7 => 'Quản lý Hồ sơ thực hiện Quy trình Xem xét của lãnh đạo thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia ISO TCVN 9001:2015',
+                        8 => 'Quản lý Hồ sơ thực hiện Quy trình Quản lý rủi ro và cơ hội thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia ISO TCVN 9001:2015',
+                        9 => 'Quản lý Hồ sơ thực hiện Quy trình Khiếu nại và đo lường sự thỏa mãn của khách hàng thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia ISO TCVN 9001:2015',
+                        10 => 'Quản lý Hồ sơ thực hiện Quy trình Khiếu nại và đo lường sự thỏa mãn của khách hàng thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia ISO TCVN 9001:2015'
+                    ];
+                    $currentCategoryId = request('category_id');
+                    $subtitle = $currentCategoryId && isset($categoryDescriptions[$currentCategoryId]) 
+                        ? $categoryDescriptions[$currentCategoryId] 
+                        : 'Quản lý văn bản chỉ đạo ISO của hệ thống';
+                @endphp
+                {{ $subtitle }}
+            </p>
         </div>
         @if(in_array(auth()->user()->role, [0, 1]))
         <div class="admin-page__actions">
@@ -31,7 +50,7 @@
                            placeholder="Tiêu đề hoặc mô tả..." class="admin-filter__input">
                 </div>
                 <div class="admin-filter__group">
-                    <label class="admin-filter__label">Năm ban hành</label>
+                    <label class="admin-filter__label">Năm ban hành tài liệu</label>
                     <input type="text" name="year" value="{{ request('year') }}" 
                            placeholder="Ví dụ: 2024" class="admin-filter__input">
                 </div>
@@ -57,43 +76,24 @@
         <table class="admin-table">
             <thead class="admin-table__head">
                 <tr>
-                    <th class="admin-table__header">ID</th>
-                    <th class="admin-table__header">Tiêu đề</th>
-                    <th class="admin-table__header">Danh mục</th>
-                    <th class="admin-table__header">Ký hiệu</th>
                     <th class="admin-table__header">Thời gian</th>
+                    @if(!in_array(request('category_id'), [4, 5]))
                     <th class="admin-table__header">Số văn bản</th>
+                    @endif
                     <th class="admin-table__header">Cơ quan ban hành</th>
                     <th class="admin-table__header">Trích yếu</th>
-                    <th class="admin-table__header">Thao tác</th>
+                    <th class="admin-table__header">Xem/tải xuống</th>
                 </tr>
             </thead>
             <tbody class="admin-table__body">
                 @forelse($documents as $document)
                 <tr class="admin-table__row">
-                    <td class="admin-table__cell">{{ $document->id }}</td>
-                    <td class="admin-table__cell">
-                        <div class="admin-document-info">
-                            <div class="admin-document-info__title">{{ $document->title }}</div>
-                            @if($document->description)
-                            <div class="admin-document-info__description">{{ Str::limit($document->description, 50) }}</div>
-                            @endif
-                        </div>
-                    </td>
-                    <td class="admin-table__cell">
-                        @if($document->category)
-                            <span class="admin-document-type-badge admin-document-type-badge--iso-directive">
-                                {{ $document->category->name }}
-                            </span>
-                        @else
-                            _
-                        @endif
-                    </td>
-                    <td class="admin-table__cell">{{ $document->symbol ?: '_' }}</td>
-                    <td class="admin-table__cell">{{ $document->time_period ?: '_' }}</td>
+                    <td class="admin-table__cell">{{ $document->issued_year ?: '_' }}</td>
+                    @if(!in_array(request('category_id'), [4, 5]))
                     <td class="admin-table__cell">{{ $document->document_number ?: '_' }}</td>
+                    @endif
                     <td class="admin-table__cell">{{ $document->issuing_agency ?: '_' }}</td>
-                    <td class="admin-table__cell">{{ $document->summary ? Str::limit($document->summary, 50) : '_' }}</td>
+                    <td class="admin-table__cell">{{ $document->summary ? Str::limit($document->summary, 100) : '_' }}</td>
                     <td class="admin-table__cell">
                         <div class="admin-table__actions">
                             <a href="{{ route('admin.iso-directive-documents.show', $document) }}" 
@@ -145,7 +145,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="9" class="admin-table__empty">
+                    <td colspan="{{ in_array(request('category_id'), [4, 5]) ? '4' : '5' }}" class="admin-table__empty">
                         <div class="admin-empty-state">
                             <svg class="admin-empty-state__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>

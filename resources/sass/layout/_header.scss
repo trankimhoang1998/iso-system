@@ -141,26 +141,8 @@
                 right: 0;
                 left: auto;
             }
-        }
 
-        &__user-icon {
-            margin-right: 8px;
-            font-size: 16px;
-            vertical-align: middle;
-
-            @include mobile {
-                margin-right: 6px;
-                font-size: 14px;
-            }
-        }
-
-        &__user-info {
-            margin-right: 5px;
-
-            @include mobile {
-                margin-right: 4px;
-            }
-
+            // Mobile dropdown styling
             @include mobile {
                 position: relative;
                 top: 0;
@@ -173,8 +155,41 @@
                 margin-top: 0;
 
                 &.active {
-                    display: block;
+                    display: block !important;
                 }
+            }
+        }
+
+        &__user-icon {
+            margin-right: 8px;
+            font-size: 16px;
+            vertical-align: middle;
+            color: $white;
+            display: flex;
+            align-items: center;
+
+            svg {
+                fill: $white;
+                width: 16px;
+                height: 16px;
+            }
+
+            @include mobile {
+                margin-right: 6px;
+                font-size: 14px;
+
+                svg {
+                    width: 14px;
+                    height: 14px;
+                }
+            }
+        }
+
+        &__user-info {
+            margin-right: 5px;
+
+            @include mobile {
+                margin-right: 4px;
             }
         }
 

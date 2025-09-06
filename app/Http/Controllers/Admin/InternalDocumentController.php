@@ -38,10 +38,10 @@ class InternalDocumentController extends Controller
             $query->where('department_id', $request->department_id);
         }
 
-        // Year filter based on time_period
+        // Year filter based on issued_year
         if ($request->filled('year')) {
             $year = $request->year;
-            $query->where('time_period', 'like', "%{$year}%");
+            $query->where('issued_year', $year);
         }
 
         $documents = $query->orderBy('created_at', 'desc')->paginate(15);
@@ -50,7 +50,7 @@ class InternalDocumentController extends Controller
         $categories = InternalDocumentCategory::getFlatList();
         
         // Get all departments for filter
-        $departments = Department::orderBy('name')->get();
+        $departments = Department::orderBy('id')->get();
 
         return view('admin.internal-documents.index', compact('documents', 'categories', 'departments'));
     }
@@ -58,7 +58,7 @@ class InternalDocumentController extends Controller
     public function create()
     {
         $categories = InternalDocumentCategory::getFlatList();
-        $departments = Department::orderBy('name')->get();
+        $departments = Department::orderBy('id')->get();
         return view('admin.internal-documents.create', compact('categories', 'departments'));
     }
 
@@ -71,7 +71,7 @@ class InternalDocumentController extends Controller
             'department_id' => 'required|exists:departments,id',
             'status' => 'nullable|in:draft,approved,archived',
             'symbol' => 'nullable|string|max:255',
-            'time_period' => 'nullable|string|max:255',
+            'issued_year' => 'nullable|integer|digits:4',
             'document_number' => 'nullable|string|max:255',
             'issuing_agency' => 'nullable|string|max:255',
             'summary' => 'nullable|string|max:1000',
@@ -105,7 +105,7 @@ class InternalDocumentController extends Controller
             'department_id' => $request->department_id,
             'status' => $request->status ?? 'draft',
             'symbol' => $request->symbol,
-            'time_period' => $request->time_period,
+            'issued_year' => $request->issued_year,
             'document_number' => $request->document_number,
             'issuing_agency' => $request->issuing_agency,
             'summary' => $request->summary,
@@ -122,7 +122,12 @@ class InternalDocumentController extends Controller
             'uploaded_by' => auth()->id(),
         ]);
 
-        return redirect()->route('admin.internal-documents.index')
+        $redirectUrl = route('admin.internal-documents.index');
+        if ($request->category_id) {
+            $redirectUrl .= '?category_id=' . $request->category_id;
+        }
+        
+        return redirect($redirectUrl)
             ->with('success', 'Tài liệu đã được tạo thành công.');
     }
 
@@ -141,7 +146,7 @@ class InternalDocumentController extends Controller
     public function edit(InternalDocument $internalDocument)
     {
         $categories = InternalDocumentCategory::getFlatList();
-        $departments = Department::orderBy('name')->get();
+        $departments = Department::orderBy('id')->get();
         return view('admin.internal-documents.edit', compact('internalDocument', 'categories', 'departments'));
     }
 
@@ -154,7 +159,7 @@ class InternalDocumentController extends Controller
             'department_id' => 'required|exists:departments,id',
             'status' => 'nullable|in:draft,approved,archived',
             'symbol' => 'nullable|string|max:255',
-            'time_period' => 'nullable|string|max:255',
+            'issued_year' => 'nullable|integer|digits:4',
             'document_number' => 'nullable|string|max:255',
             'issuing_agency' => 'nullable|string|max:255',
             'summary' => 'nullable|string|max:1000',
@@ -169,7 +174,7 @@ class InternalDocumentController extends Controller
             'department_id' => $request->department_id,
             'status' => $request->status ?? $internalDocument->status,
             'symbol' => $request->symbol,
-            'time_period' => $request->time_period,
+            'issued_year' => $request->issued_year,
             'document_number' => $request->document_number,
             'issuing_agency' => $request->issuing_agency,
             'summary' => $request->summary,
@@ -211,7 +216,12 @@ class InternalDocumentController extends Controller
 
         $internalDocument->update($updateData);
 
-        return redirect()->route('admin.internal-documents.index')
+        $redirectUrl = route('admin.internal-documents.index');
+        if ($request->category_id) {
+            $redirectUrl .= '?category_id=' . $request->category_id;
+        }
+        
+        return redirect($redirectUrl)
             ->with('success', 'Tài liệu đã được cập nhật thành công.');
     }
 
