@@ -13,7 +13,8 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body class="admin-layout">
-    @include('partials.admin.header')
+    @include('partials.banner')
+    @include('partials.header')
 
     <div class="admin-container">
         @include('partials.admin.sidebar')

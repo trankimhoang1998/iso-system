@@ -34,6 +34,12 @@ class IsoSystemDocumentController extends Controller
             $query->where('department_id', $request->department_id);
         }
 
+        // Year filter based on time_period
+        if ($request->filled('year')) {
+            $year = $request->year;
+            $query->where('time_period', 'like', "%{$year}%");
+        }
+
         // Department filter for roles 2,3 - only see documents from their department
         $user = auth()->user();
         if (in_array($user->role, [2, 3]) && $user->department_id) {

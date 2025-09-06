@@ -13,22 +13,22 @@
                     </a>
                 </li>
                 <li class="nav__item">
-                    <a href="/admin/iso-directive-documents" class="nav__link {{ request()->is('ban-chi-dao*') ? 'nav__link--active' : '' }}">
+                    <a href="/iso-directive-documents" class="nav__link {{ request()->is('ban-chi-dao*') ? 'nav__link--active' : '' }}">
                         BAN CHỈ ĐẠO ISO
                     </a>
                 </li>
                 <li class="nav__item">
-                    <a href="/admin/iso-system-documents" class="nav__link {{ request()->is('tai-lieu-he-thong-iso*') ? 'nav__link--active' : '' }}">
+                    <a href="/iso-system-documents" class="nav__link {{ request()->is('tai-lieu-he-thong-iso*') ? 'nav__link--active' : '' }}">
                         TÀI LIỆU HỆ THỐNG ISO
                     </a>
                 </li>
                 <li class="nav__item">
-                    <a href="/admin/internal-documents" class="nav__link {{ request()->is('tai-lieu-noi-bo*') ? 'nav__link--active' : '' }}">
+                    <a href="/internal-documents" class="nav__link {{ request()->is('tai-lieu-noi-bo*') ? 'nav__link--active' : '' }}">
                         TÀI LIỆU NỘI BỘ
                     </a>
                 </li>
                 <li class="nav__item">
-                    <a href="/admin/management-documents" class="nav__link {{ request()->is('van-ban-quan-ly*') ? 'nav__link--active' : '' }}">
+                    <a href="/management-documents" class="nav__link {{ request()->is('van-ban-quan-ly*') ? 'nav__link--active' : '' }}">
                         VĂN BẢN QUẢN LÝ
                     </a>
                 </li>

@@ -28,6 +28,12 @@ class IsoDirectiveDocumentController extends Controller
             $query->where('category_id', $request->category_id);
         }
 
+        // Year filter based on time_period
+        if ($request->filled('year')) {
+            $year = $request->year;
+            $query->where('time_period', 'like', "%{$year}%");
+        }
+
         $documents = $query->orderBy('created_at', 'desc')->paginate(15);
         
         // Preserve query parameters in pagination links

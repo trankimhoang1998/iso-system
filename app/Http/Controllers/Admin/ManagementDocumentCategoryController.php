@@ -12,7 +12,7 @@ class ManagementDocumentCategoryController extends Controller
     {
         $categories = ManagementDocumentCategory::with('parent', 'children')
             ->whereNull('parent_id')
-            ->orderBy('name')
+            ->orderBy('id')
             ->paginate(15);
 
         return view('admin.management-document-categories.index', compact('categories'));

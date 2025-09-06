@@ -12,7 +12,7 @@ class IsoSystemCategoryController extends Controller
     {
         $categories = IsoSystemCategory::with('parent', 'children')
             ->whereNull('parent_id')
-            ->orderBy('name')
+            ->orderBy('id')
             ->paginate(15);
 
         return view('admin.iso-system-categories.index', compact('categories'));

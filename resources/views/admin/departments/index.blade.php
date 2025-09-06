@@ -238,7 +238,7 @@ document.getElementById('editForm').addEventListener('submit', function(e) {
     const id = document.getElementById('editId').value;
     const formData = new FormData(this);
     
-    fetch(`/admin/departments/${id}`, {
+    fetch(`/departments/${id}`, {
         method: 'POST',
         body: formData,
         headers: {

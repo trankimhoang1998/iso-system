@@ -2,16 +2,6 @@
 <aside class="admin-sidebar">
     <nav class="admin-nav">
         <ul class="admin-nav__list">
-            <li class="admin-nav__item">
-                <a href="{{ route('admin.dashboard') }}" 
-                   class="admin-nav__link @if(request()->routeIs('admin.dashboard')) admin-nav__link--active @endif"
-                   data-tooltip="Tổng quan">
-                    <svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-                    </svg>
-                    <span>Tổng quan</span>
-                </a>
-            </li>
             @if(auth()->user()->isAdmin())
             <li class="admin-nav__item">
                 <a href="{{ route('admin.users.index') }}" 
@@ -47,7 +37,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 12 2 2 4-4"></path>
                     </svg>
-                    <span>Danh mục Ban chỉ đạo ISO</span>
+                    <span>Ban chỉ đạo ISO</span>
                 </a>
             </li>
             <li class="admin-nav__item">
@@ -57,7 +47,7 @@
                     <svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                     </svg>
-                    <span>Danh mục hệ thống ISO</span>
+                    <span>Tài liệu hệ thống ISO</span>
                 </a>
             </li>
             <li class="admin-nav__item">
@@ -68,7 +58,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 10h12M6 14h12M6 18h7"></path>
                     </svg>
-                    <span>Danh mục tài liệu nội bộ</span>
+                    <span>Tài liệu nội bộ</span>
                 </a>
             </li>
             <li class="admin-nav__item">
@@ -79,55 +69,150 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path>
                     </svg>
-                    <span>Danh mục văn bản quản lý</span>
+                    <span>Văn bản quản lý</span>
                 </a>
             </li>
             @endif
             
-            <!-- Quản lý tài liệu - All authenticated users can access -->
-            <li class="admin-nav__section">
-                <span class="admin-nav__section-title">Quản lý tài liệu</span>
-            </li>
-            <li class="admin-nav__item">
-                <a href="{{ route('admin.iso-directive-documents.index') }}" 
-                   class="admin-nav__link @if(request()->routeIs('admin.iso-directive-documents*')) admin-nav__link--active @endif"
-                   data-tooltip="Tài liệu Ban chỉ đạo ISO">
-                    <svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
-                    </svg>
-                    <span>Tài liệu Ban chỉ đạo ISO</span>
-                </a>
-            </li>
-            <li class="admin-nav__item">
-                <a href="{{ route('admin.iso-system-documents.index') }}" 
-                   class="admin-nav__link @if(request()->routeIs('admin.iso-system-documents*')) admin-nav__link--active @endif"
-                   data-tooltip="Tài liệu hệ thống ISO">
-                    <svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                    </svg>
-                    <span>Tài liệu hệ thống ISO</span>
-                </a>
-            </li>
-            <li class="admin-nav__item">
-                <a href="{{ route('admin.internal-documents.index') }}" 
-                   class="admin-nav__link @if(request()->routeIs('admin.internal-documents*')) admin-nav__link--active @endif"
-                   data-tooltip="Tài liệu nội bộ">
-                    <svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-                    </svg>
-                    <span>Tài liệu nội bộ</span>
-                </a>
-            </li>
-            <li class="admin-nav__item">
-                <a href="{{ route('admin.management-documents.index') }}" 
-                   class="admin-nav__link @if(request()->routeIs('admin.management-documents*')) admin-nav__link--active @endif"
-                   data-tooltip="Văn bản quản lý">
-                    <svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                    </svg>
-                    <span>Văn bản quản lý</span>
-                </a>
-            </li>
+            <!-- Dynamic Categories Section based on current route -->
+            @if(request()->routeIs('admin.iso-directive-documents*') || request()->is('iso-directive-documents*'))
+                <li class="admin-nav__section">
+                    <span class="admin-nav__section-title">Ban chỉ đạo ISO</span>
+                </li>
+                @php
+                    $isoDirectiveCategories = \App\Models\IsoDirectiveCategory::whereNull('parent_id')->orderBy('id')->get();
+                @endphp
+                @foreach($isoDirectiveCategories as $category)
+                    <li class="admin-nav__item">
+                        <a href="/iso-directive-documents?category_id={{ $category->id }}" 
+                           class="admin-nav__link @if(request('category_id') == $category->id) admin-nav__link--active @endif">
+                            <svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 12 2 2 4-4"></path>
+                            </svg>
+                            <span>{{ $category->name }}</span>
+                        </a>
+                    </li>
+                    @php
+                        $childCategories = \App\Models\IsoDirectiveCategory::where('parent_id', $category->id)->orderBy('id')->get();
+                    @endphp
+                    @foreach($childCategories as $childCategory)
+                        <li class="admin-nav__item admin-nav__item--child">
+                            <a href="/iso-directive-documents?category_id={{ $childCategory->id }}" 
+                               class="admin-nav__link @if(request('category_id') == $childCategory->id) admin-nav__link--active @endif">
+                                <svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                                <span>{{ $childCategory->name }}</span>
+                            </a>
+                        </li>
+                    @endforeach
+                @endforeach
+            @endif
+
+            @if(request()->routeIs('admin.iso-system-documents*') || request()->is('iso-system-documents*'))
+                <li class="admin-nav__section">
+                    <span class="admin-nav__section-title">Tài liệu hệ thống ISO</span>
+                </li>
+                @php
+                    $isoSystemCategories = \App\Models\IsoSystemCategory::whereNull('parent_id')->orderBy('id')->get();
+                @endphp
+                @foreach($isoSystemCategories as $category)
+                    <li class="admin-nav__item">
+                        <a href="/iso-system-documents?category_id={{ $category->id }}" 
+                           class="admin-nav__link @if(request('category_id') == $category->id) admin-nav__link--active @endif">
+                            <svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                            </svg>
+                            <span>{{ $category->name }}</span>
+                        </a>
+                    </li>
+                    @php
+                        $childCategories = \App\Models\IsoSystemCategory::where('parent_id', $category->id)->orderBy('id')->get();
+                    @endphp
+                    @foreach($childCategories as $childCategory)
+                        <li class="admin-nav__item admin-nav__item--child">
+                            <a href="/iso-system-documents?category_id={{ $childCategory->id }}" 
+                               class="admin-nav__link @if(request('category_id') == $childCategory->id) admin-nav__link--active @endif">
+                                <svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                                <span>{{ $childCategory->name }}</span>
+                            </a>
+                        </li>
+                    @endforeach
+                @endforeach
+            @endif
+
+            @if(request()->routeIs('admin.internal-documents*') || request()->is('internal-documents*'))
+                <li class="admin-nav__section">
+                    <span class="admin-nav__section-title">Tài liệu nội bộ</span>
+                </li>
+                @php
+                    $internalCategories = \App\Models\InternalDocumentCategory::whereNull('parent_id')->orderBy('id')->get();
+                @endphp
+                @foreach($internalCategories as $category)
+                    <li class="admin-nav__item">
+                        <a href="/internal-documents?category_id={{ $category->id }}" 
+                           class="admin-nav__link @if(request('category_id') == $category->id) admin-nav__link--active @endif">
+                            <svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 10h12M6 14h12M6 18h7"></path>
+                            </svg>
+                            <span>{{ $category->name }}</span>
+                        </a>
+                    </li>
+                    @php
+                        $childCategories = \App\Models\InternalDocumentCategory::where('parent_id', $category->id)->orderBy('id')->get();
+                    @endphp
+                    @foreach($childCategories as $childCategory)
+                        <li class="admin-nav__item admin-nav__item--child">
+                            <a href="/internal-documents?category_id={{ $childCategory->id }}" 
+                               class="admin-nav__link @if(request('category_id') == $childCategory->id) admin-nav__link--active @endif">
+                                <svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                                <span>{{ $childCategory->name }}</span>
+                            </a>
+                        </li>
+                    @endforeach
+                @endforeach
+            @endif
+
+            @if(request()->routeIs('admin.management-documents*') || request()->is('management-documents*'))
+                <li class="admin-nav__section">
+                    <span class="admin-nav__section-title">Văn bản quản lý</span>
+                </li>
+                @php
+                    $managementCategories = \App\Models\ManagementDocumentCategory::whereNull('parent_id')->orderBy('id')->get();
+                @endphp
+                @foreach($managementCategories as $category)
+                    <li class="admin-nav__item">
+                        <a href="/management-documents?category_id={{ $category->id }}" 
+                           class="admin-nav__link @if(request('category_id') == $category->id) admin-nav__link--active @endif">
+                            <svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path>
+                            </svg>
+                            <span>{{ $category->name }}</span>
+                        </a>
+                    </li>
+                    @php
+                        $childCategories = \App\Models\ManagementDocumentCategory::where('parent_id', $category->id)->orderBy('id')->get();
+                    @endphp
+                    @foreach($childCategories as $childCategory)
+                        <li class="admin-nav__item admin-nav__item--child">
+                            <a href="/management-documents?category_id={{ $childCategory->id }}" 
+                               class="admin-nav__link @if(request('category_id') == $childCategory->id) admin-nav__link--active @endif">
+                                <svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                                <span>{{ $childCategory->name }}</span>
+                            </a>
+                        </li>
+                    @endforeach
+                @endforeach
+            @endif
         </ul>
     </nav>
 </aside>

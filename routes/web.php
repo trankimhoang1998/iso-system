@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\IsoDirectiveCategoryController;
@@ -35,8 +34,7 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 // Admin routes - All authenticated users can access
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+Route::middleware(['auth'])->name('admin.')->group(function () {
     
     // Admin only routes - User and Department management
     Route::middleware(['role:0'])->group(function () {

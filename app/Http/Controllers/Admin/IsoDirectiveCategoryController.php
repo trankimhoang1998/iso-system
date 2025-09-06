@@ -12,7 +12,7 @@ class IsoDirectiveCategoryController extends Controller
     {
         $categories = IsoDirectiveCategory::with('parent', 'children')
             ->whereNull('parent_id')
-            ->orderBy('name')
+            ->orderBy('id')
             ->paginate(15);
 
         return view('admin.iso-directive-categories.index', compact('categories'));

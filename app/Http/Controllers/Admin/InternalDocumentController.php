@@ -38,6 +38,12 @@ class InternalDocumentController extends Controller
             $query->where('department_id', $request->department_id);
         }
 
+        // Year filter based on time_period
+        if ($request->filled('year')) {
+            $year = $request->year;
+            $query->where('time_period', 'like', "%{$year}%");
+        }
+
         $documents = $query->orderBy('created_at', 'desc')->paginate(15);
         
         // Load categories with hierarchical structure for filter dropdown

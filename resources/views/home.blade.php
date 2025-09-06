@@ -44,7 +44,7 @@
                     <p class="quality-manual__text">
                         <strong>Sổ tay chất lượng</strong> là tài liệu tổng quát về Hệ thống quản lý chất lượng của Nhà máy A31/Quân chủng PKKQ, xác định phạm vi áp dụng; chính sách và mục tiêu chất lượng; giới thiệu hoạt động và cơ cấu tổ chức, chức năng nhiệm vụ của Nhà máy; nêu quan điểm của lãnh đạo, chỉ huy đối với việc tuân thủ các yêu cầu của Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia ISO 9001:2015; danh mục các quy trình, thủ tục đã ban hành để lãnh đạo, chỉ huy và cán bộ chủ chốt của cơ quan, đơn vị trực thuộc triển khai thực hiện, làm cơ sở điều hành Hệ thống quản lý chất lượng trong đơn vị.
                     </p>
-                    <a href="/admin/iso-system-documents?category_id=1" class="quality-manual__link"><strong>Xem thêm...</strong></a>
+                    <a href="/iso-system-documents?category_id=1" class="quality-manual__link"><strong>Xem thêm...</strong></a>
                 </div>
             </section>
 
@@ -82,7 +82,7 @@
                                 </div>
                             </div>
                             <div class="process-section__footer">
-                                <a href="/admin/iso-system-documents?category_id=2" class="process-section__link"><strong>Xem thêm...</strong></a>
+                                <a href="/iso-system-documents?category_id=2" class="process-section__link"><strong>Xem thêm...</strong></a>
                             </div>
                         </div>
                     </div>
@@ -118,7 +118,7 @@
                                 </div>
                             </div>
                             <div class="process-section__footer">
-                                <a href="/admin/iso-system-documents?category_id=3" class="process-section__link"><strong>Xem thêm...</strong></a>
+                                <a href="/iso-system-documents?category_id=3" class="process-section__link"><strong>Xem thêm...</strong></a>
                             </div>
                         </div>
                     </div>
@@ -151,7 +151,7 @@
                         </div>
                     </div>
                     <div class="notifications__footer">
-                        <a href="/admin/management-documents" class="notifications__more">Xem tất cả →</a>
+                        <a href="/management-documents" class="notifications__more">Xem tất cả →</a>
                     </div>
                 </div>
             </section>
@@ -179,7 +179,7 @@
                         </div>
                     </div>
                     <div class="new-process__footer">
-                        <a href="/admin/iso-system-documents" class="new-process__more">Xem tất cả →</a>
+                        <a href="/iso-system-documents" class="new-process__more">Xem tất cả →</a>
                     </div>
                 </div>
             </section>
@@ -226,7 +226,7 @@ function searchProcess() {
         return;
     }
     
-    let url = '/admin/iso-system-documents';
+    let url = '/iso-system-documents';
     let params = [];
     
     // Xác định category_id dựa trên loại quy trình

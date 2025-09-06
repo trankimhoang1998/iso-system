@@ -31,15 +31,9 @@
                            placeholder="Tiêu đề hoặc mô tả..." class="admin-filter__input">
                 </div>
                 <div class="admin-filter__group">
-                    <label class="admin-filter__label">Danh mục</label>
-                    <select name="category_id" class="admin-filter__select">
-                        <option value="">Tất cả</option>
-                        @foreach($categories ?? [] as $category)
-                            <option value="{{ $category['id'] }}" {{ request('category_id') == $category['id'] ? 'selected' : '' }}>
-                                {{ $category['name'] }}
-                            </option>
-                        @endforeach
-                    </select>
+                    <label class="admin-filter__label">Năm ban hành</label>
+                    <input type="text" name="year" value="{{ request('year') }}" 
+                           placeholder="Ví dụ: 2024" class="admin-filter__input">
                 </div>
                 <div class="admin-filter__actions">
                     <button type="submit" class="admin-btn admin-btn--primary">

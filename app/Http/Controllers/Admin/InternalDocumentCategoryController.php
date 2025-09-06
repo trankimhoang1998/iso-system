@@ -12,7 +12,7 @@ class InternalDocumentCategoryController extends Controller
     {
         $categories = InternalDocumentCategory::with('parent', 'children')
             ->whereNull('parent_id')
-            ->orderBy('name')
+            ->orderBy('id')
             ->paginate(15);
 
         return view('admin.internal-document-categories.index', compact('categories'));

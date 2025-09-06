@@ -185,7 +185,7 @@
 <script>
 function openDeleteModal(userId, userName) {
     document.getElementById('deleteUserName').textContent = userName;
-    document.getElementById('deleteForm').action = `/admin/users/${userId}`;
+    document.getElementById('deleteForm').action = `/users/${userId}`;
     document.getElementById('deleteModal').classList.add('admin-modal--active');
 }
 
