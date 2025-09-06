@@ -11,7 +11,7 @@ class DepartmentSeeder extends Seeder
     {
         $departments = [
             'Phòng Kỹ thuật',
-            'Phòng Kế hoạch', 
+            'Phòng Kế hoạch',
             'Phòng KCS',
             'Phòng Tài chính',
             'Phòng Cơ điện',

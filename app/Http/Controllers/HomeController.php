@@ -13,7 +13,7 @@ class HomeController extends Controller
         // Display home page for authenticated users (any role can access)
         if (Auth::check()) {
             // Get all departments for process search dropdown
-            $departments = Department::orderBy('name')->get();
+            $departments = Department::orderBy('id')->get();
             return view('home', compact('departments'));
         }
         

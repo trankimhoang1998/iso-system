@@ -10,7 +10,7 @@ class DepartmentController extends Controller
 {
     public function index()
     {
-        $departments = Department::orderBy('name')->get();
+        $departments = Department::orderBy('id')->get();
         return view('admin.departments.index', compact('departments'));
     }
 

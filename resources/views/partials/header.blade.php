@@ -12,98 +12,45 @@
                         TRANG CHỦ
                     </a>
                 </li>
-                <li class="nav__item nav__item--dropdown">
-                    <a href="javascript:void(0)" class="nav__link {{ request()->is('ban-chi-dao*') ? 'nav__link--active' : '' }}" data-dropdown="ban-chi-dao">
+                <li class="nav__item">
+                    <a href="/admin/iso-directive-documents" class="nav__link {{ request()->is('ban-chi-dao*') ? 'nav__link--active' : '' }}">
                         BAN CHỈ ĐẠO ISO
-                        <span class="nav__arrow">▼</span>
                     </a>
-                    <ul class="nav__dropdown" id="dropdown-ban-chi-dao">
-                        <li class="nav__dropdown-item">
-                            <a href="/admin/iso-directive-documents" class="nav__dropdown-link">
-                                TẤT CẢ TÀI LIỆU
-                            </a>
-                        </li>
-                        @php
-                            $isoDirectiveCategories = \App\Models\IsoDirectiveCategory::getFlatList();
-                        @endphp
-                        @foreach($isoDirectiveCategories as $category)
-                            <li class="nav__dropdown-item">
-                                <a href="/admin/iso-directive-documents?category_id={{ $category['id'] }}" class="nav__dropdown-link">
-                                    {{ $category['name'] }}
-                                </a>
-                            </li>
-                        @endforeach
-                    </ul>
                 </li>
-                <li class="nav__item nav__item--dropdown">
-                    <a href="javascript:void(0)" class="nav__link {{ request()->is('tai-lieu-he-thong-iso*') ? 'nav__link--active' : '' }}" data-dropdown="tai-lieu-he-thong-iso">
+                <li class="nav__item">
+                    <a href="/admin/iso-system-documents" class="nav__link {{ request()->is('tai-lieu-he-thong-iso*') ? 'nav__link--active' : '' }}">
                         TÀI LIỆU HỆ THỐNG ISO
-                        <span class="nav__arrow">▼</span>
                     </a>
-                    <ul class="nav__dropdown" id="dropdown-tai-lieu-he-thong-iso">
-                        <li class="nav__dropdown-item">
-                            <a href="/admin/iso-system-documents" class="nav__dropdown-link">
-                                TẤT CẢ TÀI LIỆU
-                            </a>
-                        </li>
-                        @php
-                            $isoCategories = \App\Models\IsoSystemCategory::getFlatList();
-                        @endphp
-                        @foreach($isoCategories as $category)
-                            <li class="nav__dropdown-item">
-                                <a href="/admin/iso-system-documents?category_id={{ $category['id'] }}" class="nav__dropdown-link">
-                                    {{ $category['name'] }}
-                                </a>
-                            </li>
-                        @endforeach
-                    </ul>
                 </li>
-                <li class="nav__item nav__item--dropdown">
-                    <a href="javascript:void(0)" class="nav__link {{ request()->is('tai-lieu-noi-bo*') ? 'nav__link--active' : '' }}" data-dropdown="tai-lieu-noi-bo">
+                <li class="nav__item">
+                    <a href="/admin/internal-documents" class="nav__link {{ request()->is('tai-lieu-noi-bo*') ? 'nav__link--active' : '' }}">
                         TÀI LIỆU NỘI BỘ
-                        <span class="nav__arrow">▼</span>
                     </a>
-                    <ul class="nav__dropdown" id="dropdown-tai-lieu-noi-bo">
-                        <li class="nav__dropdown-item">
-                            <a href="/admin/internal-documents" class="nav__dropdown-link">
-                                TẤT CẢ TÀI LIỆU
-                            </a>
-                        </li>
-                        @php
-                            $internalCategories = \App\Models\InternalDocumentCategory::getFlatList();
-                        @endphp
-                        @foreach($internalCategories as $category)
-                            <li class="nav__dropdown-item">
-                                <a href="/admin/internal-documents?category_id={{ $category['id'] }}" class="nav__dropdown-link">
-                                    {{ $category['name'] }}
-                                </a>
-                            </li>
-                        @endforeach
-                    </ul>
                 </li>
-                <li class="nav__item nav__item--dropdown">
-                    <a href="javascript:void(0)" class="nav__link {{ request()->is('van-ban-quan-ly*') ? 'nav__link--active' : '' }}" data-dropdown="van-ban-quan-ly">
+                <li class="nav__item">
+                    <a href="/admin/management-documents" class="nav__link {{ request()->is('van-ban-quan-ly*') ? 'nav__link--active' : '' }}">
                         VĂN BẢN QUẢN LÝ
+                    </a>
+                </li>
+                @auth
+                <li class="nav__item nav__item--dropdown nav__item--user">
+                    <a href="javascript:void(0)" class="nav__link" data-dropdown="user-menu">
+                        <span class="nav__user-icon">👤</span>
+                        <span class="nav__user-info">{{ auth()->user()->name ?? 'User' }}</span>
                         <span class="nav__arrow">▼</span>
                     </a>
-                    <ul class="nav__dropdown" id="dropdown-van-ban-quan-ly">
+                    <ul class="nav__dropdown" id="dropdown-user-menu">
                         <li class="nav__dropdown-item">
-                            <a href="/admin/management-documents" class="nav__dropdown-link">
-                                TẤT CẢ VĂN BẢN
-                            </a>
+                            <form method="POST" action="{{ route('auth.logout') }}" style="margin: 0;">
+                                @csrf
+                                <button type="submit" class="nav__dropdown-link logout-btn">
+                                    ĐĂNG XUẤT
+                                </button>
+                            </form>
                         </li>
-                        @php
-                            $managementCategories = \App\Models\ManagementDocumentCategory::getFlatList();
-                        @endphp
-                        @foreach($managementCategories as $category)
-                            <li class="nav__dropdown-item">
-                                <a href="/admin/management-documents?category_id={{ $category['id'] }}" class="nav__dropdown-link">
-                                    {{ $category['name'] }}
-                                </a>
-                            </li>
-                        @endforeach
                     </ul>
                 </li>
+                @endauth
             </ul>
         </nav>
     </div>

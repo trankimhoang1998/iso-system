@@ -131,9 +131,35 @@
             background-color: $white;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
             border-radius: 4px;
-            min-width: 350px;
+            min-width: 200px;
             z-index: 1000;
             @include reset-list;
+
+            // User dropdown specific styling
+            .nav__item--user & {
+                min-width: 120px;
+                right: 0;
+                left: auto;
+            }
+        }
+
+        &__user-icon {
+            margin-right: 8px;
+            font-size: 16px;
+            vertical-align: middle;
+
+            @include mobile {
+                margin-right: 6px;
+                font-size: 14px;
+            }
+        }
+
+        &__user-info {
+            margin-right: 5px;
+
+            @include mobile {
+                margin-right: 4px;
+            }
 
             @include mobile {
                 position: relative;
@@ -180,6 +206,14 @@
             transition: all 0.3s ease;
             white-space: nowrap;
             line-height: 1.4;
+
+            &.logout-btn {
+                background: none;
+                border: none;
+                width: 100%;
+                text-align: left;
+                cursor: pointer;
+            }
 
             &:hover {
                 background-color: $primary-dark;
