@@ -10,7 +10,7 @@
         </div>
         @if(in_array(auth()->user()->role, [0, 1, 2]))
         <div class="admin-page__actions">
-            <a href="{{ route('admin.internal-documents.create') }}" class="admin-btn admin-btn--primary">
+            <a href="{{ isset($category) ? route('admin.internal-documents.category.create', $category) : route('admin.internal-documents.create') }}" class="admin-btn admin-btn--primary">
                 <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                 </svg>
@@ -22,7 +22,7 @@
 
     <!-- Filter Form -->
     <div class="admin-filter">
-        <form method="GET" action="{{ route('admin.internal-documents.index') }}" class="admin-filter__form">
+        <form method="GET" action="{{ isset($category) ? route('admin.internal-documents.category', $category) : route('admin.internal-documents.index') }}" class="admin-filter__form">
             <div class="admin-filter__row">
                 <div class="admin-filter__group">
                     <label class="admin-filter__label">Tìm kiếm</label>
@@ -31,8 +31,12 @@
                 </div>
                 <div class="admin-filter__group">
                     <label class="admin-filter__label">Năm ban hành tài liệu</label>
-                    <input type="text" name="year" value="{{ request('year') }}" 
-                           placeholder="Ví dụ: 2024" class="admin-filter__input">
+                    <select name="year" id="filter_year" class="admin-form__select select2">
+                        <option value="">-- Chọn năm --</option>
+                        @for($year = date('Y'); $year >= 1900; $year--)
+                            <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>{{ $year }}</option>
+                        @endfor
+                    </select>
                 </div>
                 <div class="admin-filter__group">
                     <label class="admin-filter__label">Phòng ban</label>
@@ -52,7 +56,7 @@
                         </svg>
                         Lọc
                     </button>
-                    <a href="{{ route('admin.internal-documents.index') }}" class="admin-btn admin-btn--secondary">
+                    <a href="{{ isset($category) ? route('admin.internal-documents.category', $category) : route('admin.internal-documents.index') }}" class="admin-btn admin-btn--secondary">
                         <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                         </svg>
@@ -83,7 +87,7 @@
                     <td class="admin-table__cell">{{ $document->summary ? Str::limit($document->summary, 100) : '_' }}</td>
                     <td class="admin-table__cell">
                         <div class="admin-table__actions">
-                            <a href="{{ route('admin.internal-documents.show', $document) }}" 
+                            <a href="{{ isset($category) ? route('admin.internal-documents.category.show', [$category, $document]) : route('admin.internal-documents.show', $document) }}" 
                                class="admin-table__action-btn admin-table__action-btn--view" 
                                title="Chi tiết">
                                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -112,7 +116,7 @@
                             </a>
                             @endif
                             @if(in_array(auth()->user()->role, [0, 1, 2]))
-                            <a href="{{ route('admin.internal-documents.edit', $document) }}" 
+                            <a href="{{ isset($category) ? route('admin.internal-documents.category.edit', [$category, $document]) : route('admin.internal-documents.edit', $document) }}" 
                                class="admin-table__action-btn admin-table__action-btn--edit" 
                                title="Chỉnh sửa">
                                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -146,7 +150,7 @@
                                 @endif
                             </p>
                             @if(in_array(auth()->user()->role, [0, 1, 2]))
-                            <a href="{{ route('admin.internal-documents.create') }}" class="admin-empty-state__btn">
+                            <a href="{{ isset($category) ? route('admin.internal-documents.category.create', $category) : route('admin.internal-documents.create') }}" class="admin-empty-state__btn">
                                 Thêm tài liệu đầu tiên
                             </a>
                             @endif
@@ -203,7 +207,7 @@
 <script>
 function openDeleteModal(documentId, documentTitle) {
     document.getElementById('deleteDocumentName').textContent = documentTitle;
-    const currentCategoryId = '{{ request("category_id") }}';
+    const currentCategoryId = '{{ isset($category) ? $category->id : request("category_id") }}';
     let deleteUrl = `/internal-documents/${documentId}`;
     if (currentCategoryId) {
         deleteUrl += `?redirect_category=${currentCategoryId}`;
@@ -220,6 +224,19 @@ function closeDeleteModal() {
 window.addEventListener('click', function(e) {
     if (e.target.classList.contains('admin-modal')) {
         e.target.classList.remove('admin-modal--active');
+    }
+});
+
+// Initialize Select2 for year filter dropdown
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof $ !== 'undefined' && $.fn.select2) {
+        $('#filter_year').select2({
+            placeholder: '-- Chọn năm --',
+            allowClear: true,
+            width: '100%',
+            dropdownCssClass: 'select2-dropdown-small',
+            containerCssClass: 'select2-container-small'
+        });
     }
 });
 </script>

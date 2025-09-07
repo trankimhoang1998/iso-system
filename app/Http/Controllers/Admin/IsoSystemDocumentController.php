@@ -60,11 +60,63 @@ class IsoSystemDocumentController extends Controller
         return view('admin.iso-system-documents.index', compact('documents', 'categories', 'departments'));
     }
 
+    public function indexByCategory(IsoSystemCategory $category, Request $request)
+    {
+        $query = IsoSystemDocument::with(['category', 'uploader', 'department'])
+                    ->where('category_id', $category->id);
+
+        // Search filter
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        // Department filter (for search/filter)
+        if ($request->filled('department_id')) {
+            $query->where('department_id', $request->department_id);
+        }
+
+        // Year filter based on issued_year
+        if ($request->filled('year')) {
+            $year = $request->year;
+            $query->where('issued_year', $year);
+        }
+
+        // Department filter for roles 2,3 - only see documents from their department
+        $user = auth()->user();
+        if (in_array($user->role, [2, 3]) && $user->department_id) {
+            $query->where('department_id', $user->department_id);
+        }
+
+        $documents = $query->orderBy('created_at', 'desc')->paginate(15);
+        
+        // Preserve query parameters in pagination links
+        $documents->appends($request->all());
+
+        // Get all categories for filter with hierarchical structure
+        $categories = IsoSystemCategory::getFlatList();
+        
+        // Get all departments for filter
+        $departments = Department::orderBy('id')->get();
+
+        return view('admin.iso-system-documents.index', compact('documents', 'categories', 'departments', 'category'));
+    }
+
     public function create()
     {
         $categories = IsoSystemCategory::getFlatList();
         $departments = Department::orderBy('id')->get();
         return view('admin.iso-system-documents.create', compact('categories', 'departments'));
+    }
+
+    public function createForCategory(IsoSystemCategory $category)
+    {
+        $categories = IsoSystemCategory::getFlatList();
+        $departments = Department::orderBy('id')->get();
+        return view('admin.iso-system-documents.create', compact('categories', 'departments', 'category'));
     }
 
     public function store(Request $request)
@@ -153,12 +205,16 @@ class IsoSystemDocumentController extends Controller
             'uploaded_by' => auth()->id(),
         ]);
 
-        $redirectUrl = route('admin.iso-system-documents.index');
+        // Use category-based routes when category context exists
         if ($request->category_id) {
-            $redirectUrl .= '?category_id=' . $request->category_id;
+            $category = IsoSystemCategory::find($request->category_id);
+            if ($category) {
+                return redirect()->route('admin.iso-system-documents.category', $category)
+                    ->with('success', 'Tài liệu đã được tạo thành công.');
+            }
         }
         
-        return redirect($redirectUrl)
+        return redirect()->route('admin.iso-system-documents.index')
             ->with('success', 'Tài liệu đã được tạo thành công.');
     }
 
@@ -174,11 +230,40 @@ class IsoSystemDocumentController extends Controller
         return view('admin.iso-system-documents.show', compact('isoSystemDocument'));
     }
 
+    public function showForCategory(IsoSystemCategory $category, IsoSystemDocument $isoSystemDocument)
+    {
+        // Check if user can access this document
+        $user = auth()->user();
+        if (in_array($user->role, [2, 3]) && $user->department_id && $isoSystemDocument->department_id !== $user->department_id) {
+            abort(404);
+        }
+
+        // Verify document belongs to the category
+        if ($isoSystemDocument->category_id !== $category->id) {
+            abort(404);
+        }
+        
+        $isoSystemDocument->load(['category', 'uploader', 'department']);
+        return view('admin.iso-system-documents.show', compact('isoSystemDocument', 'category'));
+    }
+
     public function edit(IsoSystemDocument $isoSystemDocument)
     {
         $categories = IsoSystemCategory::getFlatList();
         $departments = Department::orderBy('id')->get();
         return view('admin.iso-system-documents.edit', compact('isoSystemDocument', 'categories', 'departments'));
+    }
+
+    public function editForCategory(IsoSystemCategory $category, IsoSystemDocument $isoSystemDocument)
+    {
+        // Verify document belongs to the category
+        if ($isoSystemDocument->category_id !== $category->id) {
+            abort(404);
+        }
+
+        $categories = IsoSystemCategory::getFlatList();
+        $departments = Department::orderBy('id')->get();
+        return view('admin.iso-system-documents.edit', compact('isoSystemDocument', 'categories', 'departments', 'category'));
     }
 
     public function update(Request $request, IsoSystemDocument $isoSystemDocument)
@@ -247,12 +332,16 @@ class IsoSystemDocumentController extends Controller
 
         $isoSystemDocument->update($updateData);
 
-        $redirectUrl = route('admin.iso-system-documents.index');
+        // Use category-based routes when category context exists
         if ($request->category_id) {
-            $redirectUrl .= '?category_id=' . $request->category_id;
+            $category = IsoSystemCategory::find($request->category_id);
+            if ($category) {
+                return redirect()->route('admin.iso-system-documents.category', $category)
+                    ->with('success', 'Tài liệu đã được cập nhật thành công.');
+            }
         }
         
-        return redirect($redirectUrl)
+        return redirect()->route('admin.iso-system-documents.index')
             ->with('success', 'Tài liệu đã được cập nhật thành công.');
     }
 
@@ -270,13 +359,31 @@ class IsoSystemDocumentController extends Controller
 
         $isoSystemDocument->delete();
 
-        // Redirect back to the same category if specified
-        $redirectUrl = route('admin.iso-system-documents.index');
+        // Smart redirect based on referer URL
+        $referer = $request->headers->get('referer');
+        if ($referer) {
+            // Check if referer is a category-based URL
+            $pattern = '/\/iso-system-documents\/category\/(\d+)/';
+            if (preg_match($pattern, $referer, $matches)) {
+                $categoryId = $matches[1];
+                $category = IsoSystemCategory::find($categoryId);
+                if ($category) {
+                    return redirect()->route('admin.iso-system-documents.category', $category)
+                        ->with('success', 'Tài liệu đã được xóa thành công.');
+                }
+            }
+        }
+
+        // Fallback: check for redirect_category parameter (legacy support)
         if ($request->has('redirect_category')) {
-            $redirectUrl .= '?category_id=' . $request->redirect_category;
+            $category = IsoSystemCategory::find($request->redirect_category);
+            if ($category) {
+                return redirect()->route('admin.iso-system-documents.category', $category)
+                    ->with('success', 'Tài liệu đã được xóa thành công.');
+            }
         }
         
-        return redirect($redirectUrl)
+        return redirect()->route('admin.iso-system-documents.index')
             ->with('success', 'Tài liệu đã được xóa thành công.');
     }
 

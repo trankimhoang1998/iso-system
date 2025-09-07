@@ -5,7 +5,11 @@
 @section('content')
 <div class="admin-page">
     <div class="admin-breadcrumb">
-        <a href="{{ route('admin.iso-system-documents.index') }}" class="admin-breadcrumb__item">Văn bản hệ thống ISO</a>
+        @if(isset($category))
+            <a href="{{ route('admin.iso-system-documents.category', $category) }}" class="admin-breadcrumb__item">{{ $category->name }}</a>
+        @else
+            <a href="{{ route('admin.iso-system-documents.index') }}" class="admin-breadcrumb__item">Văn bản hệ thống ISO</a>
+        @endif
         <svg class="admin-breadcrumb__separator" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
         </svg>
@@ -18,7 +22,7 @@
             <p class="admin-page__subtitle">Cập nhật thông tin văn bản: {{ $isoSystemDocument->title }}</p>
         </div>
         <div class="admin-page__actions">
-            <a href="{{ route('admin.iso-system-documents.index') }}" class="admin-btn admin-btn--secondary">
+            <a href="{{ isset($category) ? route('admin.iso-system-documents.category', $category) : route('admin.iso-system-documents.index') }}" class="admin-btn admin-btn--secondary">
                 <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                 </svg>
@@ -60,15 +64,34 @@
                 <div class="admin-form__row admin-form__row--split">
                     <div class="admin-form__group">
                         <label class="admin-form__label admin-form__label--required">Danh mục</label>
-                        <select name="category_id" id="category_id"
-                                class="admin-form__select @error('category_id') admin-form__select--error @enderror">
-                            <option value="">-- Chọn danh mục --</option>
-                            @foreach($categories as $category)
-                                <option value="{{ $category['id'] }}" {{ old('category_id', $isoSystemDocument->category_id) == $category['id'] ? 'selected' : '' }}>
-                                    {{ $category['name'] }}
-                                </option>
-                            @endforeach
-                        </select>
+                        @if(isset($category))
+                            <!-- Category is pre-selected and disabled -->
+                            <div class="admin-form__display">
+                                <div class="admin-form__display-value">
+                                    <svg class="admin-form__display-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 12 2 2 4-4"></path>
+                                    </svg>
+                                    {{ $category->name }}
+                                </div>
+                                <div class="admin-form__display-note">
+                                    Danh mục được chọn tự động dựa trên trang hiện tại
+                                </div>
+                            </div>
+                            <!-- Hidden input to submit category_id -->
+                            <input type="hidden" name="category_id" value="{{ $category->id }}">
+                        @else
+                            <!-- Normal dropdown when no category context -->
+                            <select name="category_id" id="category_id"
+                                    class="admin-form__select @error('category_id') admin-form__select--error @enderror">
+                                <option value="">-- Chọn danh mục --</option>
+                                @foreach($categories as $categoryOption)
+                                    <option value="{{ $categoryOption['id'] }}" {{ old('category_id', $isoSystemDocument->category_id) == $categoryOption['id'] ? 'selected' : '' }}>
+                                        {{ $categoryOption['name'] }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        @endif
                         @error('category_id')
                         <div class="admin-form__error">{{ $message }}</div>
                         @enderror
@@ -258,7 +281,7 @@
                 </div>
 
                 <div class="admin-form__actions">
-                    <a href="{{ route('admin.iso-system-documents.index') }}" class="admin-btn admin-btn--secondary">Hủy</a>
+                    <a href="{{ isset($category) ? route('admin.iso-system-documents.category', $category) : route('admin.iso-system-documents.index') }}" class="admin-btn admin-btn--secondary">Hủy</a>
                     <button type="submit" class="admin-btn admin-btn--primary">
                         <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>

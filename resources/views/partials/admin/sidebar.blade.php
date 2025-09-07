@@ -86,7 +86,7 @@
                         foreach($categories as $category) {
                             $childCategories = \App\Models\IsoDirectiveCategory::where('parent_id', $category->id)->orderBy('id')->get();
                             $hasChildren = $childCategories->count() > 0;
-                            $isActive = request('category_id') == $category->id;
+                            $isActive = (request()->route('category') && request()->route('category')->id == $category->id);
                             $childClass = $level > 0 ? 'admin-nav__item--child' . ($level > 1 ? ' admin-nav__item--level-' . $level : '') : '';
                             $indentStyle = $level > 1 ? 'style="padding-left: ' . (20 + ($level - 1) * 15) . 'px;"' : '';
                             
@@ -100,7 +100,7 @@
                                 echo '</svg>';
                             } else {
                                 // Leaf category - clickable link
-                                echo '<a href="/iso-directive-documents?category_id=' . $category->id . '" ';
+                                echo '<a href="/iso-directive-documents/category/' . $category->id . '" ';
                                 echo 'class="admin-nav__link ' . ($isActive ? 'admin-nav__link--active' : '') . '">';
                                 echo '<svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">';
                                 
@@ -141,7 +141,7 @@
                         foreach($categories as $category) {
                             $childCategories = \App\Models\IsoSystemCategory::where('parent_id', $category->id)->orderBy('id')->get();
                             $hasChildren = $childCategories->count() > 0;
-                            $isActive = request('category_id') == $category->id;
+                            $isActive = (request()->route('category') && request()->route('category')->id == $category->id);
                             $childClass = $level > 0 ? 'admin-nav__item--child' . ($level > 1 ? ' admin-nav__item--level-' . $level : '') : '';
                             $indentStyle = $level > 1 ? 'style="padding-left: ' . (20 + ($level - 1) * 15) . 'px;"' : '';
                             
@@ -155,7 +155,7 @@
                                 echo '</svg>';
                             } else {
                                 // Leaf category - clickable link
-                                echo '<a href="/iso-system-documents?category_id=' . $category->id . '" ';
+                                echo '<a href="/iso-system-documents/category/' . $category->id . '" ';
                                 echo 'class="admin-nav__link ' . ($isActive ? 'admin-nav__link--active' : '') . '">';
                                 echo '<svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">';
                                 
@@ -195,7 +195,7 @@
                         foreach($categories as $category) {
                             $childCategories = \App\Models\InternalDocumentCategory::where('parent_id', $category->id)->orderBy('id')->get();
                             $hasChildren = $childCategories->count() > 0;
-                            $isActive = request('category_id') == $category->id;
+                            $isActive = (request()->route('category') && request()->route('category')->id == $category->id);
                             $childClass = $level > 0 ? 'admin-nav__item--child' . ($level > 1 ? ' admin-nav__item--level-' . $level : '') : '';
                             $indentStyle = $level > 1 ? 'style="padding-left: ' . (20 + ($level - 1) * 15) . 'px;"' : '';
                             
@@ -209,7 +209,7 @@
                                 echo '</svg>';
                             } else {
                                 // Leaf category - clickable link
-                                echo '<a href="/internal-documents?category_id=' . $category->id . '" ';
+                                echo '<a href="/internal-documents/category/' . $category->id . '" ';
                                 echo 'class="admin-nav__link ' . ($isActive ? 'admin-nav__link--active' : '') . '">';
                                 echo '<svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">';
                                 
@@ -250,7 +250,7 @@
                         foreach($categories as $category) {
                             $childCategories = \App\Models\ManagementDocumentCategory::where('parent_id', $category->id)->orderBy('id')->get();
                             $hasChildren = $childCategories->count() > 0;
-                            $isActive = request('category_id') == $category->id;
+                            $isActive = (request()->route('category') && request()->route('category')->id == $category->id);
                             $childClass = $level > 0 ? 'admin-nav__item--child' . ($level > 1 ? ' admin-nav__item--level-' . $level : '') : '';
                             $indentStyle = $level > 1 ? 'style="padding-left: ' . (20 + ($level - 1) * 15) . 'px;"' : '';
                             
@@ -264,7 +264,7 @@
                                 echo '</svg>';
                             } else {
                                 // Leaf category - clickable link
-                                echo '<a href="/management-documents?category_id=' . $category->id . '" ';
+                                echo '<a href="/management-documents/category/' . $category->id . '" ';
                                 echo 'class="admin-nav__link ' . ($isActive ? 'admin-nav__link--active' : '') . '">';
                                 echo '<svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">';
                                 

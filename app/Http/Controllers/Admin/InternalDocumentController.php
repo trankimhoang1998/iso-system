@@ -55,11 +55,62 @@ class InternalDocumentController extends Controller
         return view('admin.internal-documents.index', compact('documents', 'categories', 'departments'));
     }
 
+    public function indexByCategory(InternalDocumentCategory $category, Request $request)
+    {
+        $query = InternalDocument::with(['category', 'department'])
+                    ->where('category_id', $category->id);
+
+        // Department filter for roles 2,3 - only see documents from their department
+        $user = auth()->user();
+        if (in_array($user->role, [2, 3]) && $user->department_id) {
+            $query->where('department_id', $user->department_id);
+        }
+
+        // Apply filters
+        if ($request->filled('search')) {
+            $query->where(function($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->search . '%')
+                  ->orWhere('description', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        // Department filter (for search/filter)
+        if ($request->filled('department_id')) {
+            $query->where('department_id', $request->department_id);
+        }
+
+        // Year filter based on issued_year
+        if ($request->filled('year')) {
+            $year = $request->year;
+            $query->where('issued_year', $year);
+        }
+
+        $documents = $query->orderBy('created_at', 'desc')->paginate(15);
+        
+        // Preserve query parameters in pagination links
+        $documents->appends($request->all());
+
+        // Load categories with hierarchical structure for filter dropdown
+        $categories = InternalDocumentCategory::getFlatList();
+        
+        // Get all departments for filter
+        $departments = Department::orderBy('id')->get();
+
+        return view('admin.internal-documents.index', compact('documents', 'categories', 'departments', 'category'));
+    }
+
     public function create()
     {
         $categories = InternalDocumentCategory::getFlatList();
         $departments = Department::orderBy('id')->get();
         return view('admin.internal-documents.create', compact('categories', 'departments'));
+    }
+
+    public function createForCategory(InternalDocumentCategory $category)
+    {
+        $categories = InternalDocumentCategory::getFlatList();
+        $departments = Department::orderBy('id')->get();
+        return view('admin.internal-documents.create', compact('categories', 'departments', 'category'));
     }
 
     public function store(Request $request)
@@ -148,12 +199,16 @@ class InternalDocumentController extends Controller
             'uploaded_by' => auth()->id(),
         ]);
 
-        $redirectUrl = route('admin.internal-documents.index');
+        // Use category-based routes when category context exists
         if ($request->category_id) {
-            $redirectUrl .= '?category_id=' . $request->category_id;
+            $category = InternalDocumentCategory::find($request->category_id);
+            if ($category) {
+                return redirect()->route('admin.internal-documents.category', $category)
+                    ->with('success', 'Tài liệu đã được tạo thành công.');
+            }
         }
         
-        return redirect($redirectUrl)
+        return redirect()->route('admin.internal-documents.index')
             ->with('success', 'Tài liệu đã được tạo thành công.');
     }
 
@@ -169,11 +224,40 @@ class InternalDocumentController extends Controller
         return view('admin.internal-documents.show', compact('internalDocument'));
     }
 
+    public function showForCategory(InternalDocumentCategory $category, InternalDocument $internalDocument)
+    {
+        // Check if user can access this document
+        $user = auth()->user();
+        if (in_array($user->role, [2, 3]) && $user->department_id && $internalDocument->department_id !== $user->department_id) {
+            abort(404);
+        }
+
+        // Verify document belongs to the category
+        if ($internalDocument->category_id !== $category->id) {
+            abort(404);
+        }
+        
+        $internalDocument->load(['category', 'uploader', 'department']);
+        return view('admin.internal-documents.show', compact('internalDocument', 'category'));
+    }
+
     public function edit(InternalDocument $internalDocument)
     {
         $categories = InternalDocumentCategory::getFlatList();
         $departments = Department::orderBy('id')->get();
         return view('admin.internal-documents.edit', compact('internalDocument', 'categories', 'departments'));
+    }
+
+    public function editForCategory(InternalDocumentCategory $category, InternalDocument $internalDocument)
+    {
+        // Verify document belongs to the category
+        if ($internalDocument->category_id !== $category->id) {
+            abort(404);
+        }
+
+        $categories = InternalDocumentCategory::getFlatList();
+        $departments = Department::orderBy('id')->get();
+        return view('admin.internal-documents.edit', compact('internalDocument', 'categories', 'departments', 'category'));
     }
 
     public function update(Request $request, InternalDocument $internalDocument)
@@ -267,12 +351,16 @@ class InternalDocumentController extends Controller
 
         $internalDocument->update($updateData);
 
-        $redirectUrl = route('admin.internal-documents.index');
+        // Use category-based routes when category context exists
         if ($request->category_id) {
-            $redirectUrl .= '?category_id=' . $request->category_id;
+            $category = InternalDocumentCategory::find($request->category_id);
+            if ($category) {
+                return redirect()->route('admin.internal-documents.category', $category)
+                    ->with('success', 'Tài liệu đã được cập nhật thành công.');
+            }
         }
         
-        return redirect($redirectUrl)
+        return redirect()->route('admin.internal-documents.index')
             ->with('success', 'Tài liệu đã được cập nhật thành công.');
     }
 
@@ -290,13 +378,31 @@ class InternalDocumentController extends Controller
 
         $internalDocument->delete();
 
-        // Redirect back to the same category if specified
-        $redirectUrl = route('admin.internal-documents.index');
+        // Smart redirect based on referer URL
+        $referer = $request->headers->get('referer');
+        if ($referer) {
+            // Check if referer is a category-based URL
+            $pattern = '/\/internal-documents\/category\/(\d+)/';
+            if (preg_match($pattern, $referer, $matches)) {
+                $categoryId = $matches[1];
+                $category = InternalDocumentCategory::find($categoryId);
+                if ($category) {
+                    return redirect()->route('admin.internal-documents.category', $category)
+                        ->with('success', 'Tài liệu đã được xóa thành công.');
+                }
+            }
+        }
+
+        // Fallback: check for redirect_category parameter (legacy support)
         if ($request->has('redirect_category')) {
-            $redirectUrl .= '?category_id=' . $request->redirect_category;
+            $category = InternalDocumentCategory::find($request->redirect_category);
+            if ($category) {
+                return redirect()->route('admin.internal-documents.category', $category)
+                    ->with('success', 'Tài liệu đã được xóa thành công.');
+            }
         }
         
-        return redirect($redirectUrl)
+        return redirect()->route('admin.internal-documents.index')
             ->with('success', 'Tài liệu đã được xóa thành công.');
     }
 

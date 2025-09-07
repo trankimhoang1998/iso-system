@@ -45,10 +45,47 @@ class IsoDirectiveDocumentController extends Controller
         return view('admin.iso-directive-documents.index', compact('documents', 'categories'));
     }
 
+    public function indexByCategory(IsoDirectiveCategory $category, Request $request)
+    {
+        $query = IsoDirectiveDocument::with(['category', 'uploader'])
+                    ->where('category_id', $category->id);
+
+        // Search filter
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        // Year filter based on issued_year
+        if ($request->filled('year')) {
+            $year = $request->year;
+            $query->where('issued_year', $year);
+        }
+
+        $documents = $query->orderBy('created_at', 'desc')->paginate(15);
+        
+        // Preserve query parameters in pagination links
+        $documents->appends($request->all());
+
+        // Get all categories for filter with hierarchical structure
+        $categories = IsoDirectiveCategory::getFlatList();
+
+        return view('admin.iso-directive-documents.index', compact('documents', 'categories', 'category'));
+    }
+
     public function create()
     {
         $categories = IsoDirectiveCategory::getFlatList();
         return view('admin.iso-directive-documents.create', compact('categories'));
+    }
+
+    public function createForCategory(IsoDirectiveCategory $category)
+    {
+        $categories = IsoDirectiveCategory::getFlatList();
+        return view('admin.iso-directive-documents.create', compact('categories', 'category'));
     }
 
     public function store(Request $request)
@@ -133,12 +170,13 @@ class IsoDirectiveDocumentController extends Controller
             'uploaded_by' => auth()->id(),
         ]);
 
-        $redirectUrl = route('admin.iso-directive-documents.index');
+        // Redirect to category view if category_id is provided
         if ($request->category_id) {
-            $redirectUrl .= '?category_id=' . $request->category_id;
+            return redirect()->route('admin.iso-directive-documents.category', $request->category_id)
+                ->with('success', 'Tài liệu đã được tạo thành công.');
         }
         
-        return redirect($redirectUrl)
+        return redirect()->route('admin.iso-directive-documents.index')
             ->with('success', 'Tài liệu đã được tạo thành công.');
     }
 
@@ -148,10 +186,34 @@ class IsoDirectiveDocumentController extends Controller
         return view('admin.iso-directive-documents.show', compact('isoDirectiveDocument'));
     }
 
+    public function showForCategory(IsoDirectiveCategory $category, IsoDirectiveDocument $isoDirectiveDocument)
+    {
+        // Ensure the document belongs to the specified category
+        if ($isoDirectiveDocument->category_id !== $category->id) {
+            return redirect()->route('admin.iso-directive-documents.category', $category)
+                ->with('error', 'Tài liệu không thuộc danh mục này.');
+        }
+
+        $isoDirectiveDocument->load(['category', 'uploader']);
+        return view('admin.iso-directive-documents.show', compact('isoDirectiveDocument', 'category'));
+    }
+
     public function edit(IsoDirectiveDocument $isoDirectiveDocument)
     {
         $categories = IsoDirectiveCategory::getFlatList();
         return view('admin.iso-directive-documents.edit', compact('isoDirectiveDocument', 'categories'));
+    }
+
+    public function editForCategory(IsoDirectiveCategory $category, IsoDirectiveDocument $isoDirectiveDocument)
+    {
+        // Ensure the document belongs to the specified category
+        if ($isoDirectiveDocument->category_id !== $category->id) {
+            return redirect()->route('admin.iso-directive-documents.category', $category)
+                ->with('error', 'Tài liệu không thuộc danh mục này.');
+        }
+
+        $categories = IsoDirectiveCategory::getFlatList();
+        return view('admin.iso-directive-documents.edit', compact('isoDirectiveDocument', 'categories', 'category'));
     }
 
     public function update(Request $request, IsoDirectiveDocument $isoDirectiveDocument)
@@ -241,17 +303,21 @@ class IsoDirectiveDocumentController extends Controller
 
         $isoDirectiveDocument->update($updateData);
 
-        $redirectUrl = route('admin.iso-directive-documents.index');
+        // Redirect to category view if category_id is provided
         if ($request->category_id) {
-            $redirectUrl .= '?category_id=' . $request->category_id;
+            return redirect()->route('admin.iso-directive-documents.category', $request->category_id)
+                ->with('success', 'Tài liệu đã được cập nhật thành công.');
         }
         
-        return redirect($redirectUrl)
+        return redirect()->route('admin.iso-directive-documents.index')
             ->with('success', 'Tài liệu đã được cập nhật thành công.');
     }
 
     public function destroy(Request $request, IsoDirectiveDocument $isoDirectiveDocument)
     {
+        // Store category_id before deletion
+        $categoryId = $isoDirectiveDocument->category_id;
+        
         // Delete PDF file from storage
         if ($isoDirectiveDocument->pdf_file_path && Storage::disk('public')->exists($isoDirectiveDocument->pdf_file_path)) {
             Storage::disk('public')->delete($isoDirectiveDocument->pdf_file_path);
@@ -264,13 +330,20 @@ class IsoDirectiveDocumentController extends Controller
 
         $isoDirectiveDocument->delete();
 
-        // Redirect back to the same category if specified
-        $redirectUrl = route('admin.iso-directive-documents.index');
-        if ($request->has('redirect_category')) {
-            $redirectUrl .= '?category_id=' . $request->redirect_category;
+        // Check if request came from category page and redirect accordingly
+        $referer = $request->header('referer');
+        if ($referer && str_contains($referer, '/category/')) {
+            return redirect()->route('admin.iso-directive-documents.category', $categoryId)
+                ->with('success', 'Tài liệu đã được xóa thành công.');
         }
 
-        return redirect($redirectUrl)
+        // Fallback: redirect to category if legacy parameter exists
+        if ($request->has('redirect_category')) {
+            return redirect()->route('admin.iso-directive-documents.category', $request->redirect_category)
+                ->with('success', 'Tài liệu đã được xóa thành công.');
+        }
+
+        return redirect()->route('admin.iso-directive-documents.index')
             ->with('success', 'Tài liệu đã được xóa thành công.');
     }
 

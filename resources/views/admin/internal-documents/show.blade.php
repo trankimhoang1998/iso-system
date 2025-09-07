@@ -5,7 +5,11 @@
 @section('content')
 <div class="admin-page">
     <div class="admin-breadcrumb">
-        <a href="{{ route('admin.internal-documents.index') }}" class="admin-breadcrumb__item">Tài liệu nội bộ</a>
+        @if(isset($category))
+            <a href="{{ route('admin.internal-documents.category', $category) }}" class="admin-breadcrumb__item">{{ $category->name }}</a>
+        @else
+            <a href="{{ route('admin.internal-documents.index') }}" class="admin-breadcrumb__item">Tài liệu nội bộ</a>
+        @endif
         <svg class="admin-breadcrumb__separator" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
         </svg>
@@ -36,7 +40,7 @@
             </a>
             @endif
             @if(in_array(auth()->user()->role, [0, 1, 2]))
-            <a href="{{ route('admin.internal-documents.edit', $internalDocument) }}" 
+            <a href="{{ isset($category) ? route('admin.internal-documents.category.edit', [$category, $internalDocument]) : route('admin.internal-documents.edit', $internalDocument) }}" 
                class="admin-btn admin-btn--primary">
                 <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
