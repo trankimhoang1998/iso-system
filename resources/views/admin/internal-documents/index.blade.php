@@ -40,7 +40,7 @@
                 </div>
                 <div class="admin-filter__group">
                     <label class="admin-filter__label">Phòng ban</label>
-                    <select name="department_id" class="admin-filter__select">
+                    <select name="department_id" id="filter_department" class="admin-form__select select2">
                         <option value="">Tất cả</option>
                         @foreach($departments ?? [] as $department)
                             <option value="{{ $department->id }}" {{ request('department_id') == $department->id ? 'selected' : '' }}>
@@ -227,11 +227,21 @@ window.addEventListener('click', function(e) {
     }
 });
 
-// Initialize Select2 for year filter dropdown
+// Initialize Select2 for filter dropdowns
 document.addEventListener('DOMContentLoaded', function() {
     if (typeof $ !== 'undefined' && $.fn.select2) {
+        // Year dropdown
         $('#filter_year').select2({
             placeholder: '-- Chọn năm --',
+            allowClear: true,
+            width: '100%',
+            dropdownCssClass: 'select2-dropdown-small',
+            containerCssClass: 'select2-container-small'
+        });
+        
+        // Department dropdown
+        $('#filter_department').select2({
+            placeholder: 'Tất cả',
             allowClear: true,
             width: '100%',
             dropdownCssClass: 'select2-dropdown-small',
