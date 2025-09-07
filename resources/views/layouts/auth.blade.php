@@ -44,21 +44,7 @@
             <!-- Right Column - Login Form -->
             <div class="auth-right">
                 <div class="auth-card">
-                    <div class="auth-card__header">
-                        <h3 class="auth-card__title">@yield('card-title')</h3>
-                    </div>
-                    
                     <div class="auth-card__body">
-                        @if ($errors->any())
-                            <div class="auth-alert auth-alert--error">
-                                <ul class="auth-alert__list">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-
                         @yield('content')
                     </div>
                 </div>

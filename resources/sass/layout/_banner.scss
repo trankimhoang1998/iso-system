@@ -31,14 +31,33 @@
         margin: 0;
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
         flex: 1;
+        
+        
+        // Hover effects
+        transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        cursor: default;
+        
+        &:hover {
+            transform: scale(1.05);
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+        }
 
         @include mobile {
             font-size: 18px;
             letter-spacing: 0.5px;
+            
+            &:hover {
+                transform: scale(1.02);
+            }
         }
 
         @include tablet {
             font-size: 20px;
+            
+            &:hover {
+                transform: scale(1.03);
+            }
         }
     }
 
@@ -81,5 +100,44 @@
         @include tablet {
             height: 50px;
         }
+    }
+}
+
+// Animation keyframes
+@keyframes continuousZoom {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+// Alternative stronger zoom effect
+@keyframes strongZoom {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.15);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+// Alternative gentle breathing effect
+@keyframes gentleBreath {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
     }
 }
