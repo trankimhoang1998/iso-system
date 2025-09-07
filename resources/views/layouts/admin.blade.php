@@ -27,7 +27,13 @@
     </button>
 
     <div class="admin-container">
-        @unless(request()->is('trang-chu'))
+        @unless(request()->is('trang-chu') || 
+                request()->routeIs('admin.users*') || 
+                request()->routeIs('admin.departments*') || 
+                request()->routeIs('admin.iso-directive-categories*') || 
+                request()->routeIs('admin.iso-system-categories*') || 
+                request()->routeIs('admin.internal-document-categories*') || 
+                request()->routeIs('admin.management-document-categories*'))
             @include('partials.admin.sidebar')
         @endunless
 
