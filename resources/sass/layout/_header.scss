@@ -115,14 +115,6 @@
                     }
                 }
             }
-
-            &--user {
-                margin-left: 50px;
-
-                @include mobile { 
-                    margin-left: unset;
-                }
-            }
         }
 
         &__arrow {

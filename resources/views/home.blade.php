@@ -113,7 +113,7 @@
                                     <span class="process-list__name">Quy trình bảo dưỡng và sửa chữa thiết bị</span>
                                 </div>
                                 <div class="process-list__item">
-                                    <span class="process-list__code">QT-NV-05</span>
+                                    <span class="process-list__code">QT-NV-06</span>
                                     <span class="process-list__name">Quy trình Tổ chức huấn luyện kỹ thuật</span>
                                 </div>
                             </div>
