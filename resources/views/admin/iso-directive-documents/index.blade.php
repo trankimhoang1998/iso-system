@@ -9,22 +9,36 @@
             <p class="admin-page__subtitle">
                 @php
                     $categoryDescriptions = [
-                        1 => 'Quản lý các quyết định ban hành tài liệu thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia ISO TCVN 9001:2015 của Nhà máy A31',
-                        2 => 'Quản lý các quyết định công bố Hệ thống quản lý chất lượng của Nhà máy A31 phù hợp tiêu chuẩn quốc gia ISO TCVN 9001:2015',
-                        3 => 'Quản lý các quyết định thành lập Ban Chỉ đạo Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia ISO TCVN 9001:2015 (gọi tắt là Ban Chỉ đạo ISO)',
-                        4 => 'Quản lý các Chính sách chất lượng, Mục tiêu chất lượng của Nhà máy A31 theo Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia ISO TCVN 9001:2015',
-                        5 => 'Quản lý Hồ sơ thực hiện Quy trình kiểm soát thông tin dạng văn bản thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia ISO TCVN 9001:2015',
-                        6 => 'Quản lý Hồ sơ thực hiện Quy trình Đánh giá nội bộ thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia ISO TCVN 9001:2015',
-                        7 => 'Quản lý Hồ sơ thực hiện Quy trình Xem xét của lãnh đạo thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia ISO TCVN 9001:2015',
-                        8 => 'Quản lý Hồ sơ thực hiện Quy trình Quản lý rủi ro và cơ hội thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia ISO TCVN 9001:2015',
-                        9 => 'Quản lý Hồ sơ thực hiện Quy trình Khiếu nại và đo lường sự thỏa mãn của khách hàng thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia ISO TCVN 9001:2015',
-                        10 => 'Quản lý Hồ sơ thực hiện Quy trình Khiếu nại và đo lường sự thỏa mãn của khách hàng thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia ISO TCVN 9001:2015'
+                        1 => 'Quản lý các quyết định ban hành tài liệu thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015 của Nhà máy A31',
+                        2 => 'Quản lý các quyết định công bố Hệ thống quản lý chất lượng của Nhà máy A31 phù hợp tiêu chuẩn quốc gia TCVN ISO 9001:2015',
+                        3 => 'Quản lý các quyết định thành lập Ban Chỉ đạo Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015 (gọi tắt là Ban Chỉ đạo ISO)',
+                        4 => 'Quản lý các Chính sách chất lượng, Mục tiêu chất lượng của Nhà máy A31 theo Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015',
+                        5 => 'Quản lý Hồ sơ thực hiện Quy trình kiểm soát thông tin dạng văn bản thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015',
+                        6 => 'Quản lý Hồ sơ thực hiện Quy trình Đánh giá nội bộ thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015',
+                        7 => 'Quản lý Hồ sơ thực hiện Quy trình Xem xét của lãnh đạo thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015',
+                        8 => 'Quản lý Hồ sơ thực hiện Quy trình Quản lý rủi ro và cơ hội thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015',
+                        9 => 'Quản lý Hồ sơ thực hiện Quy trình Khiếu nại và đo lường sự thỏa mãn của khách hàng thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015',
+                        10 => 'Quản lý Hồ sơ thực hiện Quy trình Khiếu nại và đo lường sự thỏa mãn của khách hàng thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015'
                     ];
+                    
                     // Check if we're in category context (from route parameter) or legacy query parameter
                     $currentCategoryId = isset($category) ? $category->id : request('category_id');
-                    $subtitle = $currentCategoryId && isset($categoryDescriptions[$currentCategoryId]) 
-                        ? $categoryDescriptions[$currentCategoryId] 
-                        : 'Quản lý hồ sơ, văn bản pháp lý của Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia ISO TCVN 9001:2015';
+                    $subtitle = 'Quản lý hồ sơ, văn bản pháp lý của Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015';
+                    
+                    if ($currentCategoryId && isset($category)) {
+                        // If current category has a parent, use parent's description
+                        if ($category->parent_id && isset($categoryDescriptions[$category->parent_id])) {
+                            $subtitle = $categoryDescriptions[$category->parent_id];
+                        }
+                        // If current category is a parent (no parent_id), use its own description
+                        elseif (!$category->parent_id && isset($categoryDescriptions[$category->id])) {
+                            $subtitle = $categoryDescriptions[$category->id];
+                        }
+                    }
+                    // Legacy support for query parameter
+                    elseif ($currentCategoryId && isset($categoryDescriptions[$currentCategoryId])) {
+                        $subtitle = $categoryDescriptions[$currentCategoryId];
+                    }
                 @endphp
                 {{ $subtitle }}
             </p>
@@ -82,65 +96,69 @@
         <table class="admin-table">
             <thead class="admin-table__head">
                 <tr>
-                    <th class="admin-table__header">Thời gian</th>
-                    <th class="admin-table__header">Số văn bản</th>
-                    <th class="admin-table__header">Cơ quan ban hành</th>
-                    <th class="admin-table__header">Trích yếu</th>
-                    <th class="admin-table__header">Xem/tải xuống</th>
+                    <th class="admin-table__header admin-table__header--date">Thời gian</th>
+                    <th class="admin-table__header admin-table__header--document-number">Số văn bản</th>
+                    <th class="admin-table__header admin-table__header--agency">Cơ quan ban hành</th>
+                    <th class="admin-table__header admin-table__header--summary">Trích yếu</th>
+                    <th class="admin-table__header admin-table__header--actions">Xem/tải xuống</th>
                 </tr>
             </thead>
             <tbody class="admin-table__body">
                 @forelse($documents as $document)
                 <tr class="admin-table__row">
-                    <td class="admin-table__cell">{{ $document->issued_date ? \Carbon\Carbon::parse($document->issued_date)->format('d/m/Y') : '_' }}</td>
-                    <td class="admin-table__cell">{{ $document->document_number ?: '_' }}</td>
-                    <td class="admin-table__cell">{{ $document->issuing_agency ?: '_' }}</td>
-                    <td class="admin-table__cell">{{ $document->summary ? Str::limit($document->summary, 100) : '_' }}</td>
-                    <td class="admin-table__cell">
+                    <td class="admin-table__cell admin-table__cell--date">{{ $document->issued_date ? \Carbon\Carbon::parse($document->issued_date)->format('d/m/Y') : '_' }}</td>
+                    <td class="admin-table__cell admin-table__cell--document-number">{{ $document->document_number ?: '_' }}</td>
+                    <td class="admin-table__cell admin-table__cell--agency">{{ $document->issuing_agency ?: '_' }}</td>
+                    <td class="admin-table__cell admin-table__cell--summary">{{ $document->summary ?: '_' }}</td>
+                    <td class="admin-table__cell admin-table__cell--actions">
                         <div class="admin-table__actions">
-                            <a href="{{ isset($category) ? route('admin.iso-directive-documents.category.show', [$category, $document]) : route('admin.iso-directive-documents.show', $document) }}" 
-                               class="admin-table__action-btn admin-table__action-btn--view" 
-                               title="Chi tiết">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                </svg>
-                            </a>
-                            @if($document->pdf_file_path)
-                            <a href="{{ route('admin.iso-directive-documents.download', [$document, 'pdf']) }}"
-                               class="admin-table__action-btn admin-table__action-btn--download" 
-                               title="Tải PDF">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                </svg>
-                                <span class="admin-file-type-label">PDF</span>
-                            </a>
-                            @endif
-                            @if($document->word_file_path)
-                            <a href="{{ route('admin.iso-directive-documents.download', [$document, 'word']) }}"
-                               class="admin-table__action-btn admin-table__action-btn--download admin-table__action-btn--word" 
-                               title="Tải Word">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                </svg>
-                                <span class="admin-file-type-label">Word</span>
-                            </a>
-                            @endif
+                            <div class="admin-table__actions-row">
+                                <a href="{{ isset($category) ? route('admin.iso-directive-documents.category.show', [$category, $document]) : route('admin.iso-directive-documents.show', $document) }}" 
+                                   class="admin-table__action-btn admin-table__action-btn--view" 
+                                   title="Chi tiết">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                    </svg>
+                                </a>
+                                @if($document->pdf_file_path)
+                                <a href="{{ route('admin.iso-directive-documents.download', [$document, 'pdf']) }}"
+                                   class="admin-table__action-btn admin-table__action-btn--download" 
+                                   title="Tải PDF">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                    <span class="admin-file-type-label">PDF</span>
+                                </a>
+                                @endif
+                                @if($document->word_file_path)
+                                <a href="{{ route('admin.iso-directive-documents.download', [$document, 'word']) }}"
+                                   class="admin-table__action-btn admin-table__action-btn--download admin-table__action-btn--word" 
+                                   title="Tải Word">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                    <span class="admin-file-type-label">Word</span>
+                                </a>
+                                @endif
+                            </div>
                             @if(in_array(auth()->user()->role, [0, 1]))
-                            <a href="{{ isset($category) ? route('admin.iso-directive-documents.category.edit', [$category, $document]) : route('admin.iso-directive-documents.edit', $document) }}" 
-                               class="admin-table__action-btn admin-table__action-btn--edit" 
-                               title="Chỉnh sửa">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                </svg>
-                            </a>
-                            <button class="admin-table__action-btn admin-table__action-btn--delete" 
-                                    title="Xóa"
-                                    onclick="openDeleteModal({{ $document->id }}, '{{ $document->title }}')">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                </svg>
-                            </button>
+                            <div class="admin-table__actions-row">
+                                <a href="{{ isset($category) ? route('admin.iso-directive-documents.category.edit', [$category, $document]) : route('admin.iso-directive-documents.edit', $document) }}" 
+                                   class="admin-table__action-btn admin-table__action-btn--edit" 
+                                   title="Chỉnh sửa">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                    </svg>
+                                </a>
+                                <button class="admin-table__action-btn admin-table__action-btn--delete" 
+                                        title="Xóa"
+                                        onclick="openDeleteModal({{ $document->id }}, '{{ $document->title }}')">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
+                            </div>
                             @endif
                         </div>
                     </td>

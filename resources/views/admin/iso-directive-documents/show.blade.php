@@ -142,14 +142,6 @@
                     <span class="admin-info-item__value">{{ $isoDirectiveDocument->uploader->name }}</span>
                 </div>
                 @endif
-                <div class="admin-info-item">
-                    <span class="admin-info-item__label">Ngày tạo:</span>
-                    <span class="admin-info-item__value">{{ $isoDirectiveDocument->created_at->format('d/m/Y H:i') }}</span>
-                </div>
-                <div class="admin-info-item">
-                    <span class="admin-info-item__label">Ngày cập nhật:</span>
-                    <span class="admin-info-item__value">{{ $isoDirectiveDocument->updated_at->format('d/m/Y H:i') }}</span>
-                </div>
             </div>
         </div>
 

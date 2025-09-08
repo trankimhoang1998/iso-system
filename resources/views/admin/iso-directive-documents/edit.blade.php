@@ -18,8 +18,8 @@
     
     <div class="admin-page__header">
         <div class="admin-page__title-section">
-            <h1 class="admin-page__title">Sửa văn bản chỉ đạo ISO</h1>
-            <p class="admin-page__subtitle">Cập nhật thông tin văn bản chỉ đạo ISO</p>
+            <h1 class="admin-page__title">Cập nhật văn bản pháp lý thuộc HTQLCL ISO 9001:2015</h1>
+            <p class="admin-page__subtitle">Tải lên và quản lý văn bản pháp lý mới thuộc HTQLCL ISO 9001:2015</p>
         </div>
         <div class="admin-page__actions">
             <a href="{{ isset($category) ? route('admin.iso-directive-documents.category', $category) : route('admin.iso-directive-documents.index') }}" class="admin-btn admin-btn--secondary">
@@ -228,45 +228,107 @@
 </div>
 
 <script>
-// PDF File upload preview and validation
-document.getElementById('adminPdfFileInput').addEventListener('change', function(e) {
-    const label = this.parentNode.querySelector('.admin-file-upload__label span');
-    if (e.target.files.length > 0) {
-        const file = e.target.files[0];
-        label.textContent = file.name;
-        
-        // File size validation
-        const maxSize = 50 * 1024 * 1024; // 50MB in bytes
+// Function to handle file validation and preview
+function handleFileSelect(inputId, labelSelector, defaultText, maxSize, acceptedTypes) {
+    const input = document.getElementById(inputId);
+    const label = document.querySelector(labelSelector);
+    
+    function validateAndPreview(file) {
+        // Check file size
         if (file.size > maxSize) {
-            alert('Kích thước file PDF không được vượt quá 50MB');
-            this.value = '';
-            label.textContent = 'Chọn file PDF mới hoặc kéo thả vào đây';
+            const maxSizeMB = maxSize / (1024 * 1024);
+            alert(`Kích thước file không được vượt quá ${maxSizeMB}MB`);
+            input.value = '';
+            label.textContent = defaultText;
             return false;
         }
-    } else {
-        label.textContent = 'Chọn file PDF mới hoặc kéo thả vào đây';
+        
+        // Check file type
+        if (acceptedTypes && !acceptedTypes.includes(file.type)) {
+            alert('Định dạng file không được hỗ trợ');
+            input.value = '';
+            label.textContent = defaultText;
+            return false;
+        }
+        
+        // Update label with filename
+        label.textContent = file.name;
+        return true;
     }
-});
+    
+    // Handle input change
+    input.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            validateAndPreview(file);
+        } else {
+            label.textContent = defaultText;
+        }
+    });
+    
+    // Handle drag and drop
+    const dropArea = label.parentElement;
+    
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, preventDefaults, false);
+    });
+    
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropArea.addEventListener(eventName, highlight, false);
+    });
+    
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, unhighlight, false);
+    });
+    
+    function highlight() {
+        dropArea.classList.add('admin-file-upload--dragover');
+    }
+    
+    function unhighlight() {
+        dropArea.classList.remove('admin-file-upload--dragover');
+    }
+    
+    dropArea.addEventListener('drop', handleDrop, false);
+    
+    function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        
+        if (files.length > 0) {
+            const file = files[0];
+            if (validateAndPreview(file)) {
+                // Create a new FileList-like object
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                input.files = dataTransfer.files;
+            }
+        }
+    }
+}
 
-// Word File upload preview and validation
-document.getElementById('adminWordFileInput').addEventListener('change', function(e) {
-    const label = this.parentNode.querySelector('.admin-file-upload__label span');
-    if (e.target.files.length > 0) {
-        const file = e.target.files[0];
-        label.textContent = file.name;
-        
-        // File size validation
-        const maxSize = 50 * 1024 * 1024; // 50MB in bytes
-        if (file.size > maxSize) {
-            alert('Kích thước file Word không được vượt quá 50MB');
-            this.value = '';
-            label.textContent = 'Chọn file Word mới hoặc kéo thả vào đây';
-            return false;
-        }
-    } else {
-        label.textContent = 'Chọn file Word mới hoặc kéo thả vào đây';
-    }
-});
+// Initialize PDF file upload
+handleFileSelect(
+    'adminPdfFileInput',
+    'label[for="adminPdfFileInput"] span',
+    'Chọn file PDF mới hoặc kéo thả vào đây',
+    50 * 1024 * 1024, // 50MB
+    ['application/pdf']
+);
+
+// Initialize Word file upload
+handleFileSelect(
+    'adminWordFileInput',
+    'label[for="adminWordFileInput"] span',
+    'Chọn file Word mới hoặc kéo thả vào đây',
+    50 * 1024 * 1024, // 50MB
+    ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword']
+);
 
 </script>
 @endsection
