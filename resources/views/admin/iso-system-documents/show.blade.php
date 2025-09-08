@@ -62,30 +62,13 @@
                 </div>
                 @if($isoSystemDocument->department)
                 <div class="admin-document-meta__item">
-                    <span class="admin-document-meta__label">Phòng ban:</span>
+                    <span class="admin-document-meta__label">Đơn vị áp dụng:</span>
                     <span class="admin-document-meta__value">{{ $isoSystemDocument->department->name }}</span>
                 </div>
                 @endif
-                <div class="admin-document-meta__item">
-                    <span class="admin-document-meta__label">Trạng thái:</span>
-                    <span class="admin-status-badge 
-                        @if($isoSystemDocument->status == 'approved') admin-status-badge--active 
-                        @elseif($isoSystemDocument->status == 'draft') admin-status-badge--warning
-                        @else admin-status-badge--inactive @endif">
-                        {{ $isoSystemDocument->getStatusName() }}
-                    </span>
-                </div>
             </div>
         </div>
 
-        @if($isoSystemDocument->description)
-        <div class="admin-document-description">
-            <h3 class="admin-document-description__title">Mô tả</h3>
-            <div class="admin-document-description__content">
-                {{ $isoSystemDocument->description }}
-            </div>
-        </div>
-        @endif
 
         @if($isoSystemDocument->pdf_file_path || $isoSystemDocument->word_file_path)
         <div class="admin-document-file">
@@ -142,16 +125,12 @@
                     <span class="admin-info-item__value">{{ $isoSystemDocument->symbol ?: '_' }}</span>
                 </div>
                 <div class="admin-info-item">
-                    <span class="admin-info-item__label">Năm ban hành tài liệu:</span>
-                    <span class="admin-info-item__value">{{ $isoSystemDocument->issued_year ?: '_' }}</span>
+                    <span class="admin-info-item__label">Thời gian ban hành:</span>
+                    <span class="admin-info-item__value">{{ $isoSystemDocument->issued_date ? $isoSystemDocument->issued_date->format('d/m/Y') : '_' }}</span>
                 </div>
                 <div class="admin-info-item">
-                    <span class="admin-info-item__label">Số văn bản:</span>
-                    <span class="admin-info-item__value">{{ $isoSystemDocument->document_number ?: '_' }}</span>
-                </div>
-                <div class="admin-info-item">
-                    <span class="admin-info-item__label">Cơ quan ban hành:</span>
-                    <span class="admin-info-item__value">{{ $isoSystemDocument->issuing_agency ?: '_' }}</span>
+                    <span class="admin-info-item__label">Cập nhật mới nhất:</span>
+                    <span class="admin-info-item__value">{{ $isoSystemDocument->latest_update ? $isoSystemDocument->latest_update->format('d/m/Y') : '_' }}</span>
                 </div>
                 @if($isoSystemDocument->uploader)
                 <div class="admin-info-item">
@@ -159,25 +138,9 @@
                     <span class="admin-info-item__value">{{ $isoSystemDocument->uploader->name }}</span>
                 </div>
                 @endif
-                <div class="admin-info-item">
-                    <span class="admin-info-item__label">Ngày tạo:</span>
-                    <span class="admin-info-item__value">{{ $isoSystemDocument->created_at->format('d/m/Y H:i') }}</span>
-                </div>
-                <div class="admin-info-item">
-                    <span class="admin-info-item__label">Ngày cập nhật:</span>
-                    <span class="admin-info-item__value">{{ $isoSystemDocument->updated_at->format('d/m/Y H:i') }}</span>
-                </div>
             </div>
         </div>
 
-        @if($isoSystemDocument->summary)
-        <div class="admin-document-summary">
-            <h3 class="admin-document-summary__title">Trích yếu</h3>
-            <div class="admin-document-summary__content">
-                {{ $isoSystemDocument->summary }}
-            </div>
-        </div>
-        @endif
     </div>
 </div>
 @endsection

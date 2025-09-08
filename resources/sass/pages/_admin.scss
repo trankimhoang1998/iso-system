@@ -594,7 +594,7 @@
     &__group {
         display: flex;
         flex-direction: column;
-        min-width: 150px;
+        // min-width: 150px;
         flex: 1;
 
         @include mobile {
@@ -783,6 +783,37 @@
 
         &:last-child {
             border-right: none;
+        }
+
+        // Specific header column widths and styles
+        &--symbol {
+            width: 120px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        &--title {
+            width: auto;
+            min-width: 250px;
+            font-size: 14px;
+        }
+
+        &--date {
+            width: 110px;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        &--department {
+            width: 200px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        &--actions {
+            width: 150px;
+            text-align: center;
+            font-size: 13px;
         }
 
         @include mobile {
@@ -2679,6 +2710,41 @@
 }
 
 // ===============================================
+// Department Tags Style (Used in Document Index Pages)
+// ===============================================
+
+.department-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+}
+
+.department-tag {
+    display: inline-block;
+    background: rgba(52, 152, 219, 0.1);
+    color: #3498db;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    border: 1px solid rgba(52, 152, 219, 0.2);
+    white-space: nowrap;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba(52, 152, 219, 0.15);
+        border-color: rgba(52, 152, 219, 0.3);
+    }
+}
+
+.department-empty {
+    color: #95a5a6;
+    font-style: italic;
+    font-size: 12px;
+}
+
+// ===============================================
 // Categories Simple Style (Used in Category Index Pages)
 // ===============================================
 
@@ -2878,7 +2944,8 @@
 }
 
 // Small button variant
-.admin-btn--small {
+.admin-btn--small,
+.admin-btn--sm {
     padding: 6px 8px;
     font-size: 12px;
     min-width: 32px;
@@ -2943,8 +3010,6 @@
 }
 
 .admin-form__group .select2-container.select2-container--default .select2-selection__rendered {
-    line-height: 36px !important;
-    padding-left: 12px !important;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
     font-size: 13px !important;
@@ -2966,6 +3031,26 @@
     transform: translateY(-50%) !important;
     right: 0 !important;
     line-height: 1 !important;
+}
+
+// Select2 multiple selection styling
+.select2-container--default .select2-selection--multiple {
+    // height: 38px !important;
+    min-height: 38px !important;
+    border-color: #e9ecef !important;
+}
+
+.select2-container .select2-search--inline .select2-search__field {
+    margin-top: 10px !important;
+    font-size: 13px !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    top: 3px !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__clear {
+    top: 3px !important;
 }
 
 .select2-dropdown-small {

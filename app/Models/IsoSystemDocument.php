@@ -4,14 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class IsoSystemDocument extends Model
 {
     protected $fillable = [
-        'title',
-        'description',
         'category_id',
-        'department_id',
+        'symbol',
+        'title',
+        'issued_date',
+        'latest_update',
         'pdf_file_name',
         'pdf_file_path',
         'pdf_file_type',
@@ -20,18 +22,13 @@ class IsoSystemDocument extends Model
         'word_file_path',
         'word_file_type',
         'word_file_size',
-        'status',
-        'symbol',
-        'issued_year',
-        'document_number',
-        'issuing_agency',
-        'summary',
         'uploaded_by',
     ];
 
-    const STATUS_DRAFT = 'draft';
-    const STATUS_APPROVED = 'approved';
-    const STATUS_ARCHIVED = 'archived';
+    protected $casts = [
+        'issued_date' => 'date',
+        'latest_update' => 'date',
+    ];
 
     public function uploader(): BelongsTo
     {
@@ -48,15 +45,9 @@ class IsoSystemDocument extends Model
         return $this->belongsTo(Department::class);
     }
 
-
-    public function getStatusName(): string
+    public function departments(): BelongsToMany
     {
-        return match($this->status) {
-            self::STATUS_DRAFT => 'Bản nháp',
-            self::STATUS_APPROVED => 'Đã phê duyệt',
-            self::STATUS_ARCHIVED => 'Lưu trữ',
-            default => 'Không xác định',
-        };
+        return $this->belongsToMany(Department::class, 'iso_system_document_department');
     }
 
     /**

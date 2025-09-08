@@ -13,14 +13,14 @@ class IsoSystemDocumentController extends Controller
 {
     public function index(Request $request)
     {
-        $query = IsoSystemDocument::with(['category', 'uploader', 'department']);
+        $query = IsoSystemDocument::with(['category', 'uploader', 'departments']);
 
         // Search filter
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                  ->orWhere('symbol', 'like', "%{$search}%");
             });
         }
 
@@ -31,19 +31,26 @@ class IsoSystemDocumentController extends Controller
 
         // Department filter (for search/filter)
         if ($request->filled('department_id')) {
-            $query->where('department_id', $request->department_id);
+            $query->whereHas('departments', function($q) use ($request) {
+                $q->where('departments.id', $request->department_id);
+            });
         }
 
-        // Year filter based on issued_year
-        if ($request->filled('year')) {
-            $year = $request->year;
-            $query->where('issued_year', $year);
+        // Date range filter based on issued_date
+        if ($request->filled('date_from')) {
+            $query->whereDate('issued_date', '>=', $request->date_from);
+        }
+        
+        if ($request->filled('date_to')) {
+            $query->whereDate('issued_date', '<=', $request->date_to);
         }
 
         // Department filter for roles 2,3 - only see documents from their department
         $user = auth()->user();
         if (in_array($user->role, [2, 3]) && $user->department_id) {
-            $query->where('department_id', $user->department_id);
+            $query->whereHas('departments', function($q) use ($user) {
+                $q->where('departments.id', $user->department_id);
+            });
         }
 
         $documents = $query->orderBy('created_at', 'desc')->paginate(15);
@@ -62,7 +69,7 @@ class IsoSystemDocumentController extends Controller
 
     public function indexByCategory(IsoSystemCategory $category, Request $request)
     {
-        $query = IsoSystemDocument::with(['category', 'uploader', 'department'])
+        $query = IsoSystemDocument::with(['category', 'uploader', 'departments'])
                     ->where('category_id', $category->id);
 
         // Search filter
@@ -70,25 +77,32 @@ class IsoSystemDocumentController extends Controller
             $search = $request->search;
             $query->where(function($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                  ->orWhere('symbol', 'like', "%{$search}%");
             });
         }
 
         // Department filter (for search/filter)
         if ($request->filled('department_id')) {
-            $query->where('department_id', $request->department_id);
+            $query->whereHas('departments', function($q) use ($request) {
+                $q->where('departments.id', $request->department_id);
+            });
         }
 
-        // Year filter based on issued_year
-        if ($request->filled('year')) {
-            $year = $request->year;
-            $query->where('issued_year', $year);
+        // Date range filter based on issued_date
+        if ($request->filled('date_from')) {
+            $query->whereDate('issued_date', '>=', $request->date_from);
+        }
+        
+        if ($request->filled('date_to')) {
+            $query->whereDate('issued_date', '<=', $request->date_to);
         }
 
         // Department filter for roles 2,3 - only see documents from their department
         $user = auth()->user();
         if (in_array($user->role, [2, 3]) && $user->department_id) {
-            $query->where('department_id', $user->department_id);
+            $query->whereHas('departments', function($q) use ($user) {
+                $q->where('departments.id', $user->department_id);
+            });
         }
 
         $documents = $query->orderBy('created_at', 'desc')->paginate(15);
@@ -122,37 +136,29 @@ class IsoSystemDocumentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
             'category_id' => 'required|exists:iso_system_categories,id',
-            'department_id' => 'required|exists:departments,id',
-            'status' => 'nullable|in:draft,approved,archived',
             'symbol' => 'nullable|string|max:255',
-            'issued_year' => 'nullable|integer|digits:4',
-            'document_number' => 'nullable|string|max:255',
-            'issuing_agency' => 'nullable|string|max:255',
-            'summary' => 'nullable|string|max:1000',
+            'title' => 'required|string|max:255',
+            'issued_date' => 'nullable|date',
+            'latest_update' => 'nullable|date',
+            'department_ids' => 'required|array|min:1',
+            'department_ids.*' => 'exists:departments,id',
             'pdf_file' => 'required|file|mimes:pdf|max:51200', // PDF file required, 50MB max
             'word_file' => 'nullable|file|mimes:doc,docx|max:51200', // Word file optional, 50MB max
         ], [
-            'title.required' => 'Tiêu đề văn bản là bắt buộc.',
-            'title.string' => 'Tiêu đề văn bản phải là chuỗi văn bản.',
-            'title.max' => 'Tiêu đề văn bản không được vượt quá 255 ký tự.',
             'category_id.required' => 'Danh mục là bắt buộc.',
             'category_id.exists' => 'Danh mục được chọn không hợp lệ.',
-            'department_id.required' => 'Phòng ban là bắt buộc.',
-            'department_id.exists' => 'Phòng ban được chọn không hợp lệ.',
-            'status.in' => 'Trạng thái được chọn không hợp lệ.',
             'symbol.string' => 'Ký hiệu phải là chuỗi văn bản.',
             'symbol.max' => 'Ký hiệu không được vượt quá 255 ký tự.',
-            'issued_year.integer' => 'Thời gian ban hành phải là số nguyên.',
-            'issued_year.digits' => 'Thời gian ban hành phải có đúng 4 chữ số.',
-            'document_number.string' => 'Số văn bản phải là chuỗi văn bản.',
-            'document_number.max' => 'Số văn bản không được vượt quá 255 ký tự.',
-            'issuing_agency.string' => 'Cơ quan ban hành phải là chuỗi văn bản.',
-            'issuing_agency.max' => 'Cơ quan ban hành không được vượt quá 255 ký tự.',
-            'summary.string' => 'Trích yếu phải là chuỗi văn bản.',
-            'summary.max' => 'Trích yếu không được vượt quá 1000 ký tự.',
+            'title.required' => 'Tên tài liệu là bắt buộc.',
+            'title.string' => 'Tên tài liệu phải là chuỗi văn bản.',
+            'title.max' => 'Tên tài liệu không được vượt quá 255 ký tự.',
+            'issued_date.date' => 'Thời gian ban hành phải là ngày hợp lệ.',
+            'latest_update.date' => 'Cập nhật mới nhất phải là ngày hợp lệ.',
+            'department_ids.required' => 'Đơn vị áp dụng là bắt buộc.',
+            'department_ids.array' => 'Đơn vị áp dụng phải là mảng.',
+            'department_ids.min' => 'Phải chọn ít nhất một đơn vị áp dụng.',
+            'department_ids.*.exists' => 'Đơn vị áp dụng được chọn không hợp lệ.',
             'pdf_file.required' => 'File PDF là bắt buộc.',
             'pdf_file.file' => 'PDF phải là một file.',
             'pdf_file.mimes' => 'File PDF phải có định dạng: pdf.',
@@ -181,17 +187,12 @@ class IsoSystemDocumentController extends Controller
             $wordFileSize = $wordFile->getSize();
         }
 
-        IsoSystemDocument::create([
-            'title' => $request->title,
-            'description' => $request->description,
+        $document = IsoSystemDocument::create([
             'category_id' => $request->category_id,
-            'department_id' => $request->department_id,
-            'status' => $request->status ?? 'draft',
             'symbol' => $request->symbol,
-            'issued_year' => $request->issued_year,
-            'document_number' => $request->document_number,
-            'issuing_agency' => $request->issuing_agency,
-            'summary' => $request->summary,
+            'title' => $request->title,
+            'issued_date' => $request->issued_date,
+            'latest_update' => $request->latest_update,
             // PDF file fields
             'pdf_file_name' => $pdfFileName,
             'pdf_file_path' => $pdfFilePath,
@@ -204,6 +205,9 @@ class IsoSystemDocumentController extends Controller
             'word_file_size' => $wordFileSize,
             'uploaded_by' => auth()->id(),
         ]);
+
+        // Attach departments to the document
+        $document->departments()->attach($request->department_ids);
 
         // Use category-based routes when category context exists
         if ($request->category_id) {
@@ -222,7 +226,7 @@ class IsoSystemDocumentController extends Controller
     {
         // Check if user can access this document
         $user = auth()->user();
-        if (in_array($user->role, [2, 3]) && $user->department_id && $isoSystemDocument->department_id !== $user->department_id) {
+        if (in_array($user->role, [2, 3]) && $user->department_id && !$isoSystemDocument->departments->contains('id', $user->department_id)) {
             abort(404);
         }
         
@@ -234,7 +238,7 @@ class IsoSystemDocumentController extends Controller
     {
         // Check if user can access this document
         $user = auth()->user();
-        if (in_array($user->role, [2, 3]) && $user->department_id && $isoSystemDocument->department_id !== $user->department_id) {
+        if (in_array($user->role, [2, 3]) && $user->department_id && !$isoSystemDocument->departments->contains('id', $user->department_id)) {
             abort(404);
         }
 
@@ -249,6 +253,7 @@ class IsoSystemDocumentController extends Controller
 
     public function edit(IsoSystemDocument $isoSystemDocument)
     {
+        $isoSystemDocument->load('departments');
         $categories = IsoSystemCategory::getFlatList();
         $departments = Department::orderBy('id')->get();
         return view('admin.iso-system-documents.edit', compact('isoSystemDocument', 'categories', 'departments'));
@@ -261,6 +266,7 @@ class IsoSystemDocumentController extends Controller
             abort(404);
         }
 
+        $isoSystemDocument->load('departments');
         $categories = IsoSystemCategory::getFlatList();
         $departments = Department::orderBy('id')->get();
         return view('admin.iso-system-documents.edit', compact('isoSystemDocument', 'categories', 'departments', 'category'));
@@ -269,31 +275,43 @@ class IsoSystemDocumentController extends Controller
     public function update(Request $request, IsoSystemDocument $isoSystemDocument)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
             'category_id' => 'required|exists:iso_system_categories,id',
-            'department_id' => 'required|exists:departments,id',
-            'status' => 'nullable|in:draft,approved,archived',
             'symbol' => 'nullable|string|max:255',
-            'issued_year' => 'nullable|integer|digits:4',
-            'document_number' => 'nullable|string|max:255',
-            'issuing_agency' => 'nullable|string|max:255',
-            'summary' => 'nullable|string|max:1000',
+            'title' => 'required|string|max:255',
+            'issued_date' => 'nullable|date',
+            'latest_update' => 'nullable|date',
+            'department_ids' => 'required|array|min:1',
+            'department_ids.*' => 'exists:departments,id',
             'pdf_file' => 'nullable|file|mimes:pdf|max:51200', // PDF file optional for update, 50MB max
             'word_file' => 'nullable|file|mimes:doc,docx|max:51200', // Word file optional, 50MB max
+        ], [
+            'category_id.required' => 'Danh mục là bắt buộc.',
+            'category_id.exists' => 'Danh mục được chọn không hợp lệ.',
+            'symbol.string' => 'Ký hiệu phải là chuỗi văn bản.',
+            'symbol.max' => 'Ký hiệu không được vượt quá 255 ký tự.',
+            'title.required' => 'Tên tài liệu là bắt buộc.',
+            'title.string' => 'Tên tài liệu phải là chuỗi văn bản.',
+            'title.max' => 'Tên tài liệu không được vượt quá 255 ký tự.',
+            'issued_date.date' => 'Thời gian ban hành phải là ngày hợp lệ.',
+            'latest_update.date' => 'Cập nhật mới nhất phải là ngày hợp lệ.',
+            'department_ids.required' => 'Đơn vị áp dụng là bắt buộc.',
+            'department_ids.array' => 'Đơn vị áp dụng phải là mảng.',
+            'department_ids.min' => 'Phải chọn ít nhất một đơn vị áp dụng.',
+            'department_ids.*.exists' => 'Đơn vị áp dụng được chọn không hợp lệ.',
+            'pdf_file.file' => 'PDF phải là một file.',
+            'pdf_file.mimes' => 'File PDF phải có định dạng: pdf.',
+            'pdf_file.max' => 'File PDF không được vượt quá 50MB.',
+            'word_file.file' => 'Word phải là một file.',
+            'word_file.mimes' => 'File Word phải có định dạng: doc, docx.',
+            'word_file.max' => 'File Word không được vượt quá 50MB.',
         ]);
 
         $updateData = [
-            'title' => $request->title,
-            'description' => $request->description,
             'category_id' => $request->category_id,
-            'department_id' => $request->department_id,
-            'status' => $request->status ?? $isoSystemDocument->status,
             'symbol' => $request->symbol,
-            'issued_year' => $request->issued_year,
-            'document_number' => $request->document_number,
-            'issuing_agency' => $request->issuing_agency,
-            'summary' => $request->summary,
+            'title' => $request->title,
+            'issued_date' => $request->issued_date,
+            'latest_update' => $request->latest_update,
         ];
 
         // Handle PDF file update
@@ -331,6 +349,9 @@ class IsoSystemDocumentController extends Controller
         }
 
         $isoSystemDocument->update($updateData);
+
+        // Sync departments to the document
+        $isoSystemDocument->departments()->sync($request->department_ids);
 
         // Use category-based routes when category context exists
         if ($request->category_id) {
@@ -391,7 +412,7 @@ class IsoSystemDocumentController extends Controller
     {
         // Check if user can access this document
         $user = auth()->user();
-        if (in_array($user->role, [2, 3]) && $user->department_id && $isoSystemDocument->department_id !== $user->department_id) {
+        if (in_array($user->role, [2, 3]) && $user->department_id && !$isoSystemDocument->departments->contains('id', $user->department_id)) {
             abort(404);
         }
         
