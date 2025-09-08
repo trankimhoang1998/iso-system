@@ -13,12 +13,12 @@
         <svg class="admin-breadcrumb__separator" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
         </svg>
-        <span class="admin-breadcrumb__item admin-breadcrumb__item--current">{{ Str::limit($isoDirectiveDocument->title, 50) }}</span>
+        <span class="admin-breadcrumb__item admin-breadcrumb__item--current">Chi tiết văn bản</span>
     </div>
     
     <div class="admin-page__header">
         <div class="admin-page__title-section">
-            <h1 class="admin-page__title">{{ $isoDirectiveDocument->title }}</h1>
+            <h1 class="admin-page__title">Chi tiết văn bản chỉ đạo ISO</h1>
         </div>
         <div class="admin-page__actions">
             @if($isoDirectiveDocument->hasPdfFile())
@@ -66,26 +66,9 @@
                     <span class="admin-document-meta__value">{{ $isoDirectiveDocument->getFormattedFileSize() }}</span>
                 </div>
                 @endif
-                <div class="admin-document-meta__item">
-                    <span class="admin-document-meta__label">Trạng thái:</span>
-                    <span class="admin-status-badge 
-                        @if($isoDirectiveDocument->status == 'approved') admin-status-badge--active 
-                        @elseif($isoDirectiveDocument->status == 'draft') admin-status-badge--warning
-                        @else admin-status-badge--inactive @endif">
-                        {{ $isoDirectiveDocument->getStatusName() }}
-                    </span>
-                </div>
             </div>
         </div>
 
-        @if($isoDirectiveDocument->description)
-        <div class="admin-document-description">
-            <h3 class="admin-document-description__title">Mô tả</h3>
-            <div class="admin-document-description__content">
-                {{ $isoDirectiveDocument->description }}
-            </div>
-        </div>
-        @endif
 
         @if($isoDirectiveDocument->hasPdfFile() || $isoDirectiveDocument->hasWordFile())
         <div class="admin-document-file">
@@ -142,12 +125,8 @@
             <h3 class="admin-document-info__title">Thông tin văn bản</h3>
             <div class="admin-document-info__grid">
                 <div class="admin-info-item">
-                    <span class="admin-info-item__label">Ký hiệu:</span>
-                    <span class="admin-info-item__value">{{ $isoDirectiveDocument->symbol ?: '_' }}</span>
-                </div>
-                <div class="admin-info-item">
-                    <span class="admin-info-item__label">Năm ban hành tài liệu:</span>
-                    <span class="admin-info-item__value">{{ $isoDirectiveDocument->issued_year ?: '_' }}</span>
+                    <span class="admin-info-item__label">Thời gian ban hành:</span>
+                    <span class="admin-info-item__value">{{ $isoDirectiveDocument->issued_date ? \Carbon\Carbon::parse($isoDirectiveDocument->issued_date)->format('d/m/Y') : '_' }}</span>
                 </div>
                 <div class="admin-info-item">
                     <span class="admin-info-item__label">Số văn bản:</span>

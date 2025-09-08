@@ -18,8 +18,9 @@ class IsoDirectiveDocumentController extends Controller
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                $q->where('summary', 'like', "%{$search}%")
+                  ->orWhere('document_number', 'like', "%{$search}%")
+                  ->orWhere('issuing_agency', 'like', "%{$search}%");
             });
         }
 
@@ -28,10 +29,13 @@ class IsoDirectiveDocumentController extends Controller
             $query->where('category_id', $request->category_id);
         }
 
-        // Year filter based on issued_year
-        if ($request->filled('year')) {
-            $year = $request->year;
-            $query->where('issued_year', $year);
+        // Date range filter based on issued_date
+        if ($request->filled('date_from')) {
+            $query->whereDate('issued_date', '>=', $request->date_from);
+        }
+        
+        if ($request->filled('date_to')) {
+            $query->whereDate('issued_date', '<=', $request->date_to);
         }
 
         $documents = $query->orderBy('created_at', 'desc')->paginate(15);
@@ -54,15 +58,19 @@ class IsoDirectiveDocumentController extends Controller
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                $q->where('summary', 'like', "%{$search}%")
+                  ->orWhere('document_number', 'like', "%{$search}%")
+                  ->orWhere('issuing_agency', 'like', "%{$search}%");
             });
         }
 
-        // Year filter based on issued_year
-        if ($request->filled('year')) {
-            $year = $request->year;
-            $query->where('issued_year', $year);
+        // Date range filter based on issued_date
+        if ($request->filled('date_from')) {
+            $query->whereDate('issued_date', '>=', $request->date_from);
+        }
+        
+        if ($request->filled('date_to')) {
+            $query->whereDate('issued_date', '<=', $request->date_to);
         }
 
         $documents = $query->orderBy('created_at', 'desc')->paginate(15);
@@ -91,28 +99,17 @@ class IsoDirectiveDocumentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
             'category_id' => 'required|exists:iso_directive_categories,id',
-            'status' => 'nullable|in:draft,approved,archived',
-            'symbol' => 'nullable|string|max:255',
-            'issued_year' => 'nullable|integer|digits:4',
+            'issued_date' => 'nullable|date',
             'document_number' => 'nullable|string|max:255',
             'issuing_agency' => 'nullable|string|max:255',
             'summary' => 'nullable|string|max:1000',
             'pdf_file' => 'required|file|mimes:pdf|max:51200', // PDF file required, 50MB max
             'word_file' => 'nullable|file|mimes:doc,docx|max:51200', // Word file optional, 50MB max
         ], [
-            'title.required' => 'Tiêu đề là bắt buộc.',
-            'title.string' => 'Tiêu đề phải là chuỗi văn bản.',
-            'title.max' => 'Tiêu đề không được vượt quá 255 ký tự.',
             'category_id.required' => 'Danh mục là bắt buộc.',
             'category_id.exists' => 'Danh mục được chọn không hợp lệ.',
-            'status.in' => 'Trạng thái được chọn không hợp lệ.',
-            'symbol.string' => 'Ký hiệu phải là chuỗi văn bản.',
-            'symbol.max' => 'Ký hiệu không được vượt quá 255 ký tự.',
-            'issued_year.integer' => 'Năm ban hành phải là số nguyên.',
-            'issued_year.digits' => 'Năm ban hành phải có đúng 4 chữ số.',
+            'issued_date.date' => 'Thời gian ban hành phải là ngày hợp lệ.',
             'document_number.string' => 'Số văn bản phải là chuỗi văn bản.',
             'document_number.max' => 'Số văn bản không được vượt quá 255 ký tự.',
             'issuing_agency.string' => 'Cơ quan ban hành phải là chuỗi văn bản.',
@@ -148,12 +145,8 @@ class IsoDirectiveDocumentController extends Controller
         }
 
         IsoDirectiveDocument::create([
-            'title' => $request->title,
-            'description' => $request->description,
             'category_id' => $request->category_id,
-            'status' => $request->status ?? 'draft',
-            'symbol' => $request->symbol,
-            'issued_year' => $request->issued_year,
+            'issued_date' => $request->issued_date,
             'document_number' => $request->document_number,
             'issuing_agency' => $request->issuing_agency,
             'summary' => $request->summary,
@@ -219,28 +212,17 @@ class IsoDirectiveDocumentController extends Controller
     public function update(Request $request, IsoDirectiveDocument $isoDirectiveDocument)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
             'category_id' => 'required|exists:iso_directive_categories,id',
-            'status' => 'nullable|in:draft,approved,archived',
-            'symbol' => 'nullable|string|max:255',
-            'issued_year' => 'nullable|integer|digits:4',
+            'issued_date' => 'nullable|date',
             'document_number' => 'nullable|string|max:255',
             'issuing_agency' => 'nullable|string|max:255',
             'summary' => 'nullable|string|max:1000',
             'pdf_file' => 'nullable|file|mimes:pdf|max:51200', // PDF file optional for update, 50MB max
             'word_file' => 'nullable|file|mimes:doc,docx|max:51200', // Word file optional, 50MB max
         ], [
-            'title.required' => 'Tiêu đề là bắt buộc.',
-            'title.string' => 'Tiêu đề phải là chuỗi văn bản.',
-            'title.max' => 'Tiêu đề không được vượt quá 255 ký tự.',
             'category_id.required' => 'Danh mục là bắt buộc.',
             'category_id.exists' => 'Danh mục được chọn không hợp lệ.',
-            'status.in' => 'Trạng thái được chọn không hợp lệ.',
-            'symbol.string' => 'Ký hiệu phải là chuỗi văn bản.',
-            'symbol.max' => 'Ký hiệu không được vượt quá 255 ký tự.',
-            'issued_year.integer' => 'Năm ban hành phải là số nguyên.',
-            'issued_year.digits' => 'Năm ban hành phải có đúng 4 chữ số.',
+            'issued_date.date' => 'Thời gian ban hành phải là ngày hợp lệ.',
             'document_number.string' => 'Số văn bản phải là chuỗi văn bản.',
             'document_number.max' => 'Số văn bản không được vượt quá 255 ký tự.',
             'issuing_agency.string' => 'Cơ quan ban hành phải là chuỗi văn bản.',
@@ -256,12 +238,8 @@ class IsoDirectiveDocumentController extends Controller
         ]);
 
         $updateData = [
-            'title' => $request->title,
-            'description' => $request->description,
             'category_id' => $request->category_id,
-            'status' => $request->status ?? $isoDirectiveDocument->status,
-            'symbol' => $request->symbol,
-            'issued_year' => $request->issued_year,
+            'issued_date' => $request->issued_date,
             'document_number' => $request->document_number,
             'issuing_agency' => $request->issuing_agency,
             'summary' => $request->summary,

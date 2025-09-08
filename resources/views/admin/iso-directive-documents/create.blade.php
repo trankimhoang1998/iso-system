@@ -18,8 +18,8 @@
     
     <div class="admin-page__header">
         <div class="admin-page__title-section">
-            <h1 class="admin-page__title">Thêm văn bản chỉ đạo ISO</h1>
-            <p class="admin-page__subtitle">Tạo và quản lý văn bản chỉ đạo ISO mới</p>
+            <h1 class="admin-page__title">Cập nhật văn bản pháp lý thuộc HTQLCL ISO 9001:2015</h1>
+            <p class="admin-page__subtitle">Tải lên và quản lý văn bản pháp lý mới thuộc HTQLCL ISO 9001:2015</p>
         </div>
         <div class="admin-page__actions">
             <a href="{{ isset($category) ? route('admin.iso-directive-documents.category', $category) : route('admin.iso-directive-documents.index') }}" class="admin-btn admin-btn--secondary">
@@ -36,29 +36,6 @@
             <form method="POST" action="{{ route('admin.iso-directive-documents.store') }}" class="admin-form" enctype="multipart/form-data">
                 @csrf
                 
-                <div class="admin-form__row">
-                    <div class="admin-form__group">
-                        <label class="admin-form__label admin-form__label--required">Tiêu đề văn bản</label>
-                        <input type="text" name="title" value="{{ old('title') }}" 
-                               class="admin-form__input @error('title') admin-form__input--error @enderror"
-                               placeholder="Nhập tiêu đề văn bản chỉ đạo ISO">
-                        @error('title')
-                        <div class="admin-form__error">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="admin-form__row">
-                    <div class="admin-form__group">
-                        <label class="admin-form__label">Mô tả</label>
-                        <textarea name="description" rows="4" 
-                                  class="admin-form__input @error('description') admin-form__input--error @enderror"
-                                  placeholder="Nhập mô tả văn bản (tùy chọn)">{{ old('description') }}</textarea>
-                        @error('description')
-                        <div class="admin-form__error">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
 
                 <div class="admin-form__row">
                     <div class="admin-form__group">
@@ -98,33 +75,16 @@
                     </div>
                 </div>
 
-                <!-- New fields section -->
                 <div class="admin-form__row admin-form__row--split">
                     <div class="admin-form__group">
-                        <label class="admin-form__label">Ký hiệu</label>
-                        <input type="text" name="symbol" value="{{ old('symbol') }}" 
-                               class="admin-form__input @error('symbol') admin-form__input--error @enderror"
-                               placeholder="Nhập ký hiệu tài liệu">
-                        @error('symbol')
+                        <label class="admin-form__label">Thời gian ban hành</label>
+                        <input type="date" name="issued_date" value="{{ old('issued_date') }}" 
+                               class="admin-form__input @error('issued_date') admin-form__input--error @enderror">
+                        @error('issued_date')
                         <div class="admin-form__error">{{ $message }}</div>
                         @enderror
                     </div>
                     
-                    <div class="admin-form__group">
-                        <label class="admin-form__label">Năm ban hành tài liệu</label>
-                        <select name="issued_year" id="issued_year" class="admin-form__select select2 @error('issued_year') admin-form__select--error @enderror">
-                            <option value="">-- Chọn năm --</option>
-                            @for($year = date('Y'); $year >= 1900; $year--)
-                                <option value="{{ $year }}" {{ old('issued_year') == $year ? 'selected' : '' }}>{{ $year }}</option>
-                            @endfor
-                        </select>
-                        @error('issued_year')
-                        <div class="admin-form__error">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="admin-form__row admin-form__row--split">
                     <div class="admin-form__group">
                         <label class="admin-form__label">Số văn bản</label>
                         <input type="text" name="document_number" value="{{ old('document_number') }}" 
@@ -134,7 +94,9 @@
                         <div class="admin-form__error">{{ $message }}</div>
                         @enderror
                     </div>
-                    
+                </div>
+
+                <div class="admin-form__row">
                     <div class="admin-form__group">
                         <label class="admin-form__label">Cơ quan ban hành</label>
                         <input type="text" name="issuing_agency" value="{{ old('issuing_agency') }}" 
@@ -202,19 +164,6 @@
                     </div>
                 </div>
 
-                <div class="admin-form__row">
-                    <div class="admin-form__group">
-                        <label class="admin-form__label">Trạng thái</label>
-                        <select name="status" class="admin-form__select @error('status') admin-form__select--error @enderror">
-                            <option value="draft" {{ old('status', 'draft') == 'draft' ? 'selected' : '' }}>Bản nháp</option>
-                            <option value="approved" {{ old('status') == 'approved' ? 'selected' : '' }}>Đã phê duyệt</option>
-                            <option value="archived" {{ old('status') == 'archived' ? 'selected' : '' }}>Lưu trữ</option>
-                        </select>
-                        @error('status')
-                        <div class="admin-form__error">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
 
                 <div class="admin-form__actions">
                     <a href="{{ isset($category) ? route('admin.iso-directive-documents.category', $category) : route('admin.iso-directive-documents.index') }}" class="admin-btn admin-btn--secondary">Hủy</a>
@@ -222,7 +171,7 @@
                         <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                         </svg>
-                        Tạo văn bản
+                        Tải lên
                     </button>
                 </div>
             </form>
@@ -279,17 +228,5 @@ document.getElementById('adminWordFileInput').addEventListener('change', functio
     }
 });
 
-// Initialize Select2 for year dropdown
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof $ !== 'undefined' && $.fn.select2) {
-        $('#issued_year').select2({
-            placeholder: '-- Chọn năm --',
-            allowClear: true,
-            width: '100%',
-            dropdownCssClass: 'select2-dropdown-small',
-            containerCssClass: 'select2-container-small'
-        });
-    }
-});
 </script>
 @endsection

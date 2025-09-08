@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class IsoDirectiveDocument extends Model
 {
     protected $fillable = [
-        'title',
-        'description',
         'category_id',
         'pdf_file_name',
         'pdf_file_path',
@@ -20,13 +18,15 @@ class IsoDirectiveDocument extends Model
         'word_file_path',
         'word_file_type',
         'word_file_size',
-        'status',
-        'symbol',
-        'issued_year',
+        'issued_date',
         'document_number',
         'issuing_agency',
         'summary',
         'uploaded_by',
+    ];
+
+    protected $casts = [
+        'issued_date' => 'date',
     ];
 
     // Status types

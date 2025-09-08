@@ -24,7 +24,7 @@
                     $currentCategoryId = isset($category) ? $category->id : request('category_id');
                     $subtitle = $currentCategoryId && isset($categoryDescriptions[$currentCategoryId]) 
                         ? $categoryDescriptions[$currentCategoryId] 
-                        : 'Quản lý văn bản chỉ đạo ISO của hệ thống';
+                        : 'Quản lý hồ sơ, văn bản pháp lý của Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia ISO TCVN 9001:2015';
                 @endphp
                 {{ $subtitle }}
             </p>
@@ -48,16 +48,17 @@
                 <div class="admin-filter__group">
                     <label class="admin-filter__label">Tìm kiếm</label>
                     <input type="text" name="search" value="{{ request('search') }}" 
-                           placeholder="Tiêu đề hoặc mô tả..." class="admin-filter__input">
+                           placeholder="Trích yếu, số văn bản hoặc cơ quan ban hành..." class="admin-filter__input">
                 </div>
                 <div class="admin-filter__group">
-                    <label class="admin-filter__label">Năm ban hành tài liệu</label>
-                    <select name="year" id="filter_year" class="admin-form__select select2">
-                        <option value="">-- Chọn năm --</option>
-                        @for($year = date('Y'); $year >= 1900; $year--)
-                            <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>{{ $year }}</option>
-                        @endfor
-                    </select>
+                    <label class="admin-filter__label">Thời gian ban hành</label>
+                    <div class="admin-filter__date-range">
+                        <input type="date" name="date_from" value="{{ request('date_from') }}" 
+                               class="admin-form__input" placeholder="Từ ngày">
+                        <span class="admin-filter__date-separator">đến</span>
+                        <input type="date" name="date_to" value="{{ request('date_to') }}" 
+                               class="admin-form__input" placeholder="Đến ngày">
+                    </div>
                 </div>
                 <div class="admin-filter__actions">
                     <button type="submit" class="admin-btn admin-btn--primary">
@@ -82,9 +83,7 @@
             <thead class="admin-table__head">
                 <tr>
                     <th class="admin-table__header">Thời gian</th>
-                    @if(!in_array(request('category_id'), [4, 5]))
                     <th class="admin-table__header">Số văn bản</th>
-                    @endif
                     <th class="admin-table__header">Cơ quan ban hành</th>
                     <th class="admin-table__header">Trích yếu</th>
                     <th class="admin-table__header">Xem/tải xuống</th>
@@ -93,10 +92,8 @@
             <tbody class="admin-table__body">
                 @forelse($documents as $document)
                 <tr class="admin-table__row">
-                    <td class="admin-table__cell">{{ $document->issued_year ?: '_' }}</td>
-                    @if(!in_array(request('category_id'), [4, 5]))
+                    <td class="admin-table__cell">{{ $document->issued_date ? \Carbon\Carbon::parse($document->issued_date)->format('d/m/Y') : '_' }}</td>
                     <td class="admin-table__cell">{{ $document->document_number ?: '_' }}</td>
-                    @endif
                     <td class="admin-table__cell">{{ $document->issuing_agency ?: '_' }}</td>
                     <td class="admin-table__cell">{{ $document->summary ? Str::limit($document->summary, 100) : '_' }}</td>
                     <td class="admin-table__cell">
@@ -155,7 +152,13 @@
                             <svg class="admin-empty-state__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                             </svg>
-                            <h3 class="admin-empty-state__title">Chưa có văn bản nào</h3>
+                            <h3 class="admin-empty-state__title">
+                                @if(request()->routeIs('admin.iso-directive-documents.index'))
+                                    Đồng chí hãy chọn danh mục bên trái để xem các hồ sơ, văn bản liên quan
+                                @else
+                                    Chưa có văn bản nào
+                                @endif
+                            </h3>
                             <p class="admin-empty-state__description">
                                 @if(in_array(auth()->user()->role, [0, 1]))
                                     Tạo văn bản chỉ đạo ISO đầu tiên
@@ -241,17 +244,5 @@ window.addEventListener('click', function(e) {
     }
 });
 
-// Initialize Select2 for year filter dropdown
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof $ !== 'undefined' && $.fn.select2) {
-        $('#filter_year').select2({
-            placeholder: '-- Chọn năm --',
-            allowClear: true,
-            width: '100%',
-            dropdownCssClass: 'select2-dropdown-small',
-            containerCssClass: 'select2-container-small'
-        });
-    }
-});
 </script>
 @endsection

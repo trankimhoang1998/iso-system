@@ -33,12 +33,7 @@
                                 echo 'class="admin-nav__link ' . ($isActive ? 'admin-nav__link--active' : '') . '">';
                                 echo '<svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">';
                                 
-                                if($level == 0) {
-                                    echo '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>';
-                                    echo '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 12 2 2 4-4"></path>';
-                                } else {
-                                    echo '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>';
-                                }
+                                echo '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>';
                                 echo '</svg>';
                             }
                             
@@ -88,11 +83,7 @@
                                 echo 'class="admin-nav__link ' . ($isActive ? 'admin-nav__link--active' : '') . '">';
                                 echo '<svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">';
                                 
-                                if($level == 0) {
-                                    echo '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>';
-                                } else {
-                                    echo '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>';
-                                }
+                                echo '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>';
                                 echo '</svg>';
                             }
                             
@@ -142,12 +133,7 @@
                                 echo 'class="admin-nav__link ' . ($isActive ? 'admin-nav__link--active' : '') . '">';
                                 echo '<svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">';
                                 
-                                if($level == 0) {
-                                    echo '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>';
-                                    echo '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 10h12M6 14h12M6 18h7"></path>';
-                                } else {
-                                    echo '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>';
-                                }
+                                echo '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>';
                                 echo '</svg>';
                             }
                             
@@ -197,12 +183,7 @@
                                 echo 'class="admin-nav__link ' . ($isActive ? 'admin-nav__link--active' : '') . '">';
                                 echo '<svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">';
                                 
-                                if($level == 0) {
-                                    echo '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>';
-                                    echo '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path>';
-                                } else {
-                                    echo '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>';
-                                }
+                                echo '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>';
                                 echo '</svg>';
                             }
                             

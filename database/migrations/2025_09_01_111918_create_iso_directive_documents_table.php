@@ -10,8 +10,6 @@ return new class extends Migration
     {
         Schema::create('iso_directive_documents', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('description')->nullable();
             $table->unsignedBigInteger('category_id')->nullable();
             // PDF file (required)
             $table->string('pdf_file_name');
@@ -24,9 +22,7 @@ return new class extends Migration
             $table->string('word_file_path')->nullable();
             $table->string('word_file_type', 10)->nullable();
             $table->integer('word_file_size')->nullable();
-            $table->enum('status', ['draft', 'approved', 'archived'])->default('draft');
-            $table->string('symbol')->nullable()->comment('Ký hiệu');
-            $table->year('issued_year')->nullable()->comment('Năm ban hành tài liệu');
+            $table->date('issued_date')->nullable()->comment('Thời gian ban hành');
             $table->string('document_number')->nullable()->comment('Số văn bản');
             $table->string('issuing_agency')->nullable()->comment('Cơ quan ban hành');
             $table->string('summary')->nullable()->comment('Trích yếu');
@@ -36,7 +32,6 @@ return new class extends Migration
             $table->foreign('category_id')->references('id')->on('iso_directive_categories')->onDelete('set null');
             $table->foreign('uploaded_by')->references('id')->on('users');
             
-            $table->index(['status']);
             $table->index('uploaded_by');
             $table->index('category_id');
         });

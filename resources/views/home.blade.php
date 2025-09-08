@@ -42,7 +42,7 @@
                 <h2 class="quality-manual__title">SỔ TAY CHẤT LƯỢNG</h2>
                 <div class="quality-manual__content">
                     <p class="quality-manual__text">
-                        <strong>Sổ tay chất lượng</strong> là tài liệu tổng quát về Hệ thống quản lý chất lượng của Nhà máy A31/Quân chủng PKKQ, xác định phạm vi áp dụng; chính sách và mục tiêu chất lượng; giới thiệu hoạt động và cơ cấu tổ chức, chức năng nhiệm vụ của Nhà máy; nêu quan điểm của lãnh đạo, chỉ huy đối với việc tuân thủ các yêu cầu của Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia ISO 9001:2015; danh mục các quy trình, thủ tục đã ban hành để lãnh đạo, chỉ huy và cán bộ chủ chốt của cơ quan, đơn vị trực thuộc triển khai thực hiện, làm cơ sở điều hành Hệ thống quản lý chất lượng trong đơn vị.
+                        <strong>Sổ tay chất lượng</strong> là tài liệu tổng quát về Hệ thống quản lý chất lượng của Nhà máy A31/Quân chủng Phòng không-Không quân, xác định phạm vi áp dụng; chính sách và mục tiêu chất lượng; giới thiệu hoạt động và cơ cấu tổ chức, chức năng nhiệm vụ của Nhà máy; nêu quan điểm của lãnh đạo, chỉ huy đối với việc tuân thủ các yêu cầu của Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015; danh mục các quy trình, thủ tục đã ban hành để lãnh đạo, chỉ huy và cán bộ chủ chốt của cơ quan, đơn vị trực thuộc triển khai thực hiện, làm cơ sở điều hành Hệ thống quản lý chất lượng trong đơn vị.
                     </p>
                     <a href="/iso-system-documents?category_id=1" class="quality-manual__link"><strong>Xem thêm...</strong></a>
                 </div>
@@ -110,7 +110,7 @@
                                 </div>
                                 <div class="process-list__item">
                                     <span class="process-list__code">QT-NV-05</span>
-                                    <span class="process-list__name">Quy trình bảo dưỡng và sửa chữa thiết bị</span>
+                                    <span class="process-list__name">Quy trình Bảo dưỡng và sửa chữa thiết bị</span>
                                 </div>
                                 <div class="process-list__item">
                                     <span class="process-list__code">QT-NV-06</span>

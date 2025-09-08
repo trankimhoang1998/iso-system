@@ -154,7 +154,7 @@
         text-decoration: none;
         font-size: 15px;
         font-weight: 500;
-        text-transform: uppercase;
+        // text-transform: uppercase;
         transition: all 0.3s ease;
         border-left: 3px solid transparent;
         position: relative;
@@ -733,6 +733,24 @@
                 justify-content: center !important;
             }
         }
+    }
+
+    // Date range filter styles
+    &__date-range {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .admin-form__input {
+            flex: 1;
+            min-width: 140px;
+        }
+    }
+
+    &__date-separator {
+        color: $gray;
+        font-size: 14px;
+        white-space: nowrap;
     }
 }
 
