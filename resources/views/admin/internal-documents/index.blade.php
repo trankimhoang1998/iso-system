@@ -6,7 +6,7 @@
 <div class="admin-page">
     <div class="admin-page__header">
         <div>
-            <p class="admin-page__subtitle">Quản lý tài liệu nội bộ của hệ thống</p>
+            <p class="admin-page__subtitle">Quản lý hồ sơ, tài liệu ISO nội bộ của các cơ quan, phân xưởng, bao gồm cả các hồ sơ, tài liệu áp dụng quy trình</p>
         </div>
         @if(in_array(auth()->user()->role, [0, 1, 2]))
         <div class="admin-page__actions">
@@ -27,19 +27,20 @@
                 <div class="admin-filter__group">
                     <label class="admin-filter__label">Tìm kiếm</label>
                     <input type="text" name="search" value="{{ request('search') }}" 
-                           placeholder="Tiêu đề hoặc mô tả..." class="admin-filter__input">
+                           placeholder="Số văn bản, cơ quan ban hành, trích yếu..." class="admin-filter__input">
                 </div>
                 <div class="admin-filter__group">
-                    <label class="admin-filter__label">Năm ban hành tài liệu</label>
-                    <select name="year" id="filter_year" class="admin-form__select select2">
-                        <option value="">-- Chọn năm --</option>
-                        @for($year = date('Y'); $year >= 1900; $year--)
-                            <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>{{ $year }}</option>
-                        @endfor
-                    </select>
+                    <label class="admin-filter__label">Thời gian ban hành</label>
+                    <div class="admin-filter__date-range">
+                        <input type="date" name="date_from" value="{{ request('date_from') }}" 
+                               class="admin-form__input" placeholder="Từ ngày">
+                        <span class="admin-filter__date-separator">đến</span>
+                        <input type="date" name="date_to" value="{{ request('date_to') }}" 
+                               class="admin-form__input" placeholder="Đến ngày">
+                    </div>
                 </div>
                 <div class="admin-filter__group">
-                    <label class="admin-filter__label">Phòng ban</label>
+                    <label class="admin-filter__label">Đơn vị áp dụng</label>
                     <select name="department_id" id="filter_department" class="admin-form__select select2">
                         <option value="">Tất cả</option>
                         @foreach($departments ?? [] as $department)
@@ -71,65 +72,69 @@
         <table class="admin-table">
             <thead class="admin-table__head">
                 <tr>
-                    <th class="admin-table__header">Thời gian</th>
-                    <th class="admin-table__header">Số văn bản</th>
-                    <th class="admin-table__header">Cơ quan ban hành</th>
-                    <th class="admin-table__header">Trích yếu</th>
-                    <th class="admin-table__header">Xem/tải xuống</th>
+                    <th class="admin-table__header admin-table__header--date">Thời gian</th>
+                    <th class="admin-table__header admin-table__header--document-number">Số văn bản</th>
+                    <th class="admin-table__header admin-table__header--agency">Cơ quan ban hành</th>
+                    <th class="admin-table__header admin-table__header--summary">Trích yếu</th>
+                    <th class="admin-table__header admin-table__header--actions">Xem/tải xuống</th>
                 </tr>
             </thead>
             <tbody class="admin-table__body">
                 @forelse($documents as $document)
                 <tr class="admin-table__row">
-                    <td class="admin-table__cell">{{ $document->issued_year ?: '_' }}</td>
-                    <td class="admin-table__cell">{{ $document->document_number ?: '_' }}</td>
-                    <td class="admin-table__cell">{{ $document->issuing_agency ?: '_' }}</td>
-                    <td class="admin-table__cell">{{ $document->summary ? Str::limit($document->summary, 100) : '_' }}</td>
-                    <td class="admin-table__cell">
+                    <td class="admin-table__cell admin-table__cell--date">{{ $document->issued_date ? \Carbon\Carbon::parse($document->issued_date)->format('d/m/Y') : '_' }}</td>
+                    <td class="admin-table__cell admin-table__cell--document-number">{{ $document->document_number ?: '_' }}</td>
+                    <td class="admin-table__cell admin-table__cell--agency">{{ $document->issuing_agency ?: '_' }}</td>
+                    <td class="admin-table__cell admin-table__cell--summary">{{ $document->summary ?: '_' }}</td>
+                    <td class="admin-table__cell admin-table__cell--actions">
                         <div class="admin-table__actions">
-                            <a href="{{ isset($category) ? route('admin.internal-documents.category.show', [$category, $document]) : route('admin.internal-documents.show', $document) }}" 
-                               class="admin-table__action-btn admin-table__action-btn--view" 
-                               title="Chi tiết">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                </svg>
-                            </a>
-                            @if($document->pdf_file_path)
-                            <a href="{{ route('admin.internal-documents.download', [$document, 'pdf']) }}"
-                               class="admin-table__action-btn admin-table__action-btn--download" 
-                               title="Tải PDF">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                </svg>
-                                <span class="admin-file-type-label">PDF</span>
-                            </a>
-                            @endif
-                            @if($document->word_file_path)
-                            <a href="{{ route('admin.internal-documents.download', [$document, 'word']) }}"
-                               class="admin-table__action-btn admin-table__action-btn--download admin-table__action-btn--word" 
-                               title="Tải Word">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                </svg>
-                                <span class="admin-file-type-label">Word</span>
-                            </a>
-                            @endif
+                            <div class="admin-table__actions-row">
+                                <a href="{{ isset($category) ? route('admin.internal-documents.category.show', [$category, $document]) : route('admin.internal-documents.show', $document) }}" 
+                                   class="admin-table__action-btn admin-table__action-btn--view" 
+                                   title="Chi tiết">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                    </svg>
+                                </a>
+                                @if($document->pdf_file_path)
+                                <a href="{{ route('admin.internal-documents.download', [$document, 'pdf']) }}"
+                                   class="admin-table__action-btn admin-table__action-btn--download" 
+                                   title="Tải PDF">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                    <span class="admin-file-type-label">PDF</span>
+                                </a>
+                                @endif
+                                @if($document->word_file_path)
+                                <a href="{{ route('admin.internal-documents.download', [$document, 'word']) }}"
+                                   class="admin-table__action-btn admin-table__action-btn--download admin-table__action-btn--word" 
+                                   title="Tải Word">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                    <span class="admin-file-type-label">Word</span>
+                                </a>
+                                @endif
+                            </div>
                             @if(in_array(auth()->user()->role, [0, 1, 2]))
-                            <a href="{{ isset($category) ? route('admin.internal-documents.category.edit', [$category, $document]) : route('admin.internal-documents.edit', $document) }}" 
-                               class="admin-table__action-btn admin-table__action-btn--edit" 
-                               title="Chỉnh sửa">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                </svg>
-                            </a>
-                            <button class="admin-table__action-btn admin-table__action-btn--delete" 
-                                    title="Xóa"
-                                    onclick="openDeleteModal({{ $document->id }}, '{{ $document->title }}')">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                </svg>
-                            </button>
+                            <div class="admin-table__actions-row">
+                                <a href="{{ isset($category) ? route('admin.internal-documents.category.edit', [$category, $document]) : route('admin.internal-documents.edit', $document) }}" 
+                                   class="admin-table__action-btn admin-table__action-btn--edit" 
+                                   title="Chỉnh sửa">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                    </svg>
+                                </a>
+                                <button class="admin-table__action-btn admin-table__action-btn--delete" 
+                                        title="Xóa"
+                                        onclick="openDeleteModal({{ $document->id }}, '{{ $document->document_number ?: 'Tài liệu' }}')">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
+                            </div>
                             @endif
                         </div>
                     </td>
@@ -230,15 +235,6 @@ window.addEventListener('click', function(e) {
 // Initialize Select2 for filter dropdowns
 document.addEventListener('DOMContentLoaded', function() {
     if (typeof $ !== 'undefined' && $.fn.select2) {
-        // Year dropdown
-        $('#filter_year').select2({
-            placeholder: '-- Chọn năm --',
-            allowClear: true,
-            width: '100%',
-            dropdownCssClass: 'select2-dropdown-small',
-            containerCssClass: 'select2-container-small'
-        });
-        
         // Department dropdown
         $('#filter_department').select2({
             placeholder: 'Tất cả',

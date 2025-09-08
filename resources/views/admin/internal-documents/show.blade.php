@@ -13,12 +13,13 @@
         <svg class="admin-breadcrumb__separator" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
         </svg>
-        <span class="admin-breadcrumb__item admin-breadcrumb__item--current">{{ Str::limit($internalDocument->title, 50) }}</span>
+        <span class="admin-breadcrumb__item admin-breadcrumb__item--current">{{ $internalDocument->document_number ?: 'Chi tiết tài liệu' }}</span>
     </div>
     
     <div class="admin-page__header">
         <div class="admin-page__title-section">
-            <h1 class="admin-page__title">{{ $internalDocument->title }}</h1>
+            <h1 class="admin-page__title">{{ $internalDocument->document_number ?: 'Tài liệu nội bộ' }}</h1>
+            <p class="admin-page__subtitle">{{ $internalDocument->issuing_agency ?: 'Cơ quan ban hành chưa rõ' }}</p>
         </div>
         <div class="admin-page__actions">
             @if($internalDocument->pdf_file_path)
@@ -62,27 +63,18 @@
                 </div>
                 @if($internalDocument->department)
                 <div class="admin-document-meta__item">
-                    <span class="admin-document-meta__label">Phòng ban:</span>
+                    <span class="admin-document-meta__label">Đơn vị áp dụng:</span>
                     <span class="admin-document-meta__value">{{ $internalDocument->department->name }}</span>
                 </div>
                 @endif
-                <div class="admin-document-meta__item">
-                    <span class="admin-document-meta__label">Trạng thái:</span>
-                    <span class="admin-status-badge 
-                        @if($internalDocument->status == 'approved') admin-status-badge--active 
-                        @elseif($internalDocument->status == 'draft') admin-status-badge--warning
-                        @else admin-status-badge--inactive @endif">
-                        {{ $internalDocument->getStatusName() }}
-                    </span>
-                </div>
             </div>
         </div>
 
-        @if($internalDocument->description)
+        @if($internalDocument->summary)
         <div class="admin-document-description">
-            <h3 class="admin-document-description__title">Mô tả</h3>
+            <h3 class="admin-document-description__title">Trích yếu</h3>
             <div class="admin-document-description__content">
-                {{ $internalDocument->description }}
+                {{ $internalDocument->summary }}
             </div>
         </div>
         @endif
@@ -137,14 +129,12 @@
         <div class="admin-document-info">
             <h3 class="admin-document-info__title">Thông tin tài liệu</h3>
             <div class="admin-document-info__grid">
+                @if($internalDocument->issued_date)
                 <div class="admin-info-item">
-                    <span class="admin-info-item__label">Ký hiệu:</span>
-                    <span class="admin-info-item__value">{{ $internalDocument->symbol ?: '_' }}</span>
+                    <span class="admin-info-item__label">Thời gian ban hành:</span>
+                    <span class="admin-info-item__value">{{ \Carbon\Carbon::parse($internalDocument->issued_date)->format('d/m/Y') }}</span>
                 </div>
-                <div class="admin-info-item">
-                    <span class="admin-info-item__label">Năm ban hành tài liệu:</span>
-                    <span class="admin-info-item__value">{{ $internalDocument->issued_year ?: '_' }}</span>
-                </div>
+                @endif
                 <div class="admin-info-item">
                     <span class="admin-info-item__label">Số văn bản:</span>
                     <span class="admin-info-item__value">{{ $internalDocument->document_number ?: '_' }}</span>
@@ -159,25 +149,9 @@
                     <span class="admin-info-item__value">{{ $internalDocument->uploader->name }}</span>
                 </div>
                 @endif
-                <div class="admin-info-item">
-                    <span class="admin-info-item__label">Ngày tạo:</span>
-                    <span class="admin-info-item__value">{{ $internalDocument->created_at->format('d/m/Y H:i') }}</span>
-                </div>
-                <div class="admin-info-item">
-                    <span class="admin-info-item__label">Ngày cập nhật:</span>
-                    <span class="admin-info-item__value">{{ $internalDocument->updated_at->format('d/m/Y H:i') }}</span>
-                </div>
             </div>
         </div>
 
-        @if($internalDocument->summary)
-        <div class="admin-document-summary">
-            <h3 class="admin-document-summary__title">Trích yếu</h3>
-            <div class="admin-document-summary__content">
-                {{ $internalDocument->summary }}
-            </div>
-        </div>
-        @endif
     </div>
 </div>
 @endsection

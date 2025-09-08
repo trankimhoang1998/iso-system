@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class InternalDocument extends Model
 {
     protected $fillable = [
-        'title',
-        'description',
+        'issued_date',
+        'document_number',
+        'issuing_agency',
+        'summary',
         'category_id',
         'department_id',
         'pdf_file_name',
@@ -20,26 +22,13 @@ class InternalDocument extends Model
         'word_file_path',
         'word_file_type',
         'word_file_size',
-        'status',
-        'symbol',
-        'issued_year',
-        'document_number',
-        'issuing_agency',
-        'summary',
         'uploaded_by',
-        'approved_by',
-        'approved_at',
-        'is_public',
     ];
 
     protected $casts = [
-        'approved_at' => 'datetime',
-        'is_public' => 'boolean',
+        'issued_date' => 'date',
     ];
 
-    const STATUS_DRAFT = 'draft';
-    const STATUS_APPROVED = 'approved';
-    const STATUS_ARCHIVED = 'archived';
 
     public function uploader(): BelongsTo
     {
@@ -56,20 +45,6 @@ class InternalDocument extends Model
         return $this->belongsTo(Department::class);
     }
 
-    public function approver(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'approved_by');
-    }
-
-    public function getStatusName(): string
-    {
-        return match($this->status) {
-            self::STATUS_DRAFT => 'Bản nháp',
-            self::STATUS_APPROVED => 'Đã phê duyệt',
-            self::STATUS_ARCHIVED => 'Lưu trữ',
-            default => 'Không xác định',
-        };
-    }
 
     public function getFormattedPdfFileSize(): string
     {
@@ -123,18 +98,17 @@ class InternalDocument extends Model
 
     public function canUserView(User $user): bool
     {
+        // Admin can view all documents
         if ($user->role == User::ROLE_ADMIN) {
             return true;
         }
+
+        // Level 1 (Ban ISO) can view all documents they uploaded
         if ($user->role == User::ROLE_LEVEL1) {
-            return $this->uploaded_by == $user->id || $this->is_public;
+            return $this->uploaded_by == $user->id;
         }
-        if ($user->role == User::ROLE_LEVEL2) {
-            return $this->is_public;
-        }
-        if ($user->role == User::ROLE_LEVEL3) {
-            return $this->is_public;
-        }
+
+        // Level 2 and Level 3 users cannot view documents by default
         return false;
     }
 

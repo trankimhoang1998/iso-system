@@ -19,7 +19,7 @@
     <div class="admin-page__header">
         <div class="admin-page__title-section">
             <h1 class="admin-page__title">Sửa tài liệu nội bộ</h1>
-            <p class="admin-page__subtitle">Cập nhật thông tin tài liệu: {{ $internalDocument->title }}</p>
+            <p class="admin-page__subtitle">Cập nhật thông tin tài liệu: {{ $internalDocument->document_number ?: 'Tài liệu nội bộ' }}</p>
         </div>
         <div class="admin-page__actions">
             <a href="{{ isset($category) ? route('admin.internal-documents.category', $category) : route('admin.internal-documents.index') }}" class="admin-btn admin-btn--secondary">
@@ -37,31 +37,9 @@
                 @csrf
                 @method('PUT')
                 
-                <div class="admin-form__row">
-                    <div class="admin-form__group">
-                        <label class="admin-form__label admin-form__label--required">Tiêu đề tài liệu</label>
-                        <input type="text" name="title" value="{{ old('title', $internalDocument->title) }}" 
-                               class="admin-form__input @error('title') admin-form__input--error @enderror"
-                               placeholder="Nhập tiêu đề tài liệu nội bộ">
-                        @error('title')
-                        <div class="admin-form__error">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
+
 
                 <div class="admin-form__row">
-                    <div class="admin-form__group">
-                        <label class="admin-form__label">Mô tả</label>
-                        <textarea name="description" rows="4" 
-                                  class="admin-form__input @error('description') admin-form__input--error @enderror"
-                                  placeholder="Nhập mô tả tài liệu (tùy chọn)">{{ old('description', $internalDocument->description) }}</textarea>
-                        @error('description')
-                        <div class="admin-form__error">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="admin-form__row admin-form__row--split">
                     <div class="admin-form__group">
                         <label class="admin-form__label admin-form__label--required">Danh mục</label>
                         @if(isset($category))
@@ -92,9 +70,11 @@
                         <div class="admin-form__error">{{ $message }}</div>
                         @enderror
                     </div>
-                    
+                </div>
+
+                <div class="admin-form__row admin-form__row--split">
                     <div class="admin-form__group">
-                        <label class="admin-form__label admin-form__label--required">Phòng ban</label>
+                        <label class="admin-form__label">Đơn vị áp dụng</label>
                         @if(auth()->user()->role == 2 && auth()->user()->department_id)
                             <!-- Role 2 can only edit documents for their own department -->
                             <input type="hidden" name="department_id" value="{{ auth()->user()->department_id }}">
@@ -103,7 +83,7 @@
                             <!-- Role 0,1 can choose any department -->
                             <select name="department_id" id="department_id"
                                     class="admin-form__select select2 @error('department_id') admin-form__select--error @enderror">
-                                <option value="">-- Chọn phòng ban --</option>
+                                <option value="">-- Chọn đơn vị áp dụng --</option>
                                 @foreach($departments as $department)
                                     <option value="{{ $department->id }}" {{ old('department_id', $internalDocument->department_id) == $department->id ? 'selected' : '' }}>
                                         {{ $department->name }}
@@ -115,33 +95,17 @@
                         <div class="admin-form__error">{{ $message }}</div>
                         @enderror
                     </div>
-                </div>
-
-                <!-- New fields section -->
-                <div class="admin-form__row admin-form__row--split">
-                    <div class="admin-form__group">
-                        <label class="admin-form__label">Ký hiệu</label>
-                        <input type="text" name="symbol" value="{{ old('symbol', $internalDocument->symbol) }}" 
-                               class="admin-form__input @error('symbol') admin-form__input--error @enderror"
-                               placeholder="Nhập ký hiệu tài liệu">
-                        @error('symbol')
-                        <div class="admin-form__error">{{ $message }}</div>
-                        @enderror
-                    </div>
                     
                     <div class="admin-form__group">
-                        <label class="admin-form__label">Năm ban hành tài liệu</label>
-                        <select name="issued_year" id="issued_year" class="admin-form__select select2 @error('issued_year') admin-form__select--error @enderror">
-                            <option value="">-- Chọn năm --</option>
-                            @for($year = date('Y'); $year >= 1900; $year--)
-                                <option value="{{ $year }}" {{ old('issued_year', $internalDocument->issued_year) == $year ? 'selected' : '' }}>{{ $year }}</option>
-                            @endfor
-                        </select>
-                        @error('issued_year')
+                        <label class="admin-form__label">Thời gian ban hành</label>
+                        <input type="date" name="issued_date" value="{{ old('issued_date', $internalDocument->issued_date ? $internalDocument->issued_date->format('Y-m-d') : '') }}" 
+                               class="admin-form__input @error('issued_date') admin-form__input--error @enderror">
+                        @error('issued_date')
                         <div class="admin-form__error">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
+
 
                 <div class="admin-form__row admin-form__row--split">
                     <div class="admin-form__group">
@@ -269,19 +233,6 @@
                     </div>
                 </div>
 
-                <div class="admin-form__row">
-                    <div class="admin-form__group">
-                        <label class="admin-form__label">Trạng thái</label>
-                        <select name="status" class="admin-form__select @error('status') admin-form__select--error @enderror">
-                            <option value="draft" {{ old('status', $internalDocument->status) == 'draft' ? 'selected' : '' }}>Bản nháp</option>
-                            <option value="approved" {{ old('status', $internalDocument->status) == 'approved' ? 'selected' : '' }}>Đã phê duyệt</option>
-                            <option value="archived" {{ old('status', $internalDocument->status) == 'archived' ? 'selected' : '' }}>Lưu trữ</option>
-                        </select>
-                        @error('status')
-                        <div class="admin-form__error">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
 
                 <div class="admin-form__actions">
                     <a href="{{ isset($category) ? route('admin.internal-documents.category', $category) : route('admin.internal-documents.index') }}" class="admin-btn admin-btn--secondary">Hủy</a>
@@ -298,60 +249,114 @@
 </div>
 
 <script>
-// PDF File upload preview and validation
-document.getElementById('adminPdfFileInput').addEventListener('change', function(e) {
-    const label = this.parentNode.querySelector('.admin-file-upload__label span');
-    if (e.target.files.length > 0) {
-        const file = e.target.files[0];
-        label.textContent = file.name;
-        
-        // File size validation
-        const maxSize = 50 * 1024 * 1024; // 50MB in bytes
+// Function to handle file validation and preview
+function handleFileSelect(inputId, labelSelector, defaultText, maxSize, acceptedTypes) {
+    const input = document.getElementById(inputId);
+    const label = document.querySelector(labelSelector);
+    
+    function validateAndPreview(file) {
+        // Check file size
         if (file.size > maxSize) {
-            alert('Kích thước file PDF không được vượt quá 50MB');
-            this.value = '';
-            label.textContent = 'Chọn file PDF mới hoặc kéo thả vào đây';
+            const maxSizeMB = maxSize / (1024 * 1024);
+            alert(`Kích thước file không được vượt quá ${maxSizeMB}MB`);
+            input.value = '';
+            label.textContent = defaultText;
             return false;
         }
-    } else {
-        label.textContent = 'Chọn file PDF mới hoặc kéo thả vào đây';
-    }
-});
-
-// Word File upload preview and validation
-document.getElementById('adminWordFileInput').addEventListener('change', function(e) {
-    const label = this.parentNode.querySelector('.admin-file-upload__label span');
-    if (e.target.files.length > 0) {
-        const file = e.target.files[0];
-        label.textContent = file.name;
         
-        // File size validation
-        const maxSize = 50 * 1024 * 1024; // 50MB in bytes
-        if (file.size > maxSize) {
-            alert('Kích thước file Word không được vượt quá 50MB');
-            this.value = '';
-            label.textContent = 'Chọn file Word hoặc kéo thả vào đây';
+        // Check file type
+        if (acceptedTypes && !acceptedTypes.includes(file.type)) {
+            alert('Định dạng file không được hỗ trợ');
+            input.value = '';
+            label.textContent = defaultText;
+            return false;
         }
-    } else {
-        label.textContent = 'Chọn file Word hoặc kéo thả vào đây';
+        
+        // Update label with filename
+        label.textContent = file.name;
+        return true;
     }
-});
+    
+    // Handle input change
+    input.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            validateAndPreview(file);
+        } else {
+            label.textContent = defaultText;
+        }
+    });
+    
+    // Handle drag and drop
+    const dropArea = label.parentElement;
+    
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, preventDefaults, false);
+    });
+    
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropArea.addEventListener(eventName, highlight, false);
+    });
+    
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, unhighlight, false);
+    });
+    
+    function highlight() {
+        dropArea.classList.add('admin-file-upload--dragover');
+    }
+    
+    function unhighlight() {
+        dropArea.classList.remove('admin-file-upload--dragover');
+    }
+    
+    dropArea.addEventListener('drop', handleDrop, false);
+    
+    function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        
+        if (files.length > 0) {
+            const file = files[0];
+            if (validateAndPreview(file)) {
+                // Create a new FileList-like object
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                input.files = dataTransfer.files;
+            }
+        }
+    }
+}
+
+// Initialize PDF file upload
+handleFileSelect(
+    'adminPdfFileInput',
+    'label[for="adminPdfFileInput"] span',
+    'Chọn file PDF mới hoặc kéo thả vào đây',
+    50 * 1024 * 1024, // 50MB
+    ['application/pdf']
+);
+
+// Initialize Word file upload
+handleFileSelect(
+    'adminWordFileInput',
+    'label[for="adminWordFileInput"] span',
+    'Chọn file Word hoặc kéo thả vào đây',
+    50 * 1024 * 1024, // 50MB
+    ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword']
+);
 
 // Initialize Select2 for dropdowns
 document.addEventListener('DOMContentLoaded', function() {
     if (typeof $ !== 'undefined' && $.fn.select2) {
-        // Year dropdown
-        $('#issued_year').select2({
-            placeholder: '-- Chọn năm --',
-            allowClear: true,
-            width: '100%',
-            dropdownCssClass: 'select2-dropdown-small',
-            containerCssClass: 'select2-container-small'
-        });
-        
         // Department dropdown
         $('#department_id').select2({
-            placeholder: '-- Chọn phòng ban --',
+            placeholder: '-- Chọn đơn vị áp dụng --',
             allowClear: true,
             width: '100%',
             dropdownCssClass: 'select2-dropdown-small',
