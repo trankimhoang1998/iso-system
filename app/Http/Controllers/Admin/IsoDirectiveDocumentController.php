@@ -325,6 +325,21 @@ class IsoDirectiveDocumentController extends Controller
             ->with('success', 'Tài liệu đã được xóa thành công.');
     }
 
+    public function view(IsoDirectiveDocument $isoDirectiveDocument, $type = 'pdf')
+    {
+        if ($type === 'word' && $isoDirectiveDocument->word_file_path) {
+            if (Storage::disk('public')->exists($isoDirectiveDocument->word_file_path)) {
+                return Storage::disk('public')->response($isoDirectiveDocument->word_file_path);
+            }
+        } elseif ($isoDirectiveDocument->pdf_file_path) {
+            if (Storage::disk('public')->exists($isoDirectiveDocument->pdf_file_path)) {
+                return Storage::disk('public')->response($isoDirectiveDocument->pdf_file_path);
+            }
+        }
+
+        return redirect()->route('admin.iso-directive-documents.index')->with('error', 'File không tồn tại!');
+    }
+
     public function download(IsoDirectiveDocument $isoDirectiveDocument, $type = 'pdf')
     {
         if ($type === 'word' && $isoDirectiveDocument->word_file_path) {

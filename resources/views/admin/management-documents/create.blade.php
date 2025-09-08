@@ -34,79 +34,22 @@
                 
                 <div class="admin-form__row">
                     <div class="admin-form__group">
-                        <label class="admin-form__label admin-form__label--required">Tiêu đề tài liệu</label>
-                        <input type="text" name="title" value="{{ old('title') }}" 
-                               class="admin-form__input @error('title') admin-form__input--error @enderror"
-                               placeholder="Nhập tiêu đề tài liệu quản lý">
-                        @error('title')
-                        <div class="admin-form__error">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="admin-form__row">
-                    <div class="admin-form__group">
-                        <label class="admin-form__label">Mô tả</label>
-                        <textarea name="description" rows="4" 
-                                  class="admin-form__input @error('description') admin-form__input--error @enderror"
-                                  placeholder="Nhập mô tả tài liệu (tùy chọn)">{{ old('description') }}</textarea>
-                        @error('description')
-                        <div class="admin-form__error">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="admin-form__row">
-                    <div class="admin-form__group">
-                        <label class="admin-form__label">Danh mục</label>
-                        <select name="category_id" id="category_id"
-                                class="admin-form__select @error('category_id') admin-form__select--error @enderror">
-                            <option value="">-- Chọn danh mục --</option>
-                            @foreach($categories as $category)
-                                <option value="{{ $category['id'] }}" {{ old('category_id') == $category['id'] ? 'selected' : '' }}>
-                                    {{ $category['name'] }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('category_id')
-                        <div class="admin-form__error">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-
-                <!-- New fields section -->
-                <div class="admin-form__row admin-form__row--split">
-                    <div class="admin-form__group">
-                        <label class="admin-form__label">Ký hiệu</label>
-                        <input type="text" name="symbol" value="{{ old('symbol') }}" 
-                               class="admin-form__input @error('symbol') admin-form__input--error @enderror"
-                               placeholder="Nhập ký hiệu tài liệu">
-                        @error('symbol')
-                        <div class="admin-form__error">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    
-                    <div class="admin-form__group">
-                        <label class="admin-form__label">Năm ban hành tài liệu</label>
-                        <select name="issued_year" id="issued_year" class="admin-form__select select2 @error('issued_year') admin-form__select--error @enderror">
-                            <option value="">-- Chọn năm --</option>
-                            @for($year = date('Y'); $year >= 1900; $year--)
-                                <option value="{{ $year }}" {{ old('issued_year') == $year ? 'selected' : '' }}>{{ $year }}</option>
-                            @endfor
-                        </select>
-                        @error('issued_year')
-                        <div class="admin-form__error">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="admin-form__row admin-form__row--split">
-                    <div class="admin-form__group">
                         <label class="admin-form__label">Số văn bản</label>
                         <input type="text" name="document_number" value="{{ old('document_number') }}" 
                                class="admin-form__input @error('document_number') admin-form__input--error @enderror"
                                placeholder="Nhập số văn bản">
                         @error('document_number')
+                        <div class="admin-form__error">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="admin-form__row admin-form__row--split">
+                    <div class="admin-form__group">
+                        <label class="admin-form__label">Ngày ban hành</label>
+                        <input type="date" name="issued_date" value="{{ old('issued_date') }}" 
+                               class="admin-form__input @error('issued_date') admin-form__input--error @enderror">
+                        @error('issued_date')
                         <div class="admin-form__error">{{ $message }}</div>
                         @enderror
                     </div>
@@ -134,14 +77,14 @@
                     </div>
                 </div>
 
-                <!-- PDF File Upload -->
+                <!-- PDF File Upload (Required) -->
                 <div class="admin-form__row">
                     <div class="admin-form__group">
-                        <label class="admin-form__label admin-form__label--required">File PDF</label>
+                        <label class="admin-form__label admin-form__label--required">File PDF (Bắt buộc)</label>
                         <div class="admin-file-upload">
                             <input type="file" name="pdf_file" accept=".pdf"
                                    class="admin-file-upload__input @error('pdf_file') admin-form__input--error @enderror" 
-                                   id="adminPdfFileInput">
+                                   id="adminPdfFileInput" data-required="true">
                             <label for="adminPdfFileInput" class="admin-file-upload__label">
                                 <svg class="admin-file-upload__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
@@ -156,10 +99,10 @@
                     </div>
                 </div>
 
-                <!-- Word File Upload -->
+                <!-- Word File Upload (Optional) -->
                 <div class="admin-form__row">
                     <div class="admin-form__group">
-                        <label class="admin-form__label">File Word (Tùy chọn)</label>
+                        <label class="admin-form__label">File Word (Không bắt buộc)</label>
                         <div class="admin-file-upload">
                             <input type="file" name="word_file" accept=".doc,.docx"
                                    class="admin-file-upload__input @error('word_file') admin-form__input--error @enderror" 
@@ -168,7 +111,7 @@
                                 <svg class="admin-file-upload__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                                 </svg>
-                                <span>Chọn file Word hoặc kéo thả vào đây</span>
+                                <span>Chọn file Word hoặc kéo thả vào đây (tùy chọn)</span>
                             </label>
                         </div>
                         <small class="admin-form__help">Định dạng: DOC, DOCX. Kích thước tối đa: 50MB</small>
@@ -178,19 +121,6 @@
                     </div>
                 </div>
 
-                <div class="admin-form__row">
-                    <div class="admin-form__group">
-                        <label class="admin-form__label">Trạng thái</label>
-                        <select name="status" class="admin-form__select @error('status') admin-form__select--error @enderror">
-                            <option value="draft" {{ old('status', 'draft') == 'draft' ? 'selected' : '' }}>Bản nháp</option>
-                            <option value="approved" {{ old('status') == 'approved' ? 'selected' : '' }}>Đã phê duyệt</option>
-                            <option value="archived" {{ old('status') == 'archived' ? 'selected' : '' }}>Lưu trữ</option>
-                        </select>
-                        @error('status')
-                        <div class="admin-form__error">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
 
                 <div class="admin-form__actions">
                     <a href="{{ route('admin.management-documents.index') }}" class="admin-btn admin-btn--secondary">Hủy</a>
@@ -207,57 +137,107 @@
 </div>
 
 <script>
-// PDF File upload preview and validation
-document.getElementById('adminPdfFileInput').addEventListener('change', function(e) {
-    const label = this.parentNode.querySelector('.admin-file-upload__label span');
-    if (e.target.files.length > 0) {
-        const file = e.target.files[0];
-        label.textContent = file.name;
-        
-        // File size validation
-        const maxSize = 50 * 1024 * 1024; // 50MB in bytes
+// Function to handle file validation and preview
+function handleFileSelect(inputId, labelSelector, defaultText, maxSize, acceptedTypes) {
+    const input = document.getElementById(inputId);
+    const label = document.querySelector(labelSelector);
+    
+    function validateAndPreview(file) {
+        // Check file size
         if (file.size > maxSize) {
-            alert('Kích thước file PDF không được vượt quá 50MB');
-            this.value = '';
-            label.textContent = 'Chọn file PDF hoặc kéo thả vào đây';
+            const maxSizeMB = maxSize / (1024 * 1024);
+            alert(`Kích thước file không được vượt quá ${maxSizeMB}MB`);
+            input.value = '';
+            label.textContent = defaultText;
             return false;
         }
-    } else {
-        label.textContent = 'Chọn file PDF hoặc kéo thả vào đây';
-    }
-});
-
-// Word File upload preview and validation
-document.getElementById('adminWordFileInput').addEventListener('change', function(e) {
-    const label = this.parentNode.querySelector('.admin-file-upload__label span');
-    if (e.target.files.length > 0) {
-        const file = e.target.files[0];
-        label.textContent = file.name;
         
-        // File size validation
-        const maxSize = 50 * 1024 * 1024; // 50MB in bytes
-        if (file.size > maxSize) {
-            alert('Kích thước file Word không được vượt quá 50MB');
-            this.value = '';
-            label.textContent = 'Chọn file Word hoặc kéo thả vào đây';
+        // Check file type
+        if (acceptedTypes && !acceptedTypes.includes(file.type)) {
+            alert('Định dạng file không được hỗ trợ');
+            input.value = '';
+            label.textContent = defaultText;
             return false;
         }
-    } else {
-        label.textContent = 'Chọn file Word hoặc kéo thả vào đây';
+        
+        // Update label with filename
+        label.textContent = file.name;
+        return true;
     }
-});
+    
+    // Handle input change
+    input.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            validateAndPreview(file);
+        } else {
+            label.textContent = defaultText;
+        }
+    });
+    
+    // Handle drag and drop
+    const dropArea = label.parentElement;
+    
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, preventDefaults, false);
+    });
+    
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropArea.addEventListener(eventName, highlight, false);
+    });
+    
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, unhighlight, false);
+    });
+    
+    function highlight() {
+        dropArea.classList.add('admin-file-upload--dragover');
+    }
+    
+    function unhighlight() {
+        dropArea.classList.remove('admin-file-upload--dragover');
+    }
+    
+    dropArea.addEventListener('drop', handleDrop, false);
+    
+    function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        
+        if (files.length > 0) {
+            const file = files[0];
+            if (validateAndPreview(file)) {
+                // Create a new FileList-like object
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                input.files = dataTransfer.files;
+            }
+        }
+    }
+}
 
-// Initialize Select2 for year dropdown
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof $ !== 'undefined' && $.fn.select2) {
-        $('#issued_year').select2({
-            placeholder: '-- Chọn năm --',
-            allowClear: true,
-            width: '100%',
-            dropdownCssClass: 'select2-dropdown-small',
-            containerCssClass: 'select2-container-small'
-        });
-    }
-});
+// Initialize PDF file upload
+handleFileSelect(
+    'adminPdfFileInput',
+    'label[for="adminPdfFileInput"] span',
+    'Chọn file PDF hoặc kéo thả vào đây',
+    50 * 1024 * 1024, // 50MB
+    ['application/pdf']
+);
+
+// Initialize Word file upload
+handleFileSelect(
+    'adminWordFileInput',
+    'label[for="adminWordFileInput"] span',
+    'Chọn file Word hoặc kéo thả vào đây (tùy chọn)',
+    50 * 1024 * 1024, // 50MB
+    ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword']
+);
+
 </script>
 @endsection

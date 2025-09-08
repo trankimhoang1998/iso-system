@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ManagementDocument extends Model
 {
     protected $fillable = [
-        'title',
-        'description',
-        'category_id',
+        'issued_date',
+        'document_number',
+        'issuing_agency',
+        'summary',
         'pdf_file_name',
         'pdf_file_path',
         'pdf_file_type',
@@ -19,52 +20,19 @@ class ManagementDocument extends Model
         'word_file_path',
         'word_file_type',
         'word_file_size',
-        'status',
-        'symbol',
-        'issued_year',
-        'document_number',
-        'issuing_agency',
-        'summary',
         'uploaded_by',
-        'approved_by',
-        'approved_at',
-        'is_public',
     ];
 
     protected $casts = [
-        'approved_at' => 'datetime',
-        'is_public' => 'boolean',
+        'issued_date' => 'date',
     ];
 
-    const STATUS_DRAFT = 'draft';
-    const STATUS_APPROVED = 'approved';
-    const STATUS_ARCHIVED = 'archived';
 
     public function uploader(): BelongsTo
     {
         return $this->belongsTo(User::class, 'uploaded_by');
     }
 
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(ManagementDocumentCategory::class);
-    }
-
-
-    public function approver(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'approved_by');
-    }
-
-    public function getStatusName(): string
-    {
-        return match($this->status) {
-            self::STATUS_DRAFT => 'Bản nháp',
-            self::STATUS_APPROVED => 'Đã phê duyệt',
-            self::STATUS_ARCHIVED => 'Lưu trữ',
-            default => 'Không xác định',
-        };
-    }
 
     public function getFormattedPdfFileSize(): string
     {
@@ -116,25 +84,4 @@ class ManagementDocument extends Model
         return $this->pdf_file_name;
     }
 
-    public function canUserView(User $user): bool
-    {
-        if ($user->role == User::ROLE_ADMIN) {
-            return true;
-        }
-        if ($user->role == User::ROLE_LEVEL1) {
-            return $this->uploaded_by == $user->id || $this->is_public;
-        }
-        if ($user->role == User::ROLE_LEVEL2) {
-            return $this->is_public;
-        }
-        if ($user->role == User::ROLE_LEVEL3) {
-            return $this->is_public;
-        }
-        return false;
-    }
-
-    public function canUserDownload(User $user): bool
-    {
-        return $this->canUserView($user);
-    }
 }

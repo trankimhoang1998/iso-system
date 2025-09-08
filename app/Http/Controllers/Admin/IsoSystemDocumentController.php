@@ -408,6 +408,27 @@ class IsoSystemDocumentController extends Controller
             ->with('success', 'Tài liệu đã được xóa thành công.');
     }
 
+    public function view(IsoSystemDocument $isoSystemDocument, $type = 'pdf')
+    {
+        // Check if user can access this document
+        $user = auth()->user();
+        if (in_array($user->role, [2, 3]) && $user->department_id && !$isoSystemDocument->departments->contains('id', $user->department_id)) {
+            abort(404);
+        }
+        
+        if ($type === 'word' && $isoSystemDocument->word_file_path) {
+            if (Storage::disk('public')->exists($isoSystemDocument->word_file_path)) {
+                return Storage::disk('public')->response($isoSystemDocument->word_file_path);
+            }
+        } elseif ($isoSystemDocument->pdf_file_path) {
+            if (Storage::disk('public')->exists($isoSystemDocument->pdf_file_path)) {
+                return Storage::disk('public')->response($isoSystemDocument->pdf_file_path);
+            }
+        }
+
+        return redirect()->route('admin.iso-system-documents.index')->with('error', 'File không tồn tại!');
+    }
+
     public function download(IsoSystemDocument $isoSystemDocument, $type = 'pdf')
     {
         // Check if user can access this document

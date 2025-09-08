@@ -9,15 +9,15 @@
         <svg class="admin-breadcrumb__separator" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
         </svg>
-        <span class="admin-breadcrumb__item admin-breadcrumb__item--current">{{ Str::limit($managementDocument->title, 50) }}</span>
+        <span class="admin-breadcrumb__item admin-breadcrumb__item--current">{{ Str::limit($managementDocument->document_number ?: 'Văn bản quản lý', 50) }}</span>
     </div>
     
     <div class="admin-page__header">
         <div class="admin-page__title-section">
-            <h1 class="admin-page__title">{{ $managementDocument->title }}</h1>
+            <h1 class="admin-page__title">{{ $managementDocument->document_number ?: 'Văn bản quản lý' }}</h1>
         </div>
         <div class="admin-page__actions">
-            @if($managementDocument->pdf_file_path)
+            @if($managementDocument->hasPdfFile())
             <a href="{{ route('admin.management-documents.download', [$managementDocument, 'pdf']) }}"
                class="admin-btn admin-btn--success">
                 <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -26,7 +26,7 @@
                 Tải PDF
             </a>
             @endif
-            @if($managementDocument->word_file_path)
+            @if($managementDocument->hasWordFile())
             <a href="{{ route('admin.management-documents.download', [$managementDocument, 'word']) }}"
                class="admin-btn admin-btn--info">
                 <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -51,44 +51,35 @@
         <div class="admin-document-header">
             <div class="admin-document-meta">
                 <div class="admin-document-meta__item">
-                    <span class="admin-document-meta__label">Danh mục:</span>
+                    <span class="admin-document-meta__label">Loại:</span>
                     <span class="admin-document-type-badge admin-document-type-badge--management">
-                        {{ $managementDocument->category->name ?? 'Không có danh mục' }}
-                    </span>
-                </div>
-                <div class="admin-document-meta__item">
-                    <span class="admin-document-meta__label">Trạng thái:</span>
-                    <span class="admin-status-badge 
-                        @if($managementDocument->status == 'approved') admin-status-badge--active 
-                        @elseif($managementDocument->status == 'draft') admin-status-badge--warning
-                        @else admin-status-badge--inactive @endif">
-                        {{ $managementDocument->getStatusName() }}
+                        Tài liệu quản lý
                     </span>
                 </div>
             </div>
         </div>
 
-        @if($managementDocument->description)
+        @if($managementDocument->summary)
         <div class="admin-document-description">
-            <h3 class="admin-document-description__title">Mô tả</h3>
+            <h3 class="admin-document-description__title">Trích yếu</h3>
             <div class="admin-document-description__content">
-                {{ $managementDocument->description }}
+                {{ $managementDocument->summary }}
             </div>
         </div>
         @endif
 
-        @if($managementDocument->pdf_file_path || $managementDocument->word_file_path)
+        @if($managementDocument->hasPdfFile() || $managementDocument->hasWordFile())
         <div class="admin-document-file">
             <h3 class="admin-document-file__title">File đính kèm</h3>
             <div class="admin-document-file__info">
-                @if($managementDocument->pdf_file_path)
+                @if($managementDocument->hasPdfFile())
                 <div class="admin-file-item">
                     <svg class="admin-file-item__icon admin-file-item__icon--pdf" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
                     <div class="admin-file-item__details">
                         <div class="admin-file-item__name">{{ $managementDocument->pdf_file_name }}</div>
-                        <div class="admin-file-item__size">{{ number_format($managementDocument->pdf_file_size / 1024 / 1024, 2) }}MB</div>
+                        <div class="admin-file-item__size">{{ $managementDocument->getFormattedPdfFileSize() }}</div>
                         <div class="admin-file-item__type">PDF</div>
                     </div>
                     <a href="{{ route('admin.management-documents.download', [$managementDocument, 'pdf']) }}"
@@ -101,14 +92,14 @@
                 </div>
                 @endif
                 
-                @if($managementDocument->word_file_path)
+                @if($managementDocument->hasWordFile())
                 <div class="admin-file-item">
                     <svg class="admin-file-item__icon admin-file-item__icon--word" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
                     <div class="admin-file-item__details">
                         <div class="admin-file-item__name">{{ $managementDocument->word_file_name }}</div>
-                        <div class="admin-file-item__size">{{ number_format($managementDocument->word_file_size / 1024 / 1024, 2) }}MB</div>
+                        <div class="admin-file-item__size">{{ $managementDocument->getFormattedWordFileSize() }}</div>
                         <div class="admin-file-item__type">{{ strtoupper($managementDocument->word_file_type) }}</div>
                     </div>
                     <a href="{{ route('admin.management-documents.download', [$managementDocument, 'word']) }}"
@@ -128,12 +119,8 @@
             <h3 class="admin-document-info__title">Thông tin tài liệu</h3>
             <div class="admin-document-info__grid">
                 <div class="admin-info-item">
-                    <span class="admin-info-item__label">Ký hiệu:</span>
-                    <span class="admin-info-item__value">{{ $managementDocument->symbol ?: '_' }}</span>
-                </div>
-                <div class="admin-info-item">
-                    <span class="admin-info-item__label">Năm ban hành tài liệu:</span>
-                    <span class="admin-info-item__value">{{ $managementDocument->issued_year ?: '_' }}</span>
+                    <span class="admin-info-item__label">Ngày ban hành:</span>
+                    <span class="admin-info-item__value">{{ $managementDocument->issued_date ? $managementDocument->issued_date->format('d/m/Y') : '_' }}</span>
                 </div>
                 <div class="admin-info-item">
                     <span class="admin-info-item__label">Số văn bản:</span>
@@ -149,25 +136,9 @@
                     <span class="admin-info-item__value">{{ $managementDocument->uploader->name }}</span>
                 </div>
                 @endif
-                <div class="admin-info-item">
-                    <span class="admin-info-item__label">Ngày tạo:</span>
-                    <span class="admin-info-item__value">{{ $managementDocument->created_at->format('d/m/Y H:i') }}</span>
-                </div>
-                <div class="admin-info-item">
-                    <span class="admin-info-item__label">Ngày cập nhật:</span>
-                    <span class="admin-info-item__value">{{ $managementDocument->updated_at->format('d/m/Y H:i') }}</span>
-                </div>
             </div>
         </div>
 
-        @if($managementDocument->summary)
-        <div class="admin-document-summary">
-            <h3 class="admin-document-summary__title">Trích yếu</h3>
-            <div class="admin-document-summary__content">
-                {{ $managementDocument->summary }}
-            </div>
-        </div>
-        @endif
     </div>
 </div>
 @endsection

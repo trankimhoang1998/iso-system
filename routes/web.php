@@ -116,15 +116,19 @@ Route::middleware(['auth'])->name('admin.')->group(function () {
     
     // View and Download Routes - All authenticated users can access (must be after management routes)
     Route::get('iso-directive-documents/{isoDirectiveDocument}', [IsoDirectiveDocumentController::class, 'show'])->name('iso-directive-documents.show');
+    Route::get('iso-directive-documents/{isoDirectiveDocument}/view/{type?}', [IsoDirectiveDocumentController::class, 'view'])->name('iso-directive-documents.view');
     Route::get('iso-directive-documents/{isoDirectiveDocument}/download/{type?}', [IsoDirectiveDocumentController::class, 'download'])->name('iso-directive-documents.download');
     
     Route::get('iso-system-documents/{isoSystemDocument}', [IsoSystemDocumentController::class, 'show'])->name('iso-system-documents.show');
+    Route::get('iso-system-documents/{isoSystemDocument}/view/{type?}', [IsoSystemDocumentController::class, 'view'])->name('iso-system-documents.view');
     Route::get('iso-system-documents/{isoSystemDocument}/download/{type?}', [IsoSystemDocumentController::class, 'download'])->name('iso-system-documents.download');
     
     Route::get('internal-documents/{internalDocument}', [InternalDocumentController::class, 'show'])->name('internal-documents.show');
+    Route::get('internal-documents/{internalDocument}/view/{type?}', [InternalDocumentController::class, 'view'])->name('internal-documents.view');
     Route::get('internal-documents/{internalDocument}/download/{type?}', [InternalDocumentController::class, 'download'])->name('internal-documents.download');
     
     Route::get('management-documents/{managementDocument}', [ManagementDocumentController::class, 'show'])->name('management-documents.show');
+    Route::get('management-documents/{managementDocument}/view/{type?}', [ManagementDocumentController::class, 'view'])->name('management-documents.view');
     Route::get('management-documents/{managementDocument}/download/{type?}', [ManagementDocumentController::class, 'download'])->name('management-documents.download');
 });
 

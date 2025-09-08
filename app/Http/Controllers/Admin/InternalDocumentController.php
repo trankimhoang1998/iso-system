@@ -378,6 +378,27 @@ class InternalDocumentController extends Controller
             ->with('success', 'Tài liệu đã được xóa thành công.');
     }
 
+    public function view(InternalDocument $internalDocument, $type = 'pdf')
+    {
+        // Check if user can access this document
+        $user = auth()->user();
+        if (in_array($user->role, [2, 3]) && $user->department_id && $internalDocument->department_id !== $user->department_id) {
+            abort(404);
+        }
+        
+        if ($type === 'word' && $internalDocument->word_file_path) {
+            if (Storage::disk('public')->exists($internalDocument->word_file_path)) {
+                return Storage::disk('public')->response($internalDocument->word_file_path);
+            }
+        } elseif ($internalDocument->pdf_file_path) {
+            if (Storage::disk('public')->exists($internalDocument->pdf_file_path)) {
+                return Storage::disk('public')->response($internalDocument->pdf_file_path);
+            }
+        }
+
+        return redirect()->route('admin.internal-documents.index')->with('error', 'File không tồn tại!');
+    }
+
     public function download(InternalDocument $internalDocument, $type = 'pdf')
     {
         // Check if user can access this document

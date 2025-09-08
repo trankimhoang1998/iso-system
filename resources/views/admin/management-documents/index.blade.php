@@ -27,12 +27,17 @@
                 <div class="admin-filter__group">
                     <label class="admin-filter__label">Tìm kiếm</label>
                     <input type="text" name="search" value="{{ request('search') }}" 
-                           placeholder="Tiêu đề hoặc mô tả..." class="admin-filter__input">
+                           placeholder="Số văn bản, cơ quan ban hành, trích yếu..." class="admin-filter__input">
                 </div>
                 <div class="admin-filter__group">
-                    <label class="admin-filter__label">Năm ban hành tài liệu</label>
-                    <input type="text" name="year" value="{{ request('year') }}" 
-                           placeholder="Ví dụ: 2024" class="admin-filter__input">
+                    <label class="admin-filter__label">Thời gian ban hành</label>
+                    <div class="admin-filter__date-range">
+                        <input type="date" name="date_from" value="{{ request('date_from') }}" 
+                               class="admin-form__input" placeholder="Từ ngày">
+                        <span class="admin-filter__date-separator">đến</span>
+                        <input type="date" name="date_to" value="{{ request('date_to') }}" 
+                               class="admin-form__input" placeholder="Đến ngày">
+                    </div>
                 </div>
                 <div class="admin-filter__actions">
                     <button type="submit" class="admin-btn admin-btn--primary">
@@ -56,65 +61,71 @@
         <table class="admin-table">
             <thead class="admin-table__head">
                 <tr>
-                    <th class="admin-table__header">Thời gian</th>
-                    <th class="admin-table__header">Số văn bản</th>
-                    <th class="admin-table__header">Cơ quan ban hành</th>
-                    <th class="admin-table__header">Trích yếu</th>
-                    <th class="admin-table__header">Xem/tải xuống</th>
+                    <th class="admin-table__header admin-table__header--date">Thời gian</th>
+                    <th class="admin-table__header admin-table__header--document-number">Số văn bản</th>
+                    <th class="admin-table__header admin-table__header--agency">Cơ quan ban hành</th>
+                    <th class="admin-table__header admin-table__header--summary">Trích yếu</th>
+                    <th class="admin-table__header admin-table__header--actions">Xem/tải xuống</th>
                 </tr>
             </thead>
             <tbody class="admin-table__body">
                 @forelse($documents as $document)
                 <tr class="admin-table__row">
-                    <td class="admin-table__cell">{{ $document->issued_year ?: '_' }}</td>
-                    <td class="admin-table__cell">{{ $document->document_number ?: '_' }}</td>
-                    <td class="admin-table__cell">{{ $document->issuing_agency ?: '_' }}</td>
-                    <td class="admin-table__cell">{{ $document->summary ? Str::limit($document->summary, 100) : '_' }}</td>
-                    <td class="admin-table__cell">
+                    <td class="admin-table__cell admin-table__cell--date">{{ $document->issued_date ? $document->issued_date->format('d/m/Y') : '_' }}</td>
+                    <td class="admin-table__cell admin-table__cell--document-number">{{ $document->document_number ?: '_' }}</td>
+                    <td class="admin-table__cell admin-table__cell--agency">{{ $document->issuing_agency ?: '_' }}</td>
+                    <td class="admin-table__cell admin-table__cell--summary">{{ $document->summary ?: '_' }}</td>
+                    <td class="admin-table__cell admin-table__cell--actions">
                         <div class="admin-table__actions">
-                            <a href="{{ route('admin.management-documents.show', $document) }}" 
-                               class="admin-table__action-btn admin-table__action-btn--view" 
-                               title="Chi tiết">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                </svg>
-                            </a>
-                            @if($document->pdf_file_path)
-                            <a href="{{ route('admin.management-documents.download', [$document, 'pdf']) }}"
-                               class="admin-table__action-btn admin-table__action-btn--download" 
-                               title="Tải PDF">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                </svg>
-                                <span class="admin-file-type-label">PDF</span>
-                            </a>
-                            @endif
-                            @if($document->word_file_path)
-                            <a href="{{ route('admin.management-documents.download', [$document, 'word']) }}"
-                               class="admin-table__action-btn admin-table__action-btn--download admin-table__action-btn--word" 
-                               title="Tải Word">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                </svg>
-                                <span class="admin-file-type-label">Word</span>
-                            </a>
-                            @endif
+                            <div class="admin-table__actions-row">
+                                @if($document->hasPdfFile())
+                                <a href="{{ route('admin.management-documents.view', [$document, 'pdf']) }}" 
+                                   class="admin-table__action-btn admin-table__action-btn--view" 
+                                   title="Xem PDF" target="_blank">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                    </svg>
+                                </a>
+                                @endif
+                                @if($document->pdf_file_path)
+                                <a href="{{ route('admin.management-documents.download', [$document, 'pdf']) }}"
+                                   class="admin-table__action-btn admin-table__action-btn--download" 
+                                   title="Tải PDF">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                    <span class="admin-file-type-label">PDF</span>
+                                </a>
+                                @endif
+                                @if($document->word_file_path)
+                                <a href="{{ route('admin.management-documents.download', [$document, 'word']) }}"
+                                   class="admin-table__action-btn admin-table__action-btn--download admin-table__action-btn--word" 
+                                   title="Tải Word">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                    <span class="admin-file-type-label">Word</span>
+                                </a>
+                                @endif
+                            </div>
                             @if(in_array(auth()->user()->role, [0, 1]))
-                            <a href="{{ route('admin.management-documents.edit', $document) }}" 
-                               class="admin-table__action-btn admin-table__action-btn--edit" 
-                               title="Chỉnh sửa">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                </svg>
-                            </a>
-                            <button class="admin-table__action-btn admin-table__action-btn--delete" 
-                                    title="Xóa"
-                                    onclick="openDeleteModal({{ $document->id }}, '{{ $document->title }}')">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                </svg>
-                            </button>
+                            <div class="admin-table__actions-row">
+                                <a href="{{ route('admin.management-documents.edit', $document) }}" 
+                                   class="admin-table__action-btn admin-table__action-btn--edit" 
+                                   title="Chỉnh sửa">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                    </svg>
+                                </a>
+                                <button class="admin-table__action-btn admin-table__action-btn--delete" 
+                                        title="Xóa"
+                                        onclick="openDeleteModal({{ $document->id }}, '{{ addslashes($document->document_number ?: 'tài liệu') }}')">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
+                            </div>
                             @endif
                         </div>
                     </td>
@@ -192,11 +203,7 @@
 <script>
 function openDeleteModal(documentId, documentTitle) {
     document.getElementById('deleteDocumentName').textContent = documentTitle;
-    const currentCategoryId = '{{ request("category_id") }}';
     let deleteUrl = `/management-documents/${documentId}`;
-    if (currentCategoryId) {
-        deleteUrl += `?redirect_category=${currentCategoryId}`;
-    }
     document.getElementById('deleteForm').action = deleteUrl;
     document.getElementById('deleteModal').classList.add('admin-modal--active');
 }

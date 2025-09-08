@@ -12,20 +12,25 @@ class ManagementDocumentController extends Controller
 {
     public function index(Request $request)
     {
-        $query = ManagementDocument::with(['category', 'uploader']);
+        $query = ManagementDocument::with(['uploader']);
 
         // Search filter
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                $q->where('document_number', 'like', "%{$search}%")
+                  ->orWhere('issuing_agency', 'like', "%{$search}%")
+                  ->orWhere('summary', 'like', "%{$search}%");
             });
         }
 
-        // Category filter
-        if ($request->filled('category_id')) {
-            $query->where('category_id', $request->category_id);
+        // Date range filter based on issued_date
+        if ($request->filled('date_from')) {
+            $query->whereDate('issued_date', '>=', $request->date_from);
+        }
+        
+        if ($request->filled('date_to')) {
+            $query->whereDate('issued_date', '<=', $request->date_to);
         }
 
 
@@ -34,47 +39,30 @@ class ManagementDocumentController extends Controller
         // Preserve query parameters in pagination links
         $documents->appends($request->all());
 
-        // Get all categories for filter with hierarchical structure
-        $categories = ManagementDocumentCategory::getFlatList();
-        return view('admin.management-documents.index', compact('documents', 'categories'));
+        return view('admin.management-documents.index', compact('documents'));
     }
 
     public function create()
     {
-        $categories = ManagementDocumentCategory::getFlatList();
-        return view('admin.management-documents.create', compact('categories'));
+        return view('admin.management-documents.create');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'category_id' => 'nullable|exists:management_document_categories,id',
-            'status' => 'nullable|in:draft,approved,archived',
-            'symbol' => 'nullable|string|max:255',
-            'issued_year' => 'nullable|integer|digits:4',
+            'issued_date' => 'nullable|date',
             'document_number' => 'nullable|string|max:255',
             'issuing_agency' => 'nullable|string|max:255',
-            'summary' => 'nullable|string|max:1000',
-            'pdf_file' => 'required|file|mimes:pdf|max:51200', // PDF file required, 50MB max
-            'word_file' => 'nullable|file|mimes:doc,docx|max:51200', // Word file optional, 50MB max
+            'summary' => 'nullable|string',
+            'pdf_file' => 'required|file|mimes:pdf|max:51200',
+            'word_file' => 'nullable|file|mimes:doc,docx|max:51200',
         ], [
-            'title.required' => 'Tiêu đề tài liệu là bắt buộc.',
-            'title.string' => 'Tiêu đề tài liệu phải là chuỗi văn bản.',
-            'title.max' => 'Tiêu đề tài liệu không được vượt quá 255 ký tự.',
-            'category_id.exists' => 'Danh mục được chọn không hợp lệ.',
-            'status.in' => 'Trạng thái được chọn không hợp lệ.',
-            'symbol.string' => 'Ký hiệu phải là chuỗi văn bản.',
-            'symbol.max' => 'Ký hiệu không được vượt quá 255 ký tự.',
-            'issued_year.integer' => 'Năm ban hành phải là số nguyên.',
-            'issued_year.digits' => 'Năm ban hành phải có đúng 4 chữ số.',
+            'issued_date.date' => 'Thời gian ban hành phải là ngày hợp lệ.',
             'document_number.string' => 'Số văn bản phải là chuỗi văn bản.',
             'document_number.max' => 'Số văn bản không được vượt quá 255 ký tự.',
             'issuing_agency.string' => 'Cơ quan ban hành phải là chuỗi văn bản.',
             'issuing_agency.max' => 'Cơ quan ban hành không được vượt quá 255 ký tự.',
             'summary.string' => 'Trích yếu phải là chuỗi văn bản.',
-            'summary.max' => 'Trích yếu không được vượt quá 1000 ký tự.',
             'pdf_file.required' => 'File PDF là bắt buộc.',
             'pdf_file.file' => 'PDF phải là một file.',
             'pdf_file.mimes' => 'File PDF phải có định dạng: pdf.',
@@ -104,12 +92,7 @@ class ManagementDocumentController extends Controller
         }
 
         ManagementDocument::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'category_id' => $request->category_id,
-            'status' => $request->status ?? 'draft',
-            'symbol' => $request->symbol,
-            'issued_year' => $request->issued_year,
+            'issued_date' => $request->issued_date,
             'document_number' => $request->document_number,
             'issuing_agency' => $request->issuing_agency,
             'summary' => $request->summary,
@@ -126,57 +109,37 @@ class ManagementDocumentController extends Controller
             'uploaded_by' => auth()->id(),
         ]);
 
-        $redirectUrl = route('admin.management-documents.index');
-        if ($request->category_id) {
-            $redirectUrl .= '?category_id=' . $request->category_id;
-        }
-        
-        return redirect($redirectUrl)
+        return redirect()->route('admin.management-documents.index')
             ->with('success', 'Tài liệu đã được tạo thành công.');
     }
 
     public function show(ManagementDocument $managementDocument)
     {
-        $managementDocument->load(['category', 'uploader']);
+        $managementDocument->load(['uploader']);
         return view('admin.management-documents.show', compact('managementDocument'));
     }
 
     public function edit(ManagementDocument $managementDocument)
     {
-        $categories = ManagementDocumentCategory::getFlatList();
-        return view('admin.management-documents.edit', compact('managementDocument', 'categories'));
+        return view('admin.management-documents.edit', compact('managementDocument'));
     }
 
     public function update(Request $request, ManagementDocument $managementDocument)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'category_id' => 'nullable|exists:management_document_categories,id',
-            'status' => 'nullable|in:draft,approved,archived',
-            'symbol' => 'nullable|string|max:255',
-            'issued_year' => 'nullable|integer|digits:4',
+            'issued_date' => 'nullable|date',
             'document_number' => 'nullable|string|max:255',
             'issuing_agency' => 'nullable|string|max:255',
-            'summary' => 'nullable|string|max:1000',
-            'pdf_file' => 'nullable|file|mimes:pdf|max:51200', // PDF file optional for update, 50MB max
-            'word_file' => 'nullable|file|mimes:doc,docx|max:51200', // Word file optional, 50MB max
+            'summary' => 'nullable|string',
+            'pdf_file' => 'nullable|file|mimes:pdf|max:51200',
+            'word_file' => 'nullable|file|mimes:doc,docx|max:51200',
         ], [
-            'title.required' => 'Tiêu đề tài liệu là bắt buộc.',
-            'title.string' => 'Tiêu đề tài liệu phải là chuỗi văn bản.',
-            'title.max' => 'Tiêu đề tài liệu không được vượt quá 255 ký tự.',
-            'category_id.exists' => 'Danh mục được chọn không hợp lệ.',
-            'status.in' => 'Trạng thái được chọn không hợp lệ.',
-            'symbol.string' => 'Ký hiệu phải là chuỗi văn bản.',
-            'symbol.max' => 'Ký hiệu không được vượt quá 255 ký tự.',
-            'issued_year.integer' => 'Năm ban hành phải là số nguyên.',
-            'issued_year.digits' => 'Năm ban hành phải có đúng 4 chữ số.',
+            'issued_date.date' => 'Thời gian ban hành phải là ngày hợp lệ.',
             'document_number.string' => 'Số văn bản phải là chuỗi văn bản.',
             'document_number.max' => 'Số văn bản không được vượt quá 255 ký tự.',
             'issuing_agency.string' => 'Cơ quan ban hành phải là chuỗi văn bản.',
             'issuing_agency.max' => 'Cơ quan ban hành không được vượt quá 255 ký tự.',
             'summary.string' => 'Trích yếu phải là chuỗi văn bản.',
-            'summary.max' => 'Trích yếu không được vượt quá 1000 ký tự.',
             'pdf_file.file' => 'PDF phải là một file.',
             'pdf_file.mimes' => 'File PDF phải có định dạng: pdf.',
             'pdf_file.max' => 'File PDF không được vượt quá 50MB.',
@@ -186,12 +149,7 @@ class ManagementDocumentController extends Controller
         ]);
 
         $updateData = [
-            'title' => $request->title,
-            'description' => $request->description,
-            'category_id' => $request->category_id,
-            'status' => $request->status ?? $managementDocument->status,
-            'symbol' => $request->symbol,
-            'issued_year' => $request->issued_year,
+            'issued_date' => $request->issued_date,
             'document_number' => $request->document_number,
             'issuing_agency' => $request->issuing_agency,
             'summary' => $request->summary,
@@ -264,6 +222,21 @@ class ManagementDocumentController extends Controller
         
         return redirect($redirectUrl)
             ->with('success', 'Tài liệu đã được xóa thành công.');
+    }
+
+    public function view(ManagementDocument $managementDocument, $type = 'pdf')
+    {
+        if ($type === 'word' && $managementDocument->word_file_path) {
+            if (Storage::disk('public')->exists($managementDocument->word_file_path)) {
+                return Storage::disk('public')->response($managementDocument->word_file_path);
+            }
+        } elseif ($managementDocument->pdf_file_path) {
+            if (Storage::disk('public')->exists($managementDocument->pdf_file_path)) {
+                return Storage::disk('public')->response($managementDocument->pdf_file_path);
+            }
+        }
+
+        return redirect()->route('admin.management-documents.index')->with('error', 'File không tồn tại!');
     }
 
     public function download(ManagementDocument $managementDocument, $type = 'pdf')

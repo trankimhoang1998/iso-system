@@ -154,55 +154,6 @@
                 @endphp
             @endif
 
-            @if(request()->routeIs('admin.management-documents*') || request()->is('management-documents*'))
-                <li class="admin-nav__section">
-                    <span class="admin-nav__section-title">Văn bản quản lý</span>
-                </li>
-                @php
-                    $managementCategories = \App\Models\ManagementDocumentCategory::whereNull('parent_id')->orderBy('id')->get();
-                    
-                    function renderManagementCategories($categories, $level = 0) {
-                        foreach($categories as $category) {
-                            $childCategories = \App\Models\ManagementDocumentCategory::where('parent_id', $category->id)->orderBy('id')->get();
-                            $hasChildren = $childCategories->count() > 0;
-                            $isActive = (request()->route('category') && request()->route('category')->id == $category->id);
-                            $childClass = $level > 0 ? 'admin-nav__item--child' . ($level > 1 ? ' admin-nav__item--level-' . $level : '') : '';
-                            $indentStyle = $level > 1 ? 'style="padding-left: ' . (20 + ($level - 1) * 15) . 'px;"' : '';
-                            
-                            echo '<li class="admin-nav__item ' . $childClass . ($hasChildren ? ' admin-nav__item--expandable' : '') . '" ' . $indentStyle . '>';
-                            
-                            if($hasChildren) {
-                                // Parent category - expandable, no direct link
-                                echo '<a href="javascript:void(0)" class="admin-nav__link admin-nav__link--expandable" data-toggle="submenu-management-' . $category->id . '">';
-                                echo '<svg class="admin-nav__icon admin-nav__icon--expand" fill="none" stroke="currentColor" viewBox="0 0 24 24">';
-                                echo '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>';
-                                echo '</svg>';
-                            } else {
-                                // Leaf category - clickable link
-                                echo '<a href="/management-documents/category/' . $category->id . '" ';
-                                echo 'class="admin-nav__link ' . ($isActive ? 'admin-nav__link--active' : '') . '">';
-                                echo '<svg class="admin-nav__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">';
-                                
-                                echo '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>';
-                                echo '</svg>';
-                            }
-                            
-                            echo '<span>' . htmlspecialchars($category->name) . '</span>';
-                            echo '</a>';
-                            echo '</li>';
-                            
-                            // Render child categories if they exist
-                            if($hasChildren) {
-                                echo '<ul class="admin-nav__submenu" id="submenu-management-' . $category->id . '" style="display: none;">';
-                                renderManagementCategories($childCategories, $level + 1);
-                                echo '</ul>';
-                            }
-                        }
-                    }
-                    
-                    renderManagementCategories($managementCategories);
-                @endphp
-            @endif
         </ul>
     </nav>
 </aside>
