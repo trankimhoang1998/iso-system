@@ -6,7 +6,7 @@
 <div class="admin-page">
     <div class="admin-page__header">
         <div>
-            <p class="admin-page__subtitle">Quản lý tài liệu quản lý của hệ thống</p>
+            <p class="admin-page__subtitle">Quản lý các văn bản pháp lý về Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015</p>
         </div>
         @if(in_array(auth()->user()->role, [0, 1]))
         <div class="admin-page__actions">

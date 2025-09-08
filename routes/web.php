@@ -7,7 +7,6 @@ use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\IsoDirectiveCategoryController;
 use App\Http\Controllers\Admin\IsoSystemCategoryController;
 use App\Http\Controllers\Admin\InternalDocumentCategoryController;
-use App\Http\Controllers\Admin\ManagementDocumentCategoryController;
 use App\Http\Controllers\Admin\IsoDirectiveDocumentController;
 use App\Http\Controllers\Admin\IsoSystemDocumentController;
 use App\Http\Controllers\Admin\InternalDocumentController;
@@ -52,7 +51,6 @@ Route::middleware(['auth'])->name('admin.')->group(function () {
         Route::resource('iso-directive-categories', IsoDirectiveCategoryController::class)->except(['show']);
         Route::resource('iso-system-categories', IsoSystemCategoryController::class)->except(['show']);
         Route::resource('internal-document-categories', InternalDocumentCategoryController::class)->except(['show']);
-        Route::resource('management-document-categories', ManagementDocumentCategoryController::class)->except(['show']);
         
     });
     

@@ -33,7 +33,6 @@
                 request()->routeIs('admin.iso-directive-categories*') || 
                 request()->routeIs('admin.iso-system-categories*') || 
                 request()->routeIs('admin.internal-document-categories*') || 
-                request()->routeIs('admin.management-document-categories*') ||
                 request()->routeIs('admin.management-documents*'))
             @include('partials.admin.sidebar')
         @endunless

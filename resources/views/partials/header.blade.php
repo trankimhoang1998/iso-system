@@ -28,7 +28,7 @@
                     </a>
                 </li>
                 <li class="nav__item">
-                    <a href="/management-documents" class="nav__link {{ request()->is('van-ban-quan-ly*') ? 'nav__link--active' : '' }}">
+                    <a href="/management-documents" class="nav__link {{ request()->is('management-documents*') ? 'nav__link--active' : '' }}">
                         VĂN BẢN QUẢN LÝ
                     </a>
                 </li>
@@ -72,11 +72,6 @@
                     <li class="nav__dropdown-item">
                         <a href="{{ route('admin.internal-document-categories.index') }}" class="nav__dropdown-link">
                             QUẢN LÝ DANH MỤC - TÀI LIỆU NỘI BỘ
-                        </a>
-                    </li>
-                    <li class="nav__dropdown-item">
-                        <a href="{{ route('admin.management-document-categories.index') }}" class="nav__dropdown-link">
-                            QUẢN LÝ DANH MỤC - VĂN BẢN QUẢN LÝ
                         </a>
                     </li>
                     <li class="nav__dropdown-divider"></li>
