@@ -22,7 +22,7 @@
         </div>
         <div class="admin-page__actions">
             @if($isoDirectiveDocument->hasPdfFile())
-            <a href="{{ Storage::url($isoDirectiveDocument->pdf_file_path) }}" target="_blank"
+            <a href="{{ route('admin.iso-directive-documents.download', [$isoDirectiveDocument, 'pdf']) }}"
                class="admin-btn admin-btn--success">
                 <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -31,7 +31,7 @@
             </a>
             @endif
             @if($isoDirectiveDocument->hasWordFile())
-            <a href="{{ Storage::url($isoDirectiveDocument->word_file_path) }}" target="_blank"
+            <a href="{{ route('admin.iso-directive-documents.download', [$isoDirectiveDocument, 'word']) }}"
                class="admin-btn admin-btn--primary">
                 <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -86,7 +86,7 @@
                         @endif
                         <div class="admin-file-item__type">PDF</div>
                     </div>
-                    <a href="{{ Storage::url($isoDirectiveDocument->pdf_file_path) }}" target="_blank"
+                    <a href="{{ route('admin.iso-directive-documents.download', [$isoDirectiveDocument, 'pdf']) }}"
                        class="admin-btn admin-btn--sm admin-btn--success">
                         <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -108,7 +108,7 @@
                         @endif
                         <div class="admin-file-item__type">{{ strtoupper($isoDirectiveDocument->word_file_type) }}</div>
                     </div>
-                    <a href="{{ Storage::url($isoDirectiveDocument->word_file_path) }}" target="_blank"
+                    <a href="{{ route('admin.iso-directive-documents.download', [$isoDirectiveDocument, 'word']) }}"
                        class="admin-btn admin-btn--sm admin-btn--primary">
                         <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
