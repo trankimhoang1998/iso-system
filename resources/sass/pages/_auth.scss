@@ -3,7 +3,7 @@
 
 // Clean Modern Tech Background
 .auth-body {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.9) 0%, rgba(37, 99, 235, 0.9) 50%, rgba(29, 78, 216, 0.9) 100%), 
+    background: linear-gradient(135deg, rgba(17, 117, 212, 0.9) 0%, rgba(17, 117, 212, 0.9) 50%, rgba(17, 117, 212, 0.9)100%), 
                 url('../../../public/images/trong-dong-background.png');
     background-size: 400% 400%, cover;
     background-position: 0% 50%, center center;
@@ -83,12 +83,11 @@
     
     .auth-main-title {
         color: #a20000;
-        font-size: 26px;
-        font-weight: 600;
+        font-size: 40px;
+        font-weight: 900;
         margin-bottom: 0.5rem;
         letter-spacing: -0.01em;
         line-height: 1.3;
-        text-shadow: 0 2px 10px rgba(239, 68, 68, 0.3);
         
         @include mobile {
             font-size: 24px;
@@ -96,12 +95,11 @@
     }
     
     .auth-sub-title {
-        color: #003589;
-        font-size: 30px;
+        color: #082d67;
+        font-size: 36px;
         font-weight: 900;
         letter-spacing: -0.02em;
         line-height: 1.2;
-        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         
         @include mobile {
             font-size: 28px;

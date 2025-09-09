@@ -16,8 +16,8 @@
             <div class="auth-header-content">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo" class="auth-logo">
                 <div class="auth-header-text">
-                    <h1 class="auth-main-title">NHÀ MÁY A31/QUÂN CHỦNG PHÒNG KHÔNG-KHÔNG QUÂN</h1>
-                    <h2 class="auth-sub-title">HỆ THỐNG QLCL THEO TIÊU CHUẨN QUỐC GIA TCVN ISO 9001:2015</h2>
+                    <h1 class="auth-main-title">NHÀ MÁY A31</h1>
+                    <h2 class="auth-sub-title">HỆ THỐNG QUẢN LÝ CHẤT LƯỢNG THEO TIÊU CHUẨN QUỐC GIA </br> TCVN ISO 9001:2015</h2>
                 </div>
             </div>
         </div>
@@ -40,7 +40,7 @@
                         </div>
                         
                         <div class="auth-guide__section">
-                            <h3 class="auth-guide__title">2025 - Bản quyền thuộc về Nhà máy A31/Quân chủng Phòng không-Không quân</h3>
+                            <h3 class="auth-guide__title">2025 - Bản quyền thuộc về Nhà máy A31/Quân chủng PKKQ</h3>
                         </div>
                     </div>
                 </div>
