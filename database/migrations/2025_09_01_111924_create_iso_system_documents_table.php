@@ -11,6 +11,8 @@ return new class extends Migration
         Schema::create('iso_system_documents', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('category_id')->nullable()->comment('Danh mục tài liệu');
+            
+            // Document information
             $table->string('symbol')->nullable()->comment('Ký hiệu');
             $table->string('title')->comment('Tên tài liệu');
             $table->date('issued_date')->nullable()->comment('Thời gian ban hành');
@@ -28,6 +30,7 @@ return new class extends Migration
             $table->string('word_file_type', 10)->nullable();
             $table->integer('word_file_size')->nullable();
             
+            // System fields
             $table->unsignedBigInteger('uploaded_by');
             $table->timestamps();
 

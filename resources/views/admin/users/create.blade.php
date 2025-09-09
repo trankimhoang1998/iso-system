@@ -45,16 +45,6 @@
                 </div>
             </div>
 
-            <div class="admin-form__row">
-                <div class="admin-form__group">
-                    <label class="admin-form__label">Email</label>
-                    <input type="email" name="email" value="{{ old('email') }}"
-                           class="admin-form__input @error('email') admin-form__input--error @enderror">
-                    @error('email')
-                    <div class="admin-form__error">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
 
             <div class="admin-form__row">
                 <div class="admin-form__group">

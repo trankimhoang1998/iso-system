@@ -137,10 +137,10 @@ class IsoSystemDocumentController extends Controller
     {
         $request->validate([
             'category_id' => 'required|exists:iso_system_categories,id',
-            'symbol' => 'nullable|string|max:255',
+            'symbol' => 'required|string|max:255',
             'title' => 'required|string|max:255',
-            'issued_date' => 'nullable|date',
-            'latest_update' => 'nullable|date',
+            'issued_date' => 'required|date',
+            'latest_update' => 'required|date',
             'department_ids' => 'required|array|min:1',
             'department_ids.*' => 'exists:departments,id',
             'pdf_file' => 'required|file|mimes:pdf|max:51200', // PDF file required, 50MB max
@@ -148,12 +148,15 @@ class IsoSystemDocumentController extends Controller
         ], [
             'category_id.required' => 'Danh mục là bắt buộc.',
             'category_id.exists' => 'Danh mục được chọn không hợp lệ.',
+            'symbol.required' => 'Ký hiệu là bắt buộc.',
             'symbol.string' => 'Ký hiệu phải là chuỗi văn bản.',
             'symbol.max' => 'Ký hiệu không được vượt quá 255 ký tự.',
             'title.required' => 'Tên tài liệu là bắt buộc.',
             'title.string' => 'Tên tài liệu phải là chuỗi văn bản.',
             'title.max' => 'Tên tài liệu không được vượt quá 255 ký tự.',
+            'issued_date.required' => 'Thời gian ban hành là bắt buộc.',
             'issued_date.date' => 'Thời gian ban hành phải là ngày hợp lệ.',
+            'latest_update.required' => 'Cập nhật mới nhất là bắt buộc.',
             'latest_update.date' => 'Cập nhật mới nhất phải là ngày hợp lệ.',
             'department_ids.required' => 'Đơn vị áp dụng là bắt buộc.',
             'department_ids.array' => 'Đơn vị áp dụng phải là mảng.',
@@ -276,10 +279,10 @@ class IsoSystemDocumentController extends Controller
     {
         $request->validate([
             'category_id' => 'required|exists:iso_system_categories,id',
-            'symbol' => 'nullable|string|max:255',
+            'symbol' => 'required|string|max:255',
             'title' => 'required|string|max:255',
-            'issued_date' => 'nullable|date',
-            'latest_update' => 'nullable|date',
+            'issued_date' => 'required|date',
+            'latest_update' => 'required|date',
             'department_ids' => 'required|array|min:1',
             'department_ids.*' => 'exists:departments,id',
             'pdf_file' => 'nullable|file|mimes:pdf|max:51200', // PDF file optional for update, 50MB max
@@ -287,12 +290,15 @@ class IsoSystemDocumentController extends Controller
         ], [
             'category_id.required' => 'Danh mục là bắt buộc.',
             'category_id.exists' => 'Danh mục được chọn không hợp lệ.',
+            'symbol.required' => 'Ký hiệu là bắt buộc.',
             'symbol.string' => 'Ký hiệu phải là chuỗi văn bản.',
             'symbol.max' => 'Ký hiệu không được vượt quá 255 ký tự.',
             'title.required' => 'Tên tài liệu là bắt buộc.',
             'title.string' => 'Tên tài liệu phải là chuỗi văn bản.',
             'title.max' => 'Tên tài liệu không được vượt quá 255 ký tự.',
+            'issued_date.required' => 'Thời gian ban hành là bắt buộc.',
             'issued_date.date' => 'Thời gian ban hành phải là ngày hợp lệ.',
+            'latest_update.required' => 'Cập nhật mới nhất là bắt buộc.',
             'latest_update.date' => 'Cập nhật mới nhất phải là ngày hợp lệ.',
             'department_ids.required' => 'Đơn vị áp dụng là bắt buộc.',
             'department_ids.array' => 'Đơn vị áp dụng phải là mảng.',

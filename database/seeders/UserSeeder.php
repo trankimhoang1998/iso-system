@@ -18,7 +18,6 @@ class UserSeeder extends Seeder
         $admin = User::create([
             'name' => 'Administrator',
             'username' => 'admin',
-            'email' => 'admin@gmail.com',
             'password' => Hash::make('admin123'),
             'role' => User::ROLE_ADMIN,
             'is_active' => true,
@@ -28,7 +27,6 @@ class UserSeeder extends Seeder
         $banISO = User::create([
             'name' => 'Trần Thị ISO',
             'username' => 'baniso',
-            'email' => 'baniso@gmail.com',
             'password' => Hash::make('baniso123'),
             'role' => User::ROLE_LEVEL1,
             'is_active' => true,
@@ -38,7 +36,6 @@ class UserSeeder extends Seeder
         $coquan = User::create([
             'name' => 'Phạm Văn Phòng',
             'username' => 'vanphong',
-            'email' => 'vanphong@gmail.com',
             'password' => Hash::make('coquan123'),
             'role' => User::ROLE_LEVEL2,
             'department_id' => 6, // Phòng Hành chính-Hậu cần
@@ -49,7 +46,6 @@ class UserSeeder extends Seeder
         $user = User::create([
             'name' => 'Nguyễn Văn Nam',
             'username' => 'nvnam',
-            'email' => 'nvnam@gmail.com',
             'password' => Hash::make('user123'),
             'role' => User::ROLE_LEVEL3,
             'department_id' => 9, // Phân xưởng 1

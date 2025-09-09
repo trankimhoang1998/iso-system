@@ -100,20 +100,24 @@ class IsoDirectiveDocumentController extends Controller
     {
         $request->validate([
             'category_id' => 'required|exists:iso_directive_categories,id',
-            'issued_date' => 'nullable|date',
-            'document_number' => 'nullable|string|max:255',
-            'issuing_agency' => 'nullable|string|max:255',
-            'summary' => 'nullable|string|max:1000',
+            'issued_date' => 'required|date',
+            'document_number' => 'required|string|max:255',
+            'issuing_agency' => 'required|string|max:255',
+            'summary' => 'required|string|max:1000',
             'pdf_file' => 'required|file|mimes:pdf|max:51200', // PDF file required, 50MB max
             'word_file' => 'nullable|file|mimes:doc,docx|max:51200', // Word file optional, 50MB max
         ], [
             'category_id.required' => 'Danh mục là bắt buộc.',
             'category_id.exists' => 'Danh mục được chọn không hợp lệ.',
+            'issued_date.required' => 'Vui lòng nhập thời gian ban hành.',
             'issued_date.date' => 'Thời gian ban hành phải là ngày hợp lệ.',
+            'document_number.required' => 'Vui lòng nhập số văn bản.',
             'document_number.string' => 'Số văn bản phải là chuỗi văn bản.',
             'document_number.max' => 'Số văn bản không được vượt quá 255 ký tự.',
+            'issuing_agency.required' => 'Vui lòng nhập cơ quan ban hành.',
             'issuing_agency.string' => 'Cơ quan ban hành phải là chuỗi văn bản.',
             'issuing_agency.max' => 'Cơ quan ban hành không được vượt quá 255 ký tự.',
+            'summary.required' => 'Vui lòng nhập trích yếu.',
             'summary.string' => 'Trích yếu phải là chuỗi văn bản.',
             'summary.max' => 'Trích yếu không được vượt quá 1000 ký tự.',
             'pdf_file.required' => 'File PDF là bắt buộc.',
@@ -213,20 +217,24 @@ class IsoDirectiveDocumentController extends Controller
     {
         $request->validate([
             'category_id' => 'required|exists:iso_directive_categories,id',
-            'issued_date' => 'nullable|date',
-            'document_number' => 'nullable|string|max:255',
-            'issuing_agency' => 'nullable|string|max:255',
-            'summary' => 'nullable|string|max:1000',
+            'issued_date' => 'required|date',
+            'document_number' => 'required|string|max:255',
+            'issuing_agency' => 'required|string|max:255',
+            'summary' => 'required|string|max:1000',
             'pdf_file' => 'nullable|file|mimes:pdf|max:51200', // PDF file optional for update, 50MB max
             'word_file' => 'nullable|file|mimes:doc,docx|max:51200', // Word file optional, 50MB max
         ], [
             'category_id.required' => 'Danh mục là bắt buộc.',
             'category_id.exists' => 'Danh mục được chọn không hợp lệ.',
+            'issued_date.required' => 'Vui lòng nhập thời gian ban hành.',
             'issued_date.date' => 'Thời gian ban hành phải là ngày hợp lệ.',
+            'document_number.required' => 'Vui lòng nhập số văn bản.',
             'document_number.string' => 'Số văn bản phải là chuỗi văn bản.',
             'document_number.max' => 'Số văn bản không được vượt quá 255 ký tự.',
+            'issuing_agency.required' => 'Vui lòng nhập cơ quan ban hành.',
             'issuing_agency.string' => 'Cơ quan ban hành phải là chuỗi văn bản.',
             'issuing_agency.max' => 'Cơ quan ban hành không được vượt quá 255 ký tự.',
+            'summary.required' => 'Vui lòng nhập trích yếu.',
             'summary.string' => 'Trích yếu phải là chuỗi văn bản.',
             'summary.max' => 'Trích yếu không được vượt quá 1000 ký tự.',
             'pdf_file.file' => 'PDF phải là một file.',

@@ -55,7 +55,7 @@
                     </li>
                     <li class="nav__dropdown-item">
                         <a href="{{ route('admin.departments.index') }}" class="nav__dropdown-link">
-                            QUẢN LÝ PHÂN XƯỞNG
+                            QUẢN LÝ CƠ QUAN, PHÂN XƯỞNG
                         </a>
                     </li>
                     <li class="nav__dropdown-divider"></li>

@@ -12,6 +12,13 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('department_id')->nullable();
+            
+            // Document information
+            $table->string('document_number')->nullable()->comment('Số văn bản');
+            $table->string('issuing_agency')->nullable()->comment('Cơ quan ban hành');
+            $table->date('issued_date')->nullable()->comment('Thời gian ban hành');
+            $table->string('summary')->nullable()->comment('Trích yếu');
+            
             // PDF file (required)
             $table->string('pdf_file_name');
             $table->string('pdf_file_path');
@@ -23,10 +30,8 @@ return new class extends Migration
             $table->string('word_file_path')->nullable();
             $table->string('word_file_type', 10)->nullable();
             $table->integer('word_file_size')->nullable();
-            $table->date('issued_date')->nullable()->comment('Thời gian ban hành');
-            $table->string('document_number')->nullable()->comment('Số văn bản');
-            $table->string('issuing_agency')->nullable()->comment('Cơ quan ban hành');
-            $table->string('summary')->nullable()->comment('Trích yếu');
+            
+            // System fields
             $table->unsignedBigInteger('uploaded_by');
             $table->timestamps();
 

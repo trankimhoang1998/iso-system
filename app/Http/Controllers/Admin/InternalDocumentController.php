@@ -109,6 +109,11 @@ class InternalDocumentController extends Controller
 
     public function create()
     {
+        // Check permission - only roles 0 (Admin) and 2 (Cơ quan - Phân xưởng) can create
+        if (!in_array(auth()->user()->role, [0, 2])) {
+            abort(403, 'Bạn không có quyền truy cập chức năng này.');
+        }
+        
         $categories = InternalDocumentCategory::getFlatList();
         $departments = Department::orderBy('id')->get();
         return view('admin.internal-documents.create', compact('categories', 'departments'));
@@ -116,6 +121,11 @@ class InternalDocumentController extends Controller
 
     public function createForCategory(InternalDocumentCategory $category)
     {
+        // Check permission - only roles 0 (Admin) and 2 (Cơ quan - Phân xưởng) can create
+        if (!in_array(auth()->user()->role, [0, 2])) {
+            abort(403, 'Bạn không có quyền truy cập chức năng này.');
+        }
+        
         $categories = InternalDocumentCategory::getFlatList();
         $departments = Department::orderBy('id')->get();
         return view('admin.internal-documents.create', compact('categories', 'departments', 'category'));
@@ -123,23 +133,34 @@ class InternalDocumentController extends Controller
 
     public function store(Request $request)
     {
+        // Check permission - only roles 0 (Admin) and 2 (Cơ quan - Phân xưởng) can create
+        if (!in_array(auth()->user()->role, [0, 2])) {
+            abort(403, 'Bạn không có quyền truy cập chức năng này.');
+        }
+        
         $request->validate([
-            'issued_date' => 'nullable|date',
-            'document_number' => 'nullable|string|max:255',
-            'issuing_agency' => 'nullable|string|max:255',
-            'summary' => 'nullable|string',
-            'category_id' => 'nullable|exists:internal_document_categories,id',
-            'department_id' => 'nullable|exists:departments,id',
+            'issued_date' => 'required|date',
+            'document_number' => 'required|string|max:255',
+            'issuing_agency' => 'required|string|max:255',
+            'summary' => 'required|string',
+            'category_id' => 'required|exists:internal_document_categories,id',
+            'department_id' => 'required|exists:departments,id',
             'pdf_file' => 'required|file|mimes:pdf|max:51200',
             'word_file' => 'nullable|file|mimes:doc,docx|max:51200',
         ], [
+            'issued_date.required' => 'Thời gian ban hành là bắt buộc.',
             'issued_date.date' => 'Thời gian ban hành phải là ngày hợp lệ.',
+            'document_number.required' => 'Số văn bản là bắt buộc.',
             'document_number.string' => 'Số văn bản phải là chuỗi văn bản.',
             'document_number.max' => 'Số văn bản không được vượt quá 255 ký tự.',
+            'issuing_agency.required' => 'Cơ quan ban hành là bắt buộc.',
             'issuing_agency.string' => 'Cơ quan ban hành phải là chuỗi văn bản.',
             'issuing_agency.max' => 'Cơ quan ban hành không được vượt quá 255 ký tự.',
+            'summary.required' => 'Trích yếu là bắt buộc.',
             'summary.string' => 'Trích yếu phải là chuỗi văn bản.',
+            'category_id.required' => 'Danh mục là bắt buộc.',
             'category_id.exists' => 'Danh mục được chọn không hợp lệ.',
+            'department_id.required' => 'Đơn vị áp dụng là bắt buộc.',
             'department_id.exists' => 'Đơn vị áp dụng được chọn không hợp lệ.',
             'pdf_file.required' => 'File PDF là bắt buộc.',
             'pdf_file.file' => 'PDF phải là một file.',
@@ -240,6 +261,11 @@ class InternalDocumentController extends Controller
 
     public function editForCategory(InternalDocumentCategory $category, InternalDocument $internalDocument)
     {
+        // Check permission - only roles 0 (Admin) and 2 (Cơ quan - Phân xưởng) can edit
+        if (!in_array(auth()->user()->role, [0, 2])) {
+            abort(403, 'Bạn không có quyền truy cập chức năng này.');
+        }
+        
         // Verify document belongs to the category
         if ($internalDocument->category_id !== $category->id) {
             abort(404);
@@ -252,23 +278,34 @@ class InternalDocumentController extends Controller
 
     public function update(Request $request, InternalDocument $internalDocument)
     {
+        // Check permission - only roles 0 (Admin) and 2 (Cơ quan - Phân xưởng) can update
+        if (!in_array(auth()->user()->role, [0, 2])) {
+            abort(403, 'Bạn không có quyền truy cập chức năng này.');
+        }
+        
         $request->validate([
-            'issued_date' => 'nullable|date',
-            'document_number' => 'nullable|string|max:255',
-            'issuing_agency' => 'nullable|string|max:255',
-            'summary' => 'nullable|string',
-            'category_id' => 'nullable|exists:internal_document_categories,id',
-            'department_id' => 'nullable|exists:departments,id',
+            'issued_date' => 'required|date',
+            'document_number' => 'required|string|max:255',
+            'issuing_agency' => 'required|string|max:255',
+            'summary' => 'required|string',
+            'category_id' => 'required|exists:internal_document_categories,id',
+            'department_id' => 'required|exists:departments,id',
             'pdf_file' => 'nullable|file|mimes:pdf|max:51200', // PDF file optional for update, 50MB max
             'word_file' => 'nullable|file|mimes:doc,docx|max:51200', // Word file optional, 50MB max
         ], [
+            'issued_date.required' => 'Thời gian ban hành là bắt buộc.',
             'issued_date.date' => 'Thời gian ban hành phải là ngày hợp lệ.',
+            'document_number.required' => 'Số văn bản là bắt buộc.',
             'document_number.string' => 'Số văn bản phải là chuỗi văn bản.',
             'document_number.max' => 'Số văn bản không được vượt quá 255 ký tự.',
+            'issuing_agency.required' => 'Cơ quan ban hành là bắt buộc.',
             'issuing_agency.string' => 'Cơ quan ban hành phải là chuỗi văn bản.',
             'issuing_agency.max' => 'Cơ quan ban hành không được vượt quá 255 ký tự.',
+            'summary.required' => 'Trích yếu là bắt buộc.',
             'summary.string' => 'Trích yếu phải là chuỗi văn bản.',
+            'category_id.required' => 'Danh mục là bắt buộc.',
             'category_id.exists' => 'Danh mục được chọn không hợp lệ.',
+            'department_id.required' => 'Đơn vị áp dụng là bắt buộc.',
             'department_id.exists' => 'Đơn vị áp dụng được chọn không hợp lệ.',
             'pdf_file.file' => 'PDF phải là một file.',
             'pdf_file.mimes' => 'File PDF phải có định dạng: pdf.',
@@ -338,6 +375,11 @@ class InternalDocumentController extends Controller
 
     public function destroy(Request $request, InternalDocument $internalDocument)
     {
+        // Check permission - only roles 0 (Admin) and 2 (Cơ quan - Phân xưởng) can delete
+        if (!in_array(auth()->user()->role, [0, 2])) {
+            abort(403, 'Bạn không có quyền truy cập chức năng này.');
+        }
+        
         // Delete PDF file from storage
         if ($internalDocument->pdf_file_path && Storage::disk('public')->exists($internalDocument->pdf_file_path)) {
             Storage::disk('public')->delete($internalDocument->pdf_file_path);

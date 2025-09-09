@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('username')->unique();
-            $table->string('email')->nullable();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->tinyInteger('role')->default(3)->comment('0: Admin, 1: Ban ISO, 2: Cơ quan - Phân xưởng, 3: Người sử dụng');
             $table->foreignId('department_id')->nullable()->constrained('departments')->onDelete('set null');
@@ -24,12 +22,6 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->index(['role', 'is_active']);
-        });
-
-        Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
         });
 
         Schema::create('sessions', function (Blueprint $table) {
@@ -48,7 +40,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }
 };

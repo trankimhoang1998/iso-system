@@ -8,7 +8,7 @@
         <div>
             <p class="admin-page__subtitle">Quản lý hồ sơ, tài liệu ISO nội bộ của các cơ quan, phân xưởng, bao gồm cả các hồ sơ, tài liệu áp dụng quy trình</p>
         </div>
-        @if(in_array(auth()->user()->role, [0, 1, 2]))
+        @if(in_array(auth()->user()->role, [0, 2]))
         <div class="admin-page__actions">
             <a href="{{ isset($category) ? route('admin.internal-documents.category.create', $category) : route('admin.internal-documents.create') }}" class="admin-btn admin-btn--primary">
                 <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -120,7 +120,7 @@
                                 </a>
                                 @endif
                             </div>
-                            @if(in_array(auth()->user()->role, [0, 1, 2]))
+                            @if(in_array(auth()->user()->role, [0, 2]))
                             <div class="admin-table__actions-row">
                                 <a href="{{ isset($category) ? route('admin.internal-documents.category.edit', [$category, $document]) : route('admin.internal-documents.edit', $document) }}" 
                                    class="admin-table__action-btn admin-table__action-btn--edit" 
@@ -148,15 +148,21 @@
                             <svg class="admin-empty-state__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                             </svg>
-                            <h3 class="admin-empty-state__title">Chưa có tài liệu nào</h3>
+                            <h3 class="admin-empty-state__title">
+                                @if(request()->routeIs('admin.internal-documents.index'))
+                                    Đồng chí hãy chọn danh mục bên trái để xem các hồ sơ, văn bản liên quan
+                                @else
+                                    Chưa có văn bản nào
+                                @endif
+                            </h3>
                             <p class="admin-empty-state__description">
-                                @if(in_array(auth()->user()->role, [0, 1, 2]))
+                                @if(in_array(auth()->user()->role, [0, 2]))
                                     Tạo tài liệu nội bộ đầu tiên
                                 @else
                                     Hiện tại chưa có tài liệu nội bộ nào
                                 @endif
                             </p>
-                            @if(in_array(auth()->user()->role, [0, 1, 2]))
+                            @if(in_array(auth()->user()->role, [0, 2]))
                             <a href="{{ isset($category) ? route('admin.internal-documents.category.create', $category) : route('admin.internal-documents.create') }}" class="admin-empty-state__btn">
                                 Thêm tài liệu đầu tiên
                             </a>

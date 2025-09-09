@@ -79,7 +79,7 @@
                 <!-- 2. Ký hiệu -->
                 <div class="admin-form__row">
                     <div class="admin-form__group">
-                        <label class="admin-form__label">Ký hiệu</label>
+                        <label class="admin-form__label admin-form__label--required">Ký hiệu</label>
                         <input type="text" name="symbol" value="{{ old('symbol', $isoSystemDocument->symbol) }}" 
                                class="admin-form__input @error('symbol') admin-form__input--error @enderror"
                                placeholder="Nhập ký hiệu tài liệu">
@@ -105,7 +105,7 @@
                 <!-- 4. Thời gian ban hành và 5. Cập nhật mới nhất -->
                 <div class="admin-form__row admin-form__row--split">
                     <div class="admin-form__group">
-                        <label class="admin-form__label">Thời gian ban hành</label>
+                        <label class="admin-form__label admin-form__label--required">Thời gian ban hành</label>
                         <input type="date" name="issued_date" value="{{ old('issued_date', $isoSystemDocument->issued_date ? $isoSystemDocument->issued_date->format('Y-m-d') : '') }}" 
                                class="admin-form__input @error('issued_date') admin-form__input--error @enderror">
                         @error('issued_date')
@@ -114,7 +114,7 @@
                     </div>
                     
                     <div class="admin-form__group">
-                        <label class="admin-form__label">Cập nhật mới nhất</label>
+                        <label class="admin-form__label admin-form__label--required">Cập nhật mới nhất</label>
                         <input type="date" name="latest_update" value="{{ old('latest_update', $isoSystemDocument->latest_update ? $isoSystemDocument->latest_update->format('Y-m-d') : '') }}" 
                                class="admin-form__input @error('latest_update') admin-form__input--error @enderror">
                         @error('latest_update')

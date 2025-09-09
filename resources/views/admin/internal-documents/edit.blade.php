@@ -74,7 +74,7 @@
 
                 <div class="admin-form__row admin-form__row--split">
                     <div class="admin-form__group">
-                        <label class="admin-form__label">Đơn vị áp dụng</label>
+                        <label class="admin-form__label admin-form__label--required">Đơn vị áp dụng</label>
                         @if(auth()->user()->role == 2 && auth()->user()->department_id)
                             <!-- Role 2 can only edit documents for their own department -->
                             <input type="hidden" name="department_id" value="{{ auth()->user()->department_id }}">
@@ -97,7 +97,7 @@
                     </div>
                     
                     <div class="admin-form__group">
-                        <label class="admin-form__label">Thời gian ban hành</label>
+                        <label class="admin-form__label admin-form__label--required">Thời gian ban hành</label>
                         <input type="date" name="issued_date" value="{{ old('issued_date', $internalDocument->issued_date ? $internalDocument->issued_date->format('Y-m-d') : '') }}" 
                                class="admin-form__input @error('issued_date') admin-form__input--error @enderror">
                         @error('issued_date')
@@ -109,7 +109,7 @@
 
                 <div class="admin-form__row admin-form__row--split">
                     <div class="admin-form__group">
-                        <label class="admin-form__label">Số văn bản</label>
+                        <label class="admin-form__label admin-form__label--required">Số văn bản</label>
                         <input type="text" name="document_number" value="{{ old('document_number', $internalDocument->document_number) }}" 
                                class="admin-form__input @error('document_number') admin-form__input--error @enderror"
                                placeholder="Nhập số văn bản">
@@ -119,7 +119,7 @@
                     </div>
                     
                     <div class="admin-form__group">
-                        <label class="admin-form__label">Cơ quan ban hành</label>
+                        <label class="admin-form__label admin-form__label--required">Cơ quan ban hành</label>
                         <input type="text" name="issuing_agency" value="{{ old('issuing_agency', $internalDocument->issuing_agency) }}" 
                                class="admin-form__input @error('issuing_agency') admin-form__input--error @enderror"
                                placeholder="Nhập cơ quan ban hành">
@@ -131,10 +131,10 @@
 
                 <div class="admin-form__row">
                     <div class="admin-form__group">
-                        <label class="admin-form__label">Trích yếu</label>
+                        <label class="admin-form__label admin-form__label--required">Trích yếu</label>
                         <textarea name="summary" rows="3" 
                                   class="admin-form__input @error('summary') admin-form__input--error @enderror"
-                                  placeholder="Nhập trích yếu tài liệu (tùy chọn)">{{ old('summary', $internalDocument->summary) }}</textarea>
+                                  placeholder="Nhập trích yếu tài liệu">{{ old('summary', $internalDocument->summary) }}</textarea>
                         @error('summary')
                         <div class="admin-form__error">{{ $message }}</div>
                         @enderror

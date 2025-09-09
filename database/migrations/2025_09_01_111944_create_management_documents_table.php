@@ -10,9 +10,11 @@ return new class extends Migration
     {
         Schema::create('management_documents', function (Blueprint $table) {
             $table->id();
-            $table->date('issued_date')->nullable()->comment('Thời gian ban hành');
+            
+            // Document information
             $table->string('document_number')->nullable()->comment('Số văn bản');
             $table->string('issuing_agency')->nullable()->comment('Cơ quan ban hành');
+            $table->date('issued_date')->nullable()->comment('Thời gian ban hành');
             $table->text('summary')->nullable()->comment('Trích yếu');
             
             // PDF file (required)
@@ -27,6 +29,7 @@ return new class extends Migration
             $table->string('word_file_type', 10)->nullable();
             $table->integer('word_file_size')->nullable();
             
+            // System fields
             $table->unsignedBigInteger('uploaded_by');
             $table->timestamps();
 

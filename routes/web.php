@@ -70,7 +70,6 @@ Route::middleware(['auth'])->name('admin.')->group(function () {
         // ISO Directive Documents
         Route::get('iso-directive-documents/create', [IsoDirectiveDocumentController::class, 'create'])->name('iso-directive-documents.create');
         Route::get('iso-directive-documents/category/{category}/create', [IsoDirectiveDocumentController::class, 'createForCategory'])->name('iso-directive-documents.category.create');
-        Route::get('iso-directive-documents/category/{category}/{isoDirectiveDocument}', [IsoDirectiveDocumentController::class, 'showForCategory'])->name('iso-directive-documents.category.show');
         Route::get('iso-directive-documents/category/{category}/{isoDirectiveDocument}/edit', [IsoDirectiveDocumentController::class, 'editForCategory'])->name('iso-directive-documents.category.edit');
         Route::post('iso-directive-documents', [IsoDirectiveDocumentController::class, 'store'])->name('iso-directive-documents.store');
         Route::get('iso-directive-documents/{isoDirectiveDocument}/edit', [IsoDirectiveDocumentController::class, 'edit'])->name('iso-directive-documents.edit');
@@ -80,7 +79,6 @@ Route::middleware(['auth'])->name('admin.')->group(function () {
         // ISO System Documents
         Route::get('iso-system-documents/create', [IsoSystemDocumentController::class, 'create'])->name('iso-system-documents.create');
         Route::get('iso-system-documents/category/{category}/create', [IsoSystemDocumentController::class, 'createForCategory'])->name('iso-system-documents.category.create');
-        Route::get('iso-system-documents/category/{category}/{isoSystemDocument}', [IsoSystemDocumentController::class, 'showForCategory'])->name('iso-system-documents.category.show');
         Route::get('iso-system-documents/category/{category}/{isoSystemDocument}/edit', [IsoSystemDocumentController::class, 'editForCategory'])->name('iso-system-documents.category.edit');
         Route::post('iso-system-documents', [IsoSystemDocumentController::class, 'store'])->name('iso-system-documents.store');
         Route::get('iso-system-documents/{isoSystemDocument}/edit', [IsoSystemDocumentController::class, 'edit'])->name('iso-system-documents.edit');
@@ -90,7 +88,6 @@ Route::middleware(['auth'])->name('admin.')->group(function () {
         // Management Documents
         Route::get('management-documents/create', [ManagementDocumentController::class, 'create'])->name('management-documents.create');
         Route::get('management-documents/category/{category}/create', [ManagementDocumentController::class, 'createForCategory'])->name('management-documents.category.create');
-        Route::get('management-documents/category/{category}/{managementDocument}', [ManagementDocumentController::class, 'showForCategory'])->name('management-documents.category.show');
         Route::get('management-documents/category/{category}/{managementDocument}/edit', [ManagementDocumentController::class, 'editForCategory'])->name('management-documents.category.edit');
         Route::post('management-documents', [ManagementDocumentController::class, 'store'])->name('management-documents.store');
         Route::get('management-documents/{managementDocument}/edit', [ManagementDocumentController::class, 'edit'])->name('management-documents.edit');
@@ -98,11 +95,10 @@ Route::middleware(['auth'])->name('admin.')->group(function () {
         Route::delete('management-documents/{managementDocument}', [ManagementDocumentController::class, 'destroy'])->name('management-documents.destroy');
     });
     
-    // Internal Documents - Admin, Ban ISO & Cơ quan-Phân xưởng (roles 0,1,2) full access
-    Route::middleware(['role:0|1|2'])->group(function () {
+    // Internal Documents - Admin & Cơ quan-Phân xưởng (roles 0,2) can create/edit/delete
+    Route::middleware(['role:0|2'])->group(function () {
         Route::get('internal-documents/create', [InternalDocumentController::class, 'create'])->name('internal-documents.create');
         Route::get('internal-documents/category/{category}/create', [InternalDocumentController::class, 'createForCategory'])->name('internal-documents.category.create');
-        Route::get('internal-documents/category/{category}/{internalDocument}', [InternalDocumentController::class, 'showForCategory'])->name('internal-documents.category.show');
         Route::get('internal-documents/category/{category}/{internalDocument}/edit', [InternalDocumentController::class, 'editForCategory'])->name('internal-documents.category.edit');
         Route::post('internal-documents', [InternalDocumentController::class, 'store'])->name('internal-documents.store');
         Route::get('internal-documents/{internalDocument}/edit', [InternalDocumentController::class, 'edit'])->name('internal-documents.edit');
@@ -111,19 +107,15 @@ Route::middleware(['auth'])->name('admin.')->group(function () {
     });
     
     // View and Download Routes - All authenticated users can access (must be after management routes)
-    Route::get('iso-directive-documents/{isoDirectiveDocument}', [IsoDirectiveDocumentController::class, 'show'])->name('iso-directive-documents.show');
     Route::get('iso-directive-documents/{isoDirectiveDocument}/view/{type?}', [IsoDirectiveDocumentController::class, 'view'])->name('iso-directive-documents.view');
     Route::get('iso-directive-documents/{isoDirectiveDocument}/download/{type?}', [IsoDirectiveDocumentController::class, 'download'])->name('iso-directive-documents.download');
     
-    Route::get('iso-system-documents/{isoSystemDocument}', [IsoSystemDocumentController::class, 'show'])->name('iso-system-documents.show');
     Route::get('iso-system-documents/{isoSystemDocument}/view/{type?}', [IsoSystemDocumentController::class, 'view'])->name('iso-system-documents.view');
     Route::get('iso-system-documents/{isoSystemDocument}/download/{type?}', [IsoSystemDocumentController::class, 'download'])->name('iso-system-documents.download');
     
-    Route::get('internal-documents/{internalDocument}', [InternalDocumentController::class, 'show'])->name('internal-documents.show');
     Route::get('internal-documents/{internalDocument}/view/{type?}', [InternalDocumentController::class, 'view'])->name('internal-documents.view');
     Route::get('internal-documents/{internalDocument}/download/{type?}', [InternalDocumentController::class, 'download'])->name('internal-documents.download');
     
-    Route::get('management-documents/{managementDocument}', [ManagementDocumentController::class, 'show'])->name('management-documents.show');
     Route::get('management-documents/{managementDocument}/view/{type?}', [ManagementDocumentController::class, 'view'])->name('management-documents.view');
     Route::get('management-documents/{managementDocument}/download/{type?}', [ManagementDocumentController::class, 'download'])->name('management-documents.download');
 });
