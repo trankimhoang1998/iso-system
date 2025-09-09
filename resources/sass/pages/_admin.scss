@@ -762,7 +762,6 @@
     background: $white;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    overflow-x: auto;
 }
 
 .admin-table {
@@ -3102,6 +3101,133 @@
             font-size: 14px !important;
         }
     }
+}
+
+// Select2 Error State
+.admin-form__group .admin-form__select--error + .select2-container .select2-selection {
+    border: 1px solid #dc3545 !important;
+    background-color: rgba(220, 53, 69, 0.05);
+}
+
+.admin-form__group .admin-form__select--error + .select2-container .select2-selection--single {
+    border: 1px solid #dc3545 !important;
+    background-color: rgba(220, 53, 69, 0.05);
+}
+
+.admin-form__group .admin-form__select--error + .select2-container .select2-selection--multiple {
+    border: 1px solid #dc3545 !important;
+    background-color: rgba(220, 53, 69, 0.05);
+}
+
+// File Upload Error State
+.admin-file-upload__input.admin-form__input--error + .admin-file-upload__label {
+    border: 2px dashed #dc3545 !important;
+    background-color: rgba(220, 53, 69, 0.05) !important;
+    color: #dc3545 !important;
+}
+
+.admin-file-upload__input.admin-form__input--error + .admin-file-upload__label:hover {
+    border-color: #c82333 !important;
+    background-color: rgba(220, 53, 69, 0.1) !important;
+}
+
+// Department Compact Display
+.department-compact {
+    position: relative;
+    
+    .department-single {
+        color: $gray;
+        font-size: 13px;
+        display: inline-block;
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    .department-summary {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        padding: 4px 8px;
+        background: rgba(70, 130, 180, 0.1);
+        border-radius: 4px;
+        transition: all 0.2s ease;
+        max-width: 120px;
+        justify-content: center;
+        
+        &:hover {
+            background: rgba(70, 130, 180, 0.15);
+        }
+        
+        .department-count {
+            color: $primary-color;
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        
+        .department-arrow {
+            width: 16px;
+            height: 16px;
+            margin-left: 4px;
+            color: $primary-color;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+            
+            &.rotate {
+                transform: rotate(180deg);
+            }
+        }
+    }
+    
+    .department-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: $white;
+        border: 1px solid $gray-300;
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.2s ease;
+        max-height: 200px;
+        overflow-y: auto;
+        min-width: 200px;
+        
+        &.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(2px);
+        }
+        
+        .department-item {
+            padding: 8px 12px;
+            color: $gray;
+            font-size: 13px;
+            border-bottom: 1px solid $gray-100;
+            transition: background-color 0.2s ease;
+            
+            &:last-child {
+                border-bottom: none;
+            }
+            
+            &:hover {
+                background: $bg-light;
+                color: $primary-color;
+            }
+        }
+    }
+}
+
+.department-empty {
+    color: $gray-400;
+    font-size: 13px;
+    font-style: italic;
 }
 
 // Admin Form Display (for disabled/readonly fields)

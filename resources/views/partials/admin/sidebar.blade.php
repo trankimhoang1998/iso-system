@@ -207,9 +207,25 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             parent = parent.parentElement.closest('.admin-nav__submenu');
         }
+        
+        // Scroll active menu item into view within sidebar container
+        setTimeout(function() {
+            const sidebar = document.querySelector('.admin-sidebar');
+            if (sidebar) {
+                const activeRect = activeLink.getBoundingClientRect();
+                const sidebarRect = sidebar.getBoundingClientRect();
+                const scrollTop = sidebar.scrollTop;
+                
+                // Calculate position to center the active item in sidebar
+                const targetScrollTop = scrollTop + (activeRect.top - sidebarRect.top) - (sidebarRect.height / 2) + (activeRect.height / 2);
+                
+                sidebar.scrollTo({
+                    top: targetScrollTop,
+                    behavior: 'smooth'
+                });
+            }
+        }, 100);
     });
-    
-    console.log('Admin sidebar with expandable menus loaded');
 });
 </script>
 

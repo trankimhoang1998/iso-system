@@ -89,10 +89,22 @@
                     <td class="admin-table__cell admin-table__cell--date">{{ $document->latest_update ? \Carbon\Carbon::parse($document->latest_update)->format('d/m/Y') : '_' }}</td>
                     <td class="admin-table__cell admin-table__cell--department">
                         @if($document->departments && $document->departments->count() > 0)
-                            <div class="department-tags">
-                                @foreach($document->departments as $department)
-                                    <span class="department-tag">{{ $department->name }}</span>
-                                @endforeach
+                            <div class="department-compact" data-tooltip="true">
+                                @if($document->departments->count() == 1)
+                                    <span class="department-single">{{ $document->departments->first()->name }}</span>
+                                @else
+                                    <div class="department-summary" onclick="toggleDepartmentDropdown(this)">
+                                        <span class="department-count">{{ $document->departments->count() }} đơn vị</span>
+                                        <svg class="department-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="department-dropdown">
+                                        @foreach($document->departments as $department)
+                                            <div class="department-item">{{ $department->name }}</div>
+                                        @endforeach
+                                    </div>
+                                @endif
                             </div>
                         @else
                             <span class="department-empty">N/A</span>
@@ -261,6 +273,34 @@ document.addEventListener('DOMContentLoaded', function() {
             width: '100%',
             dropdownCssClass: 'select2-dropdown-small',
             containerCssClass: 'select2-container-small'
+        });
+    }
+});
+
+// Department dropdown toggle function
+function toggleDepartmentDropdown(element) {
+    const dropdown = element.nextElementSibling;
+    const arrow = element.querySelector('.department-arrow');
+    
+    // Close other open dropdowns
+    document.querySelectorAll('.department-dropdown.active').forEach(dd => {
+        if (dd !== dropdown) {
+            dd.classList.remove('active');
+            dd.previousElementSibling.querySelector('.department-arrow').classList.remove('rotate');
+        }
+    });
+    
+    // Toggle current dropdown
+    dropdown.classList.toggle('active');
+    arrow.classList.toggle('rotate');
+}
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', function(event) {
+    if (!event.target.closest('.department-compact')) {
+        document.querySelectorAll('.department-dropdown.active').forEach(dropdown => {
+            dropdown.classList.remove('active');
+            dropdown.previousElementSibling.querySelector('.department-arrow').classList.remove('rotate');
         });
     }
 });
