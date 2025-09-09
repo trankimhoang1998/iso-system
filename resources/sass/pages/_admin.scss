@@ -80,6 +80,7 @@
 
 // Admin Sidebar
 .admin-sidebar {
+    max-height: calc(100vh - 170px);
     width: 250px;
     background: $white;
     border-right: 1px solid $bg-gray;
