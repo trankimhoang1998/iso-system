@@ -49,21 +49,14 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                             </svg>
                                         </button>
-                                        <form action="{{ route('admin.departments.destroy', $department) }}" 
-                                            method="POST" 
-                                            class="admin-delete-form" 
-                                            style="display: inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" 
-                                                    class="admin-btn admin-btn--sm admin-btn--danger" 
-                                                    title="Xóa" 
-                                                    onclick="return confirm('Bạn có chắc chắn muốn xóa phân xưởng này?')">
-                                                <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                                </svg>
-                                            </button>
-                                        </form>
+                                        <button type="button" 
+                                                class="admin-btn admin-btn--sm admin-btn--danger" 
+                                                title="Xóa" 
+                                                onclick="openDeleteModal({{ $department->id }}, '{{ $department->name }}')">
+                                            <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </button>
                                      </div>
                                 </div>
                             </td>
@@ -162,6 +155,38 @@
     </div>
 </div>
 
+<!-- Delete Department Modal -->
+<div id="deleteModal" class="admin-modal">
+    <div class="admin-modal__content">
+        <div class="admin-modal__header">
+            <h3 class="admin-modal__title">Xác nhận xóa phân xưởng</h3>
+            <button type="button" class="admin-modal__close" onclick="closeDeleteModal()">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="admin-modal__body">
+            <div class="admin-modal__message">
+                <div class="admin-modal__icon admin-modal__icon--danger">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.728-.833-2.598 0L4.266 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                    </svg>
+                </div>
+                <div class="admin-modal__message-content">
+                    <p class="admin-modal__message-title">Bạn có chắc chắn muốn xóa phân xưởng này?</p>
+                    <p class="admin-modal__message-text">Phân xưởng <strong id="deleteDepartmentName"></strong> sẽ bị xóa vĩnh viễn. Hành động này không thể hoàn tác.</p>
+                </div>
+            </div>
+            
+            <div class="admin-form__actions">
+                <button type="button" class="admin-btn admin-btn--secondary" onclick="closeDeleteModal()">Hủy</button>
+                <button type="button" class="admin-btn admin-btn--danger" onclick="confirmDelete()">Xóa phân xưởng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 // Create Modal Functions
 function openCreateModal() {
@@ -184,6 +209,20 @@ function openEditModal(id, name) {
 
 function closeEditModal() {
     document.getElementById('editModal').classList.remove('admin-modal--active');
+}
+
+// Delete Modal Functions
+let deleteId = null;
+
+function openDeleteModal(departmentId, departmentName) {
+    deleteId = departmentId;
+    document.getElementById('deleteDepartmentName').textContent = departmentName;
+    document.getElementById('deleteModal').classList.add('admin-modal--active');
+}
+
+function closeDeleteModal() {
+    document.getElementById('deleteModal').classList.remove('admin-modal--active');
+    deleteId = null;
 }
 
 // Clear errors
@@ -293,6 +332,34 @@ document.getElementById('editForm').addEventListener('submit', function(e) {
         }
     });
 });
+
+// Handle Delete
+function confirmDelete() {
+    if (!deleteId) return;
+    
+    fetch(`{{ route('admin.departments.destroy', '__ID__') }}`.replace('__ID__', deleteId), {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            toastr.success(data.message);
+            closeDeleteModal();
+            window.location.href = '{{ route("admin.departments.index") }}';
+        } else {
+            toastr.error(data.message || 'Có lỗi xảy ra. Vui lòng thử lại!');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        toastr.error('Có lỗi xảy ra. Vui lòng thử lại!');
+    });
+}
 
 
 // Close modal when clicking outside
