@@ -17,7 +17,8 @@ class UserSeeder extends Seeder
         // 1. Create Admin user (Role 0)
         $admin = User::create([
             'name' => 'Administrator',
-            'email' => 'admin@chuongmy.gov.vn',
+            'username' => 'admin',
+            'email' => 'admin@gmail.com',
             'password' => Hash::make('admin123'),
             'role' => User::ROLE_ADMIN,
             'is_active' => true,
@@ -26,7 +27,8 @@ class UserSeeder extends Seeder
         // 2. Create Level 1 user - Ban ISO (Role 1)
         $banISO = User::create([
             'name' => 'Trần Thị ISO',
-            'email' => 'baniso@chuongmy.gov.vn',
+            'username' => 'baniso',
+            'email' => 'baniso@gmail.com',
             'password' => Hash::make('baniso123'),
             'role' => User::ROLE_LEVEL1,
             'is_active' => true,
@@ -34,8 +36,9 @@ class UserSeeder extends Seeder
 
         // 3. Create Level 2 user - Cơ quan - Phân xưởng (Role 2)
         $coquan = User::create([
-            'name' => 'Phạm Văn Văn phòng',
-            'email' => 'vanphong@chuongmy.gov.vn',
+            'name' => 'Phạm Văn Phòng',
+            'username' => 'vanphong',
+            'email' => 'vanphong@gmail.com',
             'password' => Hash::make('coquan123'),
             'role' => User::ROLE_LEVEL2,
             'department_id' => 6, // Phòng Hành chính-Hậu cần
@@ -45,7 +48,8 @@ class UserSeeder extends Seeder
         // 4. Create Level 3 user - Người sử dụng (Role 3)
         $user = User::create([
             'name' => 'Nguyễn Văn Nam',
-            'email' => 'nvnam@chuongmy.gov.vn',
+            'username' => 'nvnam',
+            'email' => 'nvnam@gmail.com',
             'password' => Hash::make('user123'),
             'role' => User::ROLE_LEVEL3,
             'department_id' => 9, // Phân xưởng 1
@@ -58,9 +62,9 @@ class UserSeeder extends Seeder
         echo "- Cơ quan - Phân xưởng (Role 2): " . User::where('role', User::ROLE_LEVEL2)->count() . " user\n";
         echo "- Người sử dụng (Role 3): " . User::where('role', User::ROLE_LEVEL3)->count() . " user\n";
         echo "\nLogin credentials:\n";
-        echo "Admin: admin@chuongmy.gov.vn / admin123\n";
-        echo "Ban ISO: baniso@chuongmy.gov.vn / baniso123\n";
-        echo "Cơ quan: vanphong@chuongmy.gov.vn / coquan123\n";
-        echo "Người sử dụng: nvnam@chuongmy.gov.vn / user123\n";
+        echo "Admin: admin / admin123\n";
+        echo "Ban ISO: baniso / baniso123\n";
+        echo "Cơ quan: vanphong / coquan123\n";
+        echo "Người sử dụng: nvnam / user123\n";
     }
 }

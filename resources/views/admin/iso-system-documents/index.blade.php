@@ -77,7 +77,7 @@
                     <th class="admin-table__header admin-table__header--date">Thời gian </br> ban hành</th>
                     <th class="admin-table__header admin-table__header--date">Cập nhật </br>  mới nhất</th>
                     <th class="admin-table__header admin-table__header--department">Đơn vị áp dụng</th>
-                    <th class="admin-table__header admin-table__header--actions">Xem/tải xuống</th>
+                    <th class="admin-table__header admin-table__header--actions">Hành động</th>
                 </tr>
             </thead>
             <tbody class="admin-table__body">

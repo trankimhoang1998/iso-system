@@ -18,6 +18,6 @@ class HomeController extends Controller
         }
         
         // If not logged in, redirect to login
-        return redirect()->route('home');
+        return redirect()->route('login');
     }
 }

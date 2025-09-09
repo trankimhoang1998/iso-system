@@ -15,17 +15,15 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 // Public routes
-Route::get('/', [AuthController::class, 'showLogin'])->name('home');
+Route::get('/', [AuthController::class, 'showLogin'])->name('login.form');
 
 // Home page (require authentication)
-Route::get('/trang-chu', [HomeController::class, 'index'])->middleware('auth')->name('trang-chu');
+Route::get('/home', [HomeController::class, 'index'])->middleware('auth')->name('home');
 
 // Authentication routes
 Route::controller(AuthController::class)->group(function () {
-    // General login route (redirect to home)
-    Route::get('/login', function () {
-        return redirect()->route('home');
-    })->name('login');
+    // Show login form
+    Route::get('/login', 'showLogin')->name('login');
     
     // Process login
     Route::post('/login', 'login')->name('auth.login');

@@ -36,7 +36,18 @@
 
             <div class="admin-form__row">
                 <div class="admin-form__group">
-                    <label class="admin-form__label admin-form__label--required">Email</label>
+                    <label class="admin-form__label admin-form__label--required">Tên đăng nhập</label>
+                    <input type="text" name="username" value="{{ old('username') }}"
+                           class="admin-form__input @error('username') admin-form__input--error @enderror">
+                    @error('username')
+                    <div class="admin-form__error">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="admin-form__row">
+                <div class="admin-form__group">
+                    <label class="admin-form__label">Email</label>
                     <input type="email" name="email" value="{{ old('email') }}"
                            class="admin-form__input @error('email') admin-form__input--error @enderror">
                     @error('email')

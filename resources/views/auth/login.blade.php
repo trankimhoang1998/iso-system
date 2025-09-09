@@ -8,16 +8,16 @@
     @csrf
     
     <div class="auth-form__group">
-        <label for="email" class="auth-form__label">Email</label>
-        <input id="email" 
-               type="email"
-               name="email" 
-               value="{{ old('email') }}" 
-               placeholder="Nhập địa chỉ email của bạn"
+        <label for="username" class="auth-form__label">Tên đăng nhập</label>
+        <input id="username" 
+               type="text"
+               name="username" 
+               value="{{ old('username') }}" 
+               placeholder="Nhập tên đăng nhập của bạn"
                autofocus 
-               autocomplete="email"
-               class="auth-form__input @error('email') auth-form__input--error @enderror">
-        @error('email')
+               autocomplete="username"
+               class="auth-form__input @error('username') auth-form__input--error @enderror">
+        @error('username')
             <span class="auth-form__error">{{ $message }}</span>
         @enderror
     </div>

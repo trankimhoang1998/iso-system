@@ -76,7 +76,7 @@
                     <th class="admin-table__header admin-table__header--document-number">Số văn bản</th>
                     <th class="admin-table__header admin-table__header--agency">Cơ quan ban hành</th>
                     <th class="admin-table__header admin-table__header--summary">Trích yếu</th>
-                    <th class="admin-table__header admin-table__header--actions">Xem/tải xuống</th>
+                    <th class="admin-table__header admin-table__header--actions">Hành động</th>
                 </tr>
             </thead>
             <tbody class="admin-table__body">

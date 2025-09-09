@@ -15,9 +15,9 @@ class AuthController extends Controller
      */
     public function showLogin()
     {
-        // Redirect to trang-chu if already logged in
+        // Redirect to home if already logged in
         if (Auth::check()) {
-            return redirect()->route('trang-chu');
+            return redirect()->route('home');
         }
         
         return view('auth.login');
@@ -30,30 +30,29 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'username' => 'required|string',
             'password' => 'required'
         ], [
-            'email.required' => 'Vui lòng nhập địa chỉ email.',
-            'email.email' => 'Địa chỉ email không hợp lệ.',
+            'username.required' => 'Vui lòng nhập tên đăng nhập.',
             'password.required' => 'Vui lòng nhập mật khẩu.',
         ]);
 
-        $user = User::where('email', $request->email)
+        $user = User::where('username', $request->username)
                    ->where('is_active', true)
                    ->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
-                'email' => 'Thông tin đăng nhập không chính xác.',
+                'username' => 'Thông tin đăng nhập không chính xác.',
             ]);
         }
 
-        Auth::login($user, $request->filled('remember'));
+        Auth::login($user);
 
         $request->session()->regenerate();
 
         // Redirect to home page first for all roles
-        return redirect()->route('trang-chu');
+        return redirect()->route('home');
     }
 
     /**
@@ -66,6 +65,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('home');
+        return redirect()->route('login.form');
     }
 }

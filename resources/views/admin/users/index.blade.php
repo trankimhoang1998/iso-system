@@ -23,7 +23,7 @@
                 <div class="admin-filter__group">
                     <label class="admin-filter__label">Tìm kiếm</label>
                     <input type="text" name="search" value="{{ request('search') }}" 
-                           placeholder="Tên hoặc email..." class="admin-filter__input">
+                           placeholder="Tên, tên đăng nhập hoặc email..." class="admin-filter__input">
                 </div>
                 <div class="admin-filter__group">
                     <label class="admin-filter__label">Phân quyền</label>
@@ -77,12 +77,13 @@
             <thead class="admin-table__head">
                 <tr>
                     <th class="admin-table__header">Tên</th>
+                    <th class="admin-table__header">Tên đăng nhập</th>
                     <th class="admin-table__header">Email</th>
                     <th class="admin-table__header">Phân quyền</th>
                     <th class="admin-table__header">Phân xưởng</th>
                     <th class="admin-table__header">Trạng thái</th>
                     <th class="admin-table__header">Ngày tạo</th>
-                    <th class="admin-table__header">Thao tác</th>
+                    <th class="admin-table__header">Hành động</th>
                 </tr>
             </thead>
             <tbody class="admin-table__body">
@@ -93,7 +94,10 @@
                             <div class="admin-user-info__name">{{ $user->name }}</div>
                         </div>
                     </td>
-                    <td class="admin-table__cell">{{ $user->email }}</td>
+                    <td class="admin-table__cell">
+                        <span class="admin-username">{{ $user->username }}</span>
+                    </td>
+                    <td class="admin-table__cell">{{ $user->email ?: '-' }}</td>
                     <td class="admin-table__cell">
                         <span class="admin-role-badge admin-role-badge--role-{{ $user->role }}">
                             {{ $user->getRoleName() }}

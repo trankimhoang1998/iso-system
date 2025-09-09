@@ -27,7 +27,7 @@
     </button>
 
     <div class="admin-container">
-        @unless(request()->is('trang-chu') || 
+        @unless(request()->is('home') || 
                 request()->routeIs('admin.users*') || 
                 request()->routeIs('admin.departments*') || 
                 request()->routeIs('admin.iso-directive-categories*') || 

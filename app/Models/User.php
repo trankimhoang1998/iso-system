@@ -19,6 +19,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
         'role',
@@ -111,17 +112,4 @@ class User extends Authenticatable
         return $this->belongsTo(Department::class);
     }
 
-    /**
-     * Get dashboard route based on user role
-     */
-    public function getDashboardRoute()
-    {
-        return match ($this->role) {
-            self::ROLE_ADMIN => 'admin.dashboard',
-            self::ROLE_LEVEL1 => 'level1.dashboard',
-            self::ROLE_LEVEL2 => 'level2.dashboard',
-            self::ROLE_LEVEL3 => 'level3.dashboard',
-            default => 'home',
-        };
-    }
 }
