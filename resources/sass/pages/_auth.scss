@@ -4,84 +4,16 @@
 // Clean Modern Tech Background
 .auth-body {
     background: 
-        linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%),
-        radial-gradient(ellipse at top left, rgba(59, 130, 246, 0.15) 0%, transparent 70%),
-        radial-gradient(ellipse at bottom right, rgba(16, 185, 129, 0.12) 0%, transparent 70%);
+        linear-gradient(135deg, #10b981 0%, #06b6d4 50%, #3b82f6 100%),
+        radial-gradient(ellipse at top left, rgba(16, 185, 129, 0.3) 0%, transparent 70%),
+        radial-gradient(ellipse at bottom right, rgba(59, 130, 246, 0.25) 0%, transparent 70%);
     background-attachment: fixed;
     min-height: 100vh;
     position: relative;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     overflow: hidden;
-    
-    // Geometric wave patterns
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: 
-            url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h100v100H0z' fill='none'/%3E%3Cpath d='M0 0l50 50L0 100M50 0l50 50-50 50' stroke='%233b82f6' stroke-width='0.5' fill='none' opacity='0.1'/%3E%3C/svg%3E");
-        background-size: 100px 100px;
-        animation: geometricMove 25s linear infinite;
-        pointer-events: none;
-        opacity: 0.3;
-    }
-    
-    // Floating orbs
-    &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: 
-            radial-gradient(circle at 15% 20%, rgba(59, 130, 246, 0.4) 0%, transparent 30%),
-            radial-gradient(circle at 85% 80%, rgba(16, 185, 129, 0.3) 0%, transparent 25%),
-            radial-gradient(circle at 50% 60%, rgba(139, 92, 246, 0.2) 0%, transparent 20%),
-            radial-gradient(circle at 25% 75%, rgba(59, 130, 246, 0.15) 0%, transparent 15%),
-            radial-gradient(circle at 75% 25%, rgba(16, 185, 129, 0.2) 0%, transparent 18%);
-        animation: orbFloat 20s ease-in-out infinite;
-        pointer-events: none;
-        filter: blur(40px);
-        opacity: 0.6;
-    }
 }
 
-@keyframes geometricMove {
-    0% { 
-        transform: translateX(0) translateY(0) rotate(0deg);
-        opacity: 0.3;
-    }
-    50% { 
-        opacity: 0.5;
-    }
-    100% { 
-        transform: translateX(-100px) translateY(-100px) rotate(360deg);
-        opacity: 0.3;
-    }
-}
-
-@keyframes orbFloat {
-    0%, 100% { 
-        transform: translateX(0) translateY(0) scale(1);
-        filter: blur(40px);
-    }
-    25% { 
-        transform: translateX(30px) translateY(-20px) scale(1.1);
-        filter: blur(35px);
-    }
-    50% { 
-        transform: translateX(-20px) translateY(30px) scale(0.9);
-        filter: blur(45px);
-    }
-    75% { 
-        transform: translateX(40px) translateY(10px) scale(1.05);
-        filter: blur(38px);
-    }
-}
 
 // Auth Container - Flex column layout
 .auth-container {
@@ -105,28 +37,64 @@
 .auth-header-section {
     text-align: center;
     margin-bottom: 2rem;
+    width: 100%;
+    max-width: 1400px;
+    
+    .auth-header-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        
+        @include mobile {
+            flex-direction: column;
+            gap: 1rem;
+        }
+    }
+    
+    .auth-logo {
+        height: 200px;
+        width: auto;
+        object-fit: contain;
+        
+        @include mobile {
+            height: 80px;
+        }
+    }
+    
+    .auth-header-text {
+        text-align: left;
+        
+        @include mobile {
+            text-align: center;
+        }
+    }
     
     .auth-main-title {
-        background: linear-gradient(135deg, #3b82f6, #10b981, #8b5cf6);
-        background-size: 200% 200%;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        font-size: clamp(18px, 3vw, 28px);
-        font-weight: 800;
-        margin-bottom: 0.75rem;
-        animation: gradientShift 4s ease-in-out infinite;
-        letter-spacing: -0.02em;
-        line-height: 1.2;
+        color: #ef4444;
+        font-size: 26px;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.01em;
+        line-height: 1.3;
+        text-shadow: 0 2px 10px rgba(239, 68, 68, 0.3);
+        
+        @include mobile {
+            font-size: 24px;
+        }
     }
     
     .auth-sub-title {
-        color: rgba(148, 163, 184, 0.9);
-        font-size: clamp(14px, 2vw, 18px);
-        font-weight: 500;
-        letter-spacing: -0.01em;
-        line-height: 1.4;
-        text-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        color: #003589;
+        font-size: 30px;
+        font-weight: 900;
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        
+        @include mobile {
+            font-size: 28px;
+        }
     }
 }
 
@@ -242,7 +210,7 @@
         
         &::before {
             content: '▶';
-            color: #10b981;
+            color: #003589;
             margin-right: 12px;
             font-size: 12px;
             animation: pulse 2s ease-in-out infinite;
@@ -254,7 +222,7 @@
         font-size: 14px;
         line-height: 1.6;
         margin-bottom: 8px;
-        color: rgba(203, 213, 225, 0.85);
+        color: rgba(248, 250, 252, 0.95);
         margin-left: 24px;
         
         &:last-child {
