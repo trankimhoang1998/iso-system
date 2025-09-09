@@ -48,7 +48,7 @@ class InternalDocumentController extends Controller
             $query->whereDate('issued_date', '<=', $request->date_to);
         }
 
-        $documents = $query->orderBy('created_at', 'desc')->paginate(15);
+        $documents = $query->orderBy('display_order', 'asc')->orderBy('created_at', 'desc')->paginate(15);
         
         // Load categories with hierarchical structure for filter dropdown
         $categories = InternalDocumentCategory::getFlatList();
@@ -93,7 +93,7 @@ class InternalDocumentController extends Controller
             $query->whereDate('issued_date', '<=', $request->date_to);
         }
 
-        $documents = $query->orderBy('created_at', 'desc')->paginate(15);
+        $documents = $query->orderBy('display_order', 'asc')->orderBy('created_at', 'desc')->paginate(15);
         
         // Preserve query parameters in pagination links
         $documents->appends($request->all());
@@ -190,6 +190,9 @@ class InternalDocumentController extends Controller
             $wordFileSize = $wordFile->getSize();
         }
 
+        // Get next display order
+        $maxOrder = InternalDocument::max('display_order') ?? 0;
+        
         InternalDocument::create([
             'category_id' => $request->category_id,
             'department_id' => $request->department_id,
@@ -208,6 +211,7 @@ class InternalDocumentController extends Controller
             'word_file_type' => $wordFileType,
             'word_file_size' => $wordFileSize,
             'uploaded_by' => auth()->id(),
+            'display_order' => $maxOrder + 1,
         ]);
 
         // Use category-based routes when category context exists
@@ -460,5 +464,21 @@ class InternalDocumentController extends Controller
         }
 
         return redirect()->route('admin.internal-documents.index')->with('error', 'File không tồn tại!');
+    }
+
+    public function reorder(Request $request)
+    {
+        $request->validate([
+            'items' => 'required|array',
+            'items.*.id' => 'required|integer|exists:internal_documents,id',
+            'items.*.order' => 'required|integer|min:0'
+        ]);
+
+        foreach ($request->items as $item) {
+            InternalDocument::where('id', $item['id'])
+                ->update(['display_order' => $item['order']]);
+        }
+
+        return response()->json(['success' => true]);
     }
 }

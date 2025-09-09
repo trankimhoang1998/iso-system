@@ -23,6 +23,7 @@ class IsoDirectiveDocument extends Model
         'issuing_agency',
         'summary',
         'uploaded_by',
+        'display_order',
     ];
 
     protected $casts = [

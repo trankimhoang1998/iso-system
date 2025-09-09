@@ -44,6 +44,12 @@ Route::middleware(['auth'])->name('admin.')->group(function () {
         Route::put('/departments/{department}', [DepartmentController::class, 'update'])->name('departments.update');
         Route::delete('/departments/{department}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
         Route::post('/departments/{department}/toggle', [DepartmentController::class, 'toggle'])->name('departments.toggle');
+        
+        // Document ordering endpoints - Admin only
+        Route::post('/iso-directive-documents/reorder', [IsoDirectiveDocumentController::class, 'reorder'])->name('iso-directive-documents.reorder');
+        Route::post('/iso-system-documents/reorder', [IsoSystemDocumentController::class, 'reorder'])->name('iso-system-documents.reorder');
+        Route::post('/internal-documents/reorder', [InternalDocumentController::class, 'reorder'])->name('internal-documents.reorder');
+        Route::post('/management-documents/reorder', [ManagementDocumentController::class, 'reorder'])->name('management-documents.reorder');
           
         // New Categories management - 4 separate types (without show routes)
         Route::resource('iso-directive-categories', IsoDirectiveCategoryController::class)->except(['show']);

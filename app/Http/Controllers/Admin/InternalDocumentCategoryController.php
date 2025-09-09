@@ -28,16 +28,19 @@ class InternalDocumentCategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
             'parent_id' => 'nullable|exists:internal_document_categories,id',
         ], [
             'name.required' => 'Tên danh mục là bắt buộc.',
             'name.string' => 'Tên danh mục phải là chuỗi văn bản.',
             'name.max' => 'Tên danh mục không được vượt quá 255 ký tự.',
+            'description.string' => 'Thuyết minh phải là chuỗi văn bản.',
             'parent_id.exists' => 'Danh mục cha được chọn không hợp lệ.',
         ]);
 
         InternalDocumentCategory::create([
             'name' => $request->name,
+            'description' => $request->description,
             'parent_id' => $request->parent_id,
         ]);
 
@@ -56,16 +59,19 @@ class InternalDocumentCategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
             'parent_id' => 'nullable|exists:internal_document_categories,id',
         ], [
             'name.required' => 'Tên danh mục là bắt buộc.',
             'name.string' => 'Tên danh mục phải là chuỗi văn bản.',
             'name.max' => 'Tên danh mục không được vượt quá 255 ký tự.',
+            'description.string' => 'Thuyết minh phải là chuỗi văn bản.',
             'parent_id.exists' => 'Danh mục cha được chọn không hợp lệ.',
         ]);
 
         $internalDocumentCategory->update([
             'name' => $request->name,
+            'description' => $request->description,
             'parent_id' => $request->parent_id,
         ]);
 

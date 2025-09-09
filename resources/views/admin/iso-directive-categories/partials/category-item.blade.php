@@ -1,6 +1,9 @@
 <div class="admin-category-simple-item" style="margin-left: {{ $level * 30 }}px;">
     <div class="admin-category-simple-content">
         <div class="admin-category-simple-name">{{ $category->name }}</div>
+        @if($category->description)
+            <div class="admin-category-simple-description">{{ $category->description }}</div>
+        @endif
     </div>
     <div class="admin-category-simple-actions">
         <a href="{{ route('admin.iso-directive-categories.edit', $category) }}" class="admin-btn admin-btn--small admin-btn--primary">

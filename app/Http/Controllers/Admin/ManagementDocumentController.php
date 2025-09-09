@@ -33,7 +33,7 @@ class ManagementDocumentController extends Controller
         }
 
 
-        $documents = $query->orderBy('created_at', 'desc')->paginate(15);
+        $documents = $query->orderBy('display_order', 'asc')->orderBy('created_at', 'desc')->paginate(15);
         
         // Preserve query parameters in pagination links
         $documents->appends($request->all());
@@ -94,6 +94,9 @@ class ManagementDocumentController extends Controller
             $wordFileSize = $wordFile->getSize();
         }
 
+        // Get next display order
+        $maxOrder = ManagementDocument::max('display_order') ?? 0;
+        
         ManagementDocument::create([
             'issued_date' => $request->issued_date,
             'document_number' => $request->document_number,
@@ -110,6 +113,7 @@ class ManagementDocumentController extends Controller
             'word_file_type' => $wordFileType,
             'word_file_size' => $wordFileSize,
             'uploaded_by' => auth()->id(),
+            'display_order' => $maxOrder + 1,
         ]);
 
         return redirect()->route('admin.management-documents.index')
@@ -259,5 +263,21 @@ class ManagementDocumentController extends Controller
         }
 
         return redirect()->route('admin.management-documents.index')->with('error', 'File không tồn tại!');
+    }
+
+    public function reorder(Request $request)
+    {
+        $request->validate([
+            'items' => 'required|array',
+            'items.*.id' => 'required|integer|exists:management_documents,id',
+            'items.*.order' => 'required|integer|min:0'
+        ]);
+
+        foreach ($request->items as $item) {
+            ManagementDocument::where('id', $item['id'])
+                ->update(['display_order' => $item['order']]);
+        }
+
+        return response()->json(['success' => true]);
     }
 }

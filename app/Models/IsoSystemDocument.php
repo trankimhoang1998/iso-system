@@ -23,6 +23,7 @@ class IsoSystemDocument extends Model
         'word_file_type',
         'word_file_size',
         'uploaded_by',
+        'display_order',
     ];
 
     protected $casts = [

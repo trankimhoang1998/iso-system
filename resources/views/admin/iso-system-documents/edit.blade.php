@@ -18,8 +18,8 @@
     
     <div class="admin-page__header">
         <div class="admin-page__title-section">
-            <h1 class="admin-page__title">Sửa văn bản hệ thống ISO</h1>
-            <p class="admin-page__subtitle">Cập nhật thông tin văn bản: {{ $isoSystemDocument->title }}</p>
+            <h1 class="admin-page__title">Sửa tài liệu hệ thống ISO</h1>
+            <p class="admin-page__subtitle">Cập nhật thông tin tài liệu hệ thống ISO< </p>
         </div>
         <div class="admin-page__actions">
             <a href="{{ isset($category) ? route('admin.iso-system-documents.category', $category) : route('admin.iso-system-documents.index') }}" class="admin-btn admin-btn--secondary">

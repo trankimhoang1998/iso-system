@@ -36,6 +36,19 @@
 
             <div class="admin-form__row">
                 <div class="admin-form__group admin-form__group--full">
+                    <label for="description" class="admin-form__label">Thuyết minh</label>
+                    <textarea id="description" name="description" rows="3" class="admin-form__input @error('description') admin-form__input--error @enderror" placeholder="Mô tả chi tiết về danh mục (tùy chọn)">{{ old('description', $isoSystemCategory->description) }}</textarea>
+                    @error('description')
+                        <span class="admin-form__error">{{ $message }}</span>
+                    @enderror
+                    <div class="admin-form__help">
+                        Thuyết minh về mục đích, phạm vi áp dụng của danh mục này
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-form__row">
+                <div class="admin-form__group admin-form__group--full">
                     <label for="parent_id" class="admin-form__label">Danh mục cha</label>
                     <select id="parent_id" name="parent_id" class="admin-form__select @error('parent_id') admin-form__select--error @enderror">
                         <option value="">-- Chọn danh mục cha (tùy chọn) --</option>

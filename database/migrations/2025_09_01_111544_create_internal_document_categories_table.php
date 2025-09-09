@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('internal_document_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->text('description')->nullable()->comment('Thuyết minh');
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->timestamps();
 

@@ -38,7 +38,7 @@ class IsoDirectiveDocumentController extends Controller
             $query->whereDate('issued_date', '<=', $request->date_to);
         }
 
-        $documents = $query->orderBy('created_at', 'desc')->paginate(15);
+        $documents = $query->orderBy('display_order', 'asc')->orderBy('created_at', 'desc')->paginate(15);
         
         // Preserve query parameters in pagination links
         $documents->appends($request->all());
@@ -73,7 +73,7 @@ class IsoDirectiveDocumentController extends Controller
             $query->whereDate('issued_date', '<=', $request->date_to);
         }
 
-        $documents = $query->orderBy('created_at', 'desc')->paginate(15);
+        $documents = $query->orderBy('display_order', 'asc')->orderBy('created_at', 'desc')->paginate(15);
         
         // Preserve query parameters in pagination links
         $documents->appends($request->all());
@@ -148,6 +148,9 @@ class IsoDirectiveDocumentController extends Controller
             $wordFileSize = $wordFile->getSize();
         }
 
+        // Get next display order
+        $maxOrder = IsoDirectiveDocument::max('display_order') ?? 0;
+        
         IsoDirectiveDocument::create([
             'category_id' => $request->category_id,
             'issued_date' => $request->issued_date,
@@ -165,6 +168,7 @@ class IsoDirectiveDocumentController extends Controller
             'word_file_type' => $wordFileType,
             'word_file_size' => $wordFileSize,
             'uploaded_by' => auth()->id(),
+            'display_order' => $maxOrder + 1,
         ]);
 
         // Redirect to category view if category_id is provided
@@ -361,6 +365,22 @@ class IsoDirectiveDocumentController extends Controller
         }
 
         return redirect()->route('admin.iso-directive-documents.index')->with('error', 'File không tồn tại!');
+    }
+
+    public function reorder(Request $request)
+    {
+        $request->validate([
+            'items' => 'required|array',
+            'items.*.id' => 'required|integer|exists:iso_directive_documents,id',
+            'items.*.order' => 'required|integer|min:0'
+        ]);
+
+        foreach ($request->items as $item) {
+            IsoDirectiveDocument::where('id', $item['id'])
+                ->update(['display_order' => $item['order']]);
+        }
+
+        return response()->json(['success' => true]);
     }
 
 }

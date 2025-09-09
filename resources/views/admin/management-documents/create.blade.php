@@ -14,8 +14,8 @@
     
     <div class="admin-page__header">
         <div class="admin-page__title-section">
-            <h1 class="admin-page__title">Thêm tài liệu quản lý</h1>
-            <p class="admin-page__subtitle">Tạo và quản lý tài liệu quản lý mới</p>
+            <h1 class="admin-page__title">Thêm văn bản quản lý</h1>
+            <p class="admin-page__subtitle">Tạo và quản lý văn bản quản lý mới</p>
         </div>
         <div class="admin-page__actions">
             <a href="{{ route('admin.management-documents.index') }}" class="admin-btn admin-btn--secondary">
@@ -128,7 +128,7 @@
                         <svg class="admin-btn__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                         </svg>
-                        Tạo tài liệu
+                        Tải lên
                     </button>
                 </div>
             </form>

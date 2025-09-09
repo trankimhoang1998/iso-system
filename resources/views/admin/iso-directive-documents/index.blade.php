@@ -8,36 +8,10 @@
         <div>
             <p class="admin-page__subtitle">
                 @php
-                    $categoryDescriptions = [
-                        1 => 'Quản lý các quyết định ban hành tài liệu thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015 của Nhà máy A31',
-                        2 => 'Quản lý các quyết định công bố Hệ thống quản lý chất lượng của Nhà máy A31 phù hợp tiêu chuẩn quốc gia TCVN ISO 9001:2015',
-                        3 => 'Quản lý các quyết định thành lập Ban Chỉ đạo Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015 (gọi tắt là Ban Chỉ đạo ISO)',
-                        4 => 'Quản lý các Chính sách chất lượng, Mục tiêu chất lượng của Nhà máy A31 theo Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015',
-                        5 => 'Quản lý Hồ sơ thực hiện Quy trình kiểm soát thông tin dạng văn bản thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015',
-                        6 => 'Quản lý Hồ sơ thực hiện Quy trình Đánh giá nội bộ thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015',
-                        7 => 'Quản lý Hồ sơ thực hiện Quy trình Xem xét của lãnh đạo thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015',
-                        8 => 'Quản lý Hồ sơ thực hiện Quy trình Quản lý rủi ro và cơ hội thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015',
-                        9 => 'Quản lý Hồ sơ thực hiện Quy trình Khiếu nại và đo lường sự thỏa mãn của khách hàng thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015',
-                        10 => 'Quản lý Hồ sơ thực hiện Quy trình Khiếu nại và đo lường sự thỏa mãn của khách hàng thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015'
-                    ];
-                    
-                    // Check if we're in category context (from route parameter) or legacy query parameter
-                    $currentCategoryId = isset($category) ? $category->id : request('category_id');
                     $subtitle = 'Quản lý hồ sơ, văn bản pháp lý của Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015';
                     
-                    if ($currentCategoryId && isset($category)) {
-                        // If current category has a parent, use parent's description
-                        if ($category->parent_id && isset($categoryDescriptions[$category->parent_id])) {
-                            $subtitle = $categoryDescriptions[$category->parent_id];
-                        }
-                        // If current category is a parent (no parent_id), use its own description
-                        elseif (!$category->parent_id && isset($categoryDescriptions[$category->id])) {
-                            $subtitle = $categoryDescriptions[$category->id];
-                        }
-                    }
-                    // Legacy support for query parameter
-                    elseif ($currentCategoryId && isset($categoryDescriptions[$currentCategoryId])) {
-                        $subtitle = $categoryDescriptions[$currentCategoryId];
+                    if (isset($category) && $category->description) {
+                        $subtitle = $category->description;
                     }
                 @endphp
                 {{ $subtitle }}
@@ -96,6 +70,9 @@
         <table class="admin-table">
             <thead class="admin-table__head">
                 <tr>
+                    @if(auth()->user()->role == 0)
+                    <th class="admin-table__header" style="width: 40px;">≡</th>
+                    @endif
                     <th class="admin-table__header admin-table__header--date">Thời gian</th>
                     <th class="admin-table__header admin-table__header--document-number">Số văn bản</th>
                     <th class="admin-table__header admin-table__header--agency">Cơ quan ban hành</th>
@@ -105,7 +82,10 @@
             </thead>
             <tbody class="admin-table__body">
                 @forelse($documents as $document)
-                <tr class="admin-table__row">
+                <tr class="admin-table__row" data-id="{{ $document->id }}">
+                    @if(auth()->user()->role == 0)
+                    <td class="admin-table__cell drag-handle" style="cursor: grab; text-align: center;">≡</td>
+                    @endif
                     <td class="admin-table__cell admin-table__cell--date">{{ $document->issued_date ? \Carbon\Carbon::parse($document->issued_date)->format('d/m/Y') : '_' }}</td>
                     <td class="admin-table__cell admin-table__cell--document-number">{{ $document->document_number ?: '_' }}</td>
                     <td class="admin-table__cell admin-table__cell--agency">{{ $document->issuing_agency ?: '_' }}</td>
@@ -264,5 +244,54 @@ window.addEventListener('click', function(e) {
     }
 });
 
+// Drag & Drop functionality for admin users only
+@if(auth()->user()->role == 0)
+// Initialize SortableJS
+document.addEventListener('DOMContentLoaded', function() {
+    const tableBody = document.querySelector('.admin-table__body');
+    if (tableBody) {
+        new Sortable(tableBody, {
+            handle: '.drag-handle',
+            animation: 150,
+            onEnd: function(evt) {
+                // Get all table rows and their IDs in new order
+                const rows = tableBody.querySelectorAll('.admin-table__row[data-id]');
+                const items = Array.from(rows).map((row, index) => ({
+                    id: parseInt(row.dataset.id),
+                    order: index
+                }));
+                
+                // Send AJAX request to update order
+                fetch('{{ route("admin.iso-directive-documents.reorder") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ items: items })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Optional: Show success message
+                        console.log('Đã cập nhật thứ tự');
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi cập nhật thứ tự:', error);
+                    // Optionally revert the UI change
+                });
+            }
+        });
+    }
+});
+@endif
+
 </script>
+
+<!-- SortableJS CDN for drag & drop -->
+@if(auth()->user()->role == 0)
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+@endif
+
 @endsection

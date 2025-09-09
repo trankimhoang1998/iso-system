@@ -32,6 +32,7 @@ return new class extends Migration
             
             // System fields
             $table->unsignedBigInteger('uploaded_by');
+            $table->integer('display_order')->default(0)->comment('Thứ tự hiển thị');
             $table->timestamps();
 
             $table->foreign('category_id')->references('id')->on('iso_system_categories')->onDelete('set null');

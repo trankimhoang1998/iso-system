@@ -53,7 +53,7 @@ class IsoSystemDocumentController extends Controller
             });
         }
 
-        $documents = $query->orderBy('created_at', 'desc')->paginate(15);
+        $documents = $query->orderBy('display_order', 'asc')->orderBy('created_at', 'desc')->paginate(15);
         
         // Preserve query parameters in pagination links
         $documents->appends($request->all());
@@ -105,7 +105,7 @@ class IsoSystemDocumentController extends Controller
             });
         }
 
-        $documents = $query->orderBy('created_at', 'desc')->paginate(15);
+        $documents = $query->orderBy('display_order', 'asc')->orderBy('created_at', 'desc')->paginate(15);
         
         // Preserve query parameters in pagination links
         $documents->appends($request->all());
@@ -190,6 +190,9 @@ class IsoSystemDocumentController extends Controller
             $wordFileSize = $wordFile->getSize();
         }
 
+        // Get next display order
+        $maxOrder = IsoSystemDocument::max('display_order') ?? 0;
+        
         $document = IsoSystemDocument::create([
             'category_id' => $request->category_id,
             'symbol' => $request->symbol,
@@ -207,6 +210,7 @@ class IsoSystemDocumentController extends Controller
             'word_file_type' => $wordFileType,
             'word_file_size' => $wordFileSize,
             'uploaded_by' => auth()->id(),
+            'display_order' => $maxOrder + 1,
         ]);
 
         // Attach departments to the document
@@ -454,5 +458,21 @@ class IsoSystemDocumentController extends Controller
         }
 
         return redirect()->route('admin.iso-system-documents.index')->with('error', 'File không tồn tại!');
+    }
+
+    public function reorder(Request $request)
+    {
+        $request->validate([
+            'items' => 'required|array',
+            'items.*.id' => 'required|integer|exists:iso_system_documents,id',
+            'items.*.order' => 'required|integer|min:0'
+        ]);
+
+        foreach ($request->items as $item) {
+            IsoSystemDocument::where('id', $item['id'])
+                ->update(['display_order' => $item['order']]);
+        }
+
+        return response()->json(['success' => true]);
     }
 }

@@ -13,16 +13,56 @@ class IsoDirectiveCategoriesSeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['name' => 'BAN HÀNH HỆ THỐNG TÀI LIỆU', 'parent_id' => null],
-            ['name' => 'CÔNG BỐ HTQLCL PHÙ HỢP TIÊU CHUẨN ISO', 'parent_id' => null],
-            ['name' => 'THÀNH LẬP BAN CHỈ ĐẠO ISO', 'parent_id' => null],
-            ['name' => 'CHÍNH SÁCH CHẤT LƯỢNG VÀ MỤC TIÊU CHẤT LƯỢNG', 'parent_id' => null],
-            ['name' => 'KIỂM SOÁT THÔNG TIN DẠNG VĂN BẢN', 'parent_id' => null],
-            ['name' => 'ĐÁNH GIÁ NỘI BỘ', 'parent_id' => null],
-            ['name' => 'XEM XÉT LÃNH ĐẠO', 'parent_id' => null],
-            ['name' => 'KIỂM SOÁT SỰ KHÔNG PHÙ HỢP-HÀNH ĐỘNG KHẮC PHỤC', 'parent_id' => null],
-            ['name' => 'QUẢN LÝ RỦI RO VÀ CƠ HỘI', 'parent_id' => null],
-            ['name' => 'KHIẾU NẠI VÀ ĐO LƯỜNG SỰ THỎA MÃN CỦA KHÁCH HÀNG', 'parent_id' => null],
+            [
+                'name' => 'BAN HÀNH HỆ THỐNG TÀI LIỆU', 
+                'description' => 'Quản lý các quyết định ban hành tài liệu thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015 của Nhà máy A31',
+                'parent_id' => null
+            ],
+            [
+                'name' => 'CÔNG BỐ HTQLCL PHÙ HỢP TIÊU CHUẨN ISO', 
+                'description' => 'Quản lý các quyết định công bố Hệ thống quản lý chất lượng của Nhà máy A31 phù hợp tiêu chuẩn quốc gia TCVN ISO 9001:2015',
+                'parent_id' => null
+            ],
+            [
+                'name' => 'THÀNH LẬP BAN CHỈ ĐẠO ISO', 
+                'description' => 'Quản lý các quyết định thành lập Ban Chỉ đạo Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015 (gọi tắt là Ban Chỉ đạo ISO)',
+                'parent_id' => null
+            ],
+            [
+                'name' => 'CHÍNH SÁCH CHẤT LƯỢNG VÀ MỤC TIÊU CHẤT LƯỢNG', 
+                'description' => 'Quản lý các Chính sách chất lượng, Mục tiêu chất lượng của Nhà máy A31 theo Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015',
+                'parent_id' => null
+            ],
+            [
+                'name' => 'KIỂM SOÁT THÔNG TIN DẠNG VĂN BẢN', 
+                'description' => 'Quản lý Hồ sơ thực hiện Quy trình kiểm soát thông tin dạng văn bản thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015',
+                'parent_id' => null
+            ],
+            [
+                'name' => 'ĐÁNH GIÁ NỘI BỘ', 
+                'description' => 'Quản lý Hồ sơ thực hiện Quy trình Đánh giá nội bộ thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015',
+                'parent_id' => null
+            ],
+            [
+                'name' => 'XEM XÉT LÃNH ĐẠO', 
+                'description' => 'Quản lý Hồ sơ thực hiện Quy trình Xem xét của lãnh đạo thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015',
+                'parent_id' => null
+            ],
+            [
+                'name' => 'KIỂM SOÁT SỰ KHÔNG PHÙ HỢP-HÀNH ĐỘNG KHẮC PHỤC', 
+                'description' => 'Quản lý Hồ sơ thực hiện Quy trình Quản lý rủi ro và cơ hội thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015',
+                'parent_id' => null
+            ],
+            [
+                'name' => 'QUẢN LÝ RỦI RO VÀ CƠ HỘI', 
+                'description' => 'Quản lý Hồ sơ thực hiện Quy trình Khiếu nại và đo lường sự thỏa mãn của khách hàng thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015',
+                'parent_id' => null
+            ],
+            [
+                'name' => 'KHIẾU NẠI VÀ ĐO LƯỜNG SỰ THỎA MÃN CỦA KHÁCH HÀNG', 
+                'description' => 'Quản lý Hồ sơ thực hiện Quy trình Khiếu nại và đo lường sự thỏa mãn của khách hàng thuộc Hệ thống quản lý chất lượng theo tiêu chuẩn quốc gia TCVN ISO 9001:2015',
+                'parent_id' => null
+            ],
         ];
 
         foreach ($categories as $categoryData) {

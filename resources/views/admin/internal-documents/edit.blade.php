@@ -19,7 +19,7 @@
     <div class="admin-page__header">
         <div class="admin-page__title-section">
             <h1 class="admin-page__title">Sửa tài liệu nội bộ</h1>
-            <p class="admin-page__subtitle">Cập nhật thông tin tài liệu: {{ $internalDocument->document_number ?: 'Tài liệu nội bộ' }}</p>
+            <p class="admin-page__subtitle">Cập nhật thông tin tài liệu nội bộ</p>
         </div>
         <div class="admin-page__actions">
             <a href="{{ isset($category) ? route('admin.internal-documents.category', $category) : route('admin.internal-documents.index') }}" class="admin-btn admin-btn--secondary">
