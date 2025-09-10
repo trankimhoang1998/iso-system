@@ -46,7 +46,6 @@ Route::middleware(['auth'])->name('admin.')->group(function () {
         Route::post('/departments', [DepartmentController::class, 'store'])->name('departments.store');
         Route::put('/departments/{department}', [DepartmentController::class, 'update'])->name('departments.update');
         Route::delete('/departments/{department}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
-        Route::post('/departments/{department}/toggle', [DepartmentController::class, 'toggle'])->name('departments.toggle');
         
         // Download Guide management - Admin only
         Route::get('/download-guide', [DownloadGuideController::class, 'index'])->name('download-guide.index');

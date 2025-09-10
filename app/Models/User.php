@@ -77,29 +77,6 @@ class User extends Authenticatable
         return $this->role === self::ROLE_ADMIN;
     }
 
-    /**
-     * Check if user is Ban ISO
-     */
-    public function isLevel1()
-    {
-        return $this->role === self::ROLE_LEVEL1;
-    }
-
-    /**
-     * Check if user is Cơ quan - Phân xưởng
-     */
-    public function isLevel2()
-    {
-        return $this->role === self::ROLE_LEVEL2;
-    }
-
-    /**
-     * Check if user is Người sử dụng
-     */
-    public function isLevel3()
-    {
-        return $this->role === self::ROLE_LEVEL3;
-    }
 
 
     /**

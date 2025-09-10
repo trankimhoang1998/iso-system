@@ -13,10 +13,4 @@ class Department extends Model
         'name',
     ];
 
-    // Get all departments for dropdowns
-    public static function getList()
-    {
-        return static::orderBy('name')
-            ->pluck('name', 'id');
-    }
 }
