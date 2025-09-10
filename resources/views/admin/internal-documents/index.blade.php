@@ -50,6 +50,7 @@
                 </div>
                 <div class="admin-filter__group">
                     <label class="admin-filter__label">Đơn vị áp dụng</label>
+                    @if(in_array(auth()->user()->role, [0, 1]))
                     <select name="department_id" id="filter_department" class="admin-form__select select2">
                         <option value="">Tất cả</option>
                         @foreach($departments ?? [] as $department)
@@ -58,6 +59,11 @@
                             </option>
                         @endforeach
                     </select>
+                    @else
+                    <input type="text" value="{{ auth()->user()->department ? auth()->user()->department->name : 'Chưa có đơn vị' }}" 
+                           class="admin-form__input" readonly disabled>
+                    <input type="hidden" name="department_id" value="{{ auth()->user()->department_id }}">
+                    @endif
                 </div>
                 <div class="admin-filter__actions">
                     <button type="submit" class="admin-btn admin-btn--primary">
@@ -87,6 +93,9 @@
                     <th class="admin-table__header admin-table__header--date">Thời gian</th>
                     <th class="admin-table__header admin-table__header--document-number">Số văn bản</th>
                     <th class="admin-table__header admin-table__header--agency">Cơ quan ban hành</th>
+                    @if(in_array(auth()->user()->role, [0, 1]))
+                    <th class="admin-table__header admin-table__header--department">Đơn vị áp dụng</th>
+                    @endif
                     <th class="admin-table__header admin-table__header--summary">Trích yếu</th>
                     <th class="admin-table__header admin-table__header--actions">Hành động</th>
                 </tr>
@@ -100,6 +109,9 @@
                     <td class="admin-table__cell admin-table__cell--date">{{ $document->issued_date ? \Carbon\Carbon::parse($document->issued_date)->format('d/m/Y') : '_' }}</td>
                     <td class="admin-table__cell admin-table__cell--document-number">{{ $document->document_number ?: '_' }}</td>
                     <td class="admin-table__cell admin-table__cell--agency">{{ $document->issuing_agency ?: '_' }}</td>
+                    @if(in_array(auth()->user()->role, [0, 1]))
+                    <td class="admin-table__cell admin-table__cell--department">{{ $document->department ? $document->department->name : '_' }}</td>
+                    @endif
                     <td class="admin-table__cell admin-table__cell--summary">{{ $document->summary ?: '_' }}</td>
                     <td class="admin-table__cell admin-table__cell--actions">
                         <div class="admin-table__actions">
@@ -158,7 +170,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" class="admin-table__empty">
+                    <td colspan="{{ auth()->user()->role == 0 ? (in_array(auth()->user()->role, [0, 1]) ? '7' : '6') : (in_array(auth()->user()->role, [0, 1]) ? '6' : '5') }}" class="admin-table__empty">
                         <div class="admin-empty-state">
                             <svg class="admin-empty-state__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -258,7 +270,8 @@ window.addEventListener('click', function(e) {
 // Initialize Select2 for filter dropdowns
 document.addEventListener('DOMContentLoaded', function() {
     if (typeof $ !== 'undefined' && $.fn.select2) {
-        // Department dropdown
+        // Department dropdown - only for roles 0,1
+        @if(in_array(auth()->user()->role, [0, 1]))
         $('#filter_department').select2({
             placeholder: 'Tất cả',
             allowClear: true,
@@ -266,6 +279,7 @@ document.addEventListener('DOMContentLoaded', function() {
             dropdownCssClass: 'select2-dropdown-small',
             containerCssClass: 'select2-container-small'
         });
+        @endif
     }
 });
 
