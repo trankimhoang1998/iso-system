@@ -30,7 +30,18 @@
                     <div class="auth-guide">
                         <div class="auth-guide__section">
                             <h3 class="auth-guide__title">Hướng dẫn sử dụng:</h3>
-                            <p class="auth-guide__text">Tải xuống tài liệu hướng dẫn sử dụng</p>
+                            @php
+                                $downloadGuide = \App\Models\DownloadGuide::first();
+                            @endphp
+                            @if($downloadGuide && $downloadGuide->download_link)
+                                <p class="auth-guide__text">
+                                    <a href="{{ $downloadGuide->download_link }}" target="_blank" class="auth-guide__link">
+                                        Tải xuống tài liệu hướng dẫn sử dụng
+                                    </a>
+                                </p>
+                            @else
+                                <p class="auth-guide__text">Tài liệu hướng dẫn sử dụng</p>
+                            @endif
                         </div>
                         
                         <div class="auth-guide__section">

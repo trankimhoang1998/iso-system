@@ -35,7 +35,8 @@
                 request()->routeIs('admin.internal-document-categories*') || 
                 request()->routeIs('admin.management-documents*') || 
                 request()->routeIs('admin.notifications*')|| 
-                request()->routeIs('admin.new-processes*'))
+                request()->routeIs('admin.new-processes*')|| 
+                request()->routeIs('admin.download-guide*'))
             @include('partials.admin.sidebar')
         @endunless
 

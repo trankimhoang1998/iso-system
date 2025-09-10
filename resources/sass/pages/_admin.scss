@@ -550,6 +550,17 @@
         }
     }
 
+    &--outline {
+        background: transparent;
+        color: $primary-color;
+        border: 1px solid $primary-color;
+
+        &:hover {
+            background: $primary-color;
+            color: $white;
+        }
+    }
+
     @include mobile {
         padding: 8px 12px;
         font-size: 13px;
@@ -1745,6 +1756,53 @@
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+
+    &__header {
+        padding: $spacing-lg $spacing-lg $spacing-md;
+        border-bottom: 1px solid $bg-gray-light;
+    }
+
+    &__title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 18px;
+        font-weight: $font-weight-bold;
+        color: $gray;
+        margin: 0;
+    }
+
+    &__icon {
+        width: 20px;
+        height: 20px;
+        color: $primary-color;
+        flex-shrink: 0;
+    }
+
+    &__body {
+        padding: $spacing-lg;
+    }
+
+    &__meta {
+        margin-top: $spacing-md;
+        padding-top: $spacing-md;
+        border-top: 1px solid $bg-gray-light;
+    }
+
+    &__meta-text {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        color: $text-muted;
+        margin: 0;
+    }
+
+    &__meta-icon {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
+    }
 }
 
 // Enhanced Admin Form
@@ -1846,11 +1904,21 @@
         color: $text-muted;
         margin-top: 4px;
         line-height: 1.4;
+        display: flex;
+        align-items: flex-start;
+        gap: 6px;
 
         small {
             font-size: 11px;
             opacity: 0.8;
         }
+    }
+
+    &__help-icon {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
+        margin-top: 1px;
     }
 
     &__actions {
@@ -1943,6 +2011,62 @@
         .admin-current-file__size {
             font-size: 12px;
             color: $text-muted;
+        }
+    }
+}
+
+// Admin Link Display
+.admin-link-display {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    
+    @include tablet {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    &__url {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    &__actions {
+        display: flex;
+        gap: $spacing-sm;
+        flex-shrink: 0;
+        
+        @include mobile {
+            flex-direction: column;
+        }
+    }
+}
+
+// Admin Link
+.admin-link {
+    color: $primary-color;
+    text-decoration: none;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 14px;
+    word-break: break-all;
+    line-height: 1.4;
+    
+    &:hover {
+        color: $primary-dark;
+        text-decoration: underline;
+    }
+    
+    &--external {
+        display: block;
+        padding: $spacing-sm;
+        background: $bg-light;
+        border: 1px solid $bg-gray;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        
+        &:hover {
+            background: $bg-gray-light;
+            border-color: $primary-color;
         }
     }
 }

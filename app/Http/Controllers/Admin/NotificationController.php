@@ -42,14 +42,15 @@ class NotificationController extends Controller
                 ->withInput();
         }
 
-        // Get next display order
-        $maxOrder = Notification::max('display_order') ?? 0;
+        // Push all existing notifications down by incrementing their display_order
+        Notification::query()->increment('display_order');
 
+        // Create new notification with display_order = 0 (top position)
         Notification::create([
             'title' => $request->title,
             'issue_date' => $request->issue_date,
             'document_link' => $request->document_link,
-            'display_order' => $maxOrder + 1,
+            'display_order' => 0,
         ]);
 
         return redirect()->route('admin.notifications.index')

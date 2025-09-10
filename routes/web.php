@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\InternalDocumentController;
 use App\Http\Controllers\Admin\ManagementDocumentController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\NewProcessController;
+use App\Http\Controllers\Admin\DownloadGuideController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -46,6 +47,11 @@ Route::middleware(['auth'])->name('admin.')->group(function () {
         Route::put('/departments/{department}', [DepartmentController::class, 'update'])->name('departments.update');
         Route::delete('/departments/{department}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
         Route::post('/departments/{department}/toggle', [DepartmentController::class, 'toggle'])->name('departments.toggle');
+        
+        // Download Guide management - Admin only
+        Route::get('/download-guide', [DownloadGuideController::class, 'index'])->name('download-guide.index');
+        Route::get('/download-guide/edit', [DownloadGuideController::class, 'edit'])->name('download-guide.edit');
+        Route::put('/download-guide', [DownloadGuideController::class, 'update'])->name('download-guide.update');
         
         // Document ordering endpoints - Admin only
         Route::post('/iso-directive-documents/reorder', [IsoDirectiveDocumentController::class, 'reorder'])->name('iso-directive-documents.reorder');

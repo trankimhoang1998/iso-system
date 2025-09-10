@@ -42,14 +42,15 @@ class NewProcessController extends Controller
                 ->withInput();
         }
 
-        // Get next display order
-        $maxOrder = NewProcess::max('display_order') ?? 0;
+        // Push all existing new processes down by incrementing their display_order
+        NewProcess::query()->increment('display_order');
 
+        // Create new process with display_order = 0 (top position)
         NewProcess::create([
             'title' => $request->title,
             'issue_date' => $request->issue_date,
             'document_link' => $request->document_link,
-            'display_order' => $maxOrder + 1,
+            'display_order' => 0,
         ]);
 
         return redirect()->route('admin.new-processes.index')

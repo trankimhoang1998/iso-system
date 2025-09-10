@@ -77,6 +77,11 @@
                             QUẢN LÝ DANH MỤC - TÀI LIỆU NỘI BỘ
                         </a>
                     </li>
+                    <li class="nav__dropdown-item">
+                        <a href="{{ route('admin.download-guide.index') }}" class="nav__dropdown-link">
+                            QUẢN LÝ LINK HƯỚNG DẪN
+                        </a>
+                    </li>
                     <li class="nav__dropdown-divider"></li>
                     @endif
                     @if(in_array(auth()->user()->role, [0, 1]))
