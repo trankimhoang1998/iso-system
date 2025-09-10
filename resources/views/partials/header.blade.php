@@ -76,6 +76,19 @@
                     </li>
                     <li class="nav__dropdown-divider"></li>
                     @endif
+                    @if(in_array(auth()->user()->role, [0, 1]))
+                    <li class="nav__dropdown-item">
+                        <a href="{{ route('admin.notifications.index') }}" class="nav__dropdown-link">
+                            QUẢN LÝ THÔNG BÁO
+                        </a>
+                    </li>
+                    <li class="nav__dropdown-item">
+                        <a href="{{ route('admin.new-processes.index') }}" class="nav__dropdown-link">
+                            QUẢN LÝ QUY TRÌNH MỚI
+                        </a>
+                    </li>
+                    <li class="nav__dropdown-divider"></li>
+                    @endif
                     <li class="nav__dropdown-item">
                         <form method="POST" action="{{ route('auth.logout') }}" style="margin: 0;">
                             @csrf

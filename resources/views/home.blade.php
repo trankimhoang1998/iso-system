@@ -133,22 +133,17 @@
                 <h2 class="notifications__title">THÔNG BÁO</h2>
                 <div class="notifications__content">
                     <div class="news-list">
+                        @forelse($notifications as $notification)
                         <div class="news-item">
-                            <div class="news-item__date">28/08/2024</div>
-                            <a href="#" class="news-item__title">Thông báo về việc triển khai hệ thống ISO mới</a>
+                            <div class="news-item__date">{{ $notification->issue_date->format('d/m/Y') }}</div>
+                            <a href="{{ $notification->document_link }}" target="_blank" class="news-item__title">{{ $notification->title }}</a>
                         </div>
+                        @empty
                         <div class="news-item">
-                            <div class="news-item__date">26/08/2024</div>
-                            <a href="#" class="news-item__title">Lịch đào tạo về quy trình chất lượng tháng 9</a>
+                            <div class="news-item__date">--/--/----</div>
+                            <span class="news-item__title">Chưa có thông báo nào</span>
                         </div>
-                        <div class="news-item">
-                            <div class="news-item__date">24/08/2024</div>
-                            <a href="#" class="news-item__title">Thông báo kiểm tra nội bộ định kỳ quý III</a>
-                        </div>
-                        <div class="news-item">
-                            <div class="news-item__date">21/08/2024</div>
-                            <a href="#" class="news-item__title">Hướng dẫn sử dụng hệ thống tài liệu điện tử</a>
-                        </div>
+                        @endforelse
                     </div>
                     <div class="notifications__footer">
                         <a href="/management-documents" class="notifications__more">Xem tất cả →</a>
@@ -161,22 +156,17 @@
                 <h2 class="new-process__title">QUY TRÌNH MỚI</h2>
                 <div class="new-process__content">
                     <div class="news-list">
+                        @forelse($newProcesses as $newProcess)
                         <div class="news-item">
-                            <div class="news-item__date">28/08/2024</div>
-                            <a href="#" class="news-item__title">Quy trình mới về quản lý chất lượng ISO 9001:2015</a>
+                            <div class="news-item__date">{{ $newProcess->issue_date->format('d/m/Y') }}</div>
+                            <a href="{{ $newProcess->document_link }}" target="_blank" class="news-item__title">{{ $newProcess->title }}</a>
                         </div>
+                        @empty
                         <div class="news-item">
-                            <div class="news-item__date">25/08/2024</div>
-                            <a href="#" class="news-item__title">Cập nhật quy trình đánh giá nội bộ</a>
+                            <div class="news-item__date">--/--/----</div>
+                            <span class="news-item__title">Chưa có quy trình mới nào</span>
                         </div>
-                        <div class="news-item">
-                            <div class="news-item__date">22/08/2024</div>
-                            <a href="#" class="news-item__title">Quy trình mới về xử lý khiếu nại khách hàng</a>
-                        </div>
-                        <div class="news-item">
-                            <div class="news-item__date">20/08/2024</div>
-                            <a href="#" class="news-item__title">Hướng dẫn quy trình cải tiến liên tục</a>
-                        </div>
+                        @endforelse
                     </div>
                     <div class="new-process__footer">
                         <a href="/iso-system-documents/category/4" class="new-process__more">Xem tất cả →</a>

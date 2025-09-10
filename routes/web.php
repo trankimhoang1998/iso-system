@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\IsoDirectiveDocumentController;
 use App\Http\Controllers\Admin\IsoSystemDocumentController;
 use App\Http\Controllers\Admin\InternalDocumentController;
 use App\Http\Controllers\Admin\ManagementDocumentController;
+use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\NewProcessController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -50,6 +52,7 @@ Route::middleware(['auth'])->name('admin.')->group(function () {
         Route::post('/iso-system-documents/reorder', [IsoSystemDocumentController::class, 'reorder'])->name('iso-system-documents.reorder');
         Route::post('/internal-documents/reorder', [InternalDocumentController::class, 'reorder'])->name('internal-documents.reorder');
         Route::post('/management-documents/reorder', [ManagementDocumentController::class, 'reorder'])->name('management-documents.reorder');
+        
           
         // New Categories management - 4 separate types (without show routes)
         Route::resource('iso-directive-categories', IsoDirectiveCategoryController::class)->except(['show']);
@@ -70,6 +73,29 @@ Route::middleware(['auth'])->name('admin.')->group(function () {
     
     Route::get('management-documents', [ManagementDocumentController::class, 'index'])->name('management-documents.index');
     Route::get('management-documents/category/{category}', [ManagementDocumentController::class, 'indexByCategory'])->name('management-documents.category');
+    
+    
+    // Notification Management - Admin & Ban ISO (roles 0,1) full access
+    Route::middleware(['role:0|1'])->group(function () {
+        Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
+        Route::get('notifications/create', [NotificationController::class, 'create'])->name('notifications.create');
+        Route::post('notifications', [NotificationController::class, 'store'])->name('notifications.store');
+        Route::get('notifications/{notification}/edit', [NotificationController::class, 'edit'])->name('notifications.edit');
+        Route::put('notifications/{notification}', [NotificationController::class, 'update'])->name('notifications.update');
+        Route::delete('notifications/{notification}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
+        Route::post('notifications/reorder', [NotificationController::class, 'reorder'])->name('notifications.reorder');
+    });
+    
+    // New Process Management - Admin & Ban ISO (roles 0,1) full access
+    Route::middleware(['role:0|1'])->group(function () {
+        Route::get('new-processes', [NewProcessController::class, 'index'])->name('new-processes.index');
+        Route::get('new-processes/create', [NewProcessController::class, 'create'])->name('new-processes.create');
+        Route::post('new-processes', [NewProcessController::class, 'store'])->name('new-processes.store');
+        Route::get('new-processes/{newProcess}/edit', [NewProcessController::class, 'edit'])->name('new-processes.edit');
+        Route::put('new-processes/{newProcess}', [NewProcessController::class, 'update'])->name('new-processes.update');
+        Route::delete('new-processes/{newProcess}', [NewProcessController::class, 'destroy'])->name('new-processes.destroy');
+        Route::post('new-processes/reorder', [NewProcessController::class, 'reorder'])->name('new-processes.reorder');
+    });
     
     // Document Management - Admin & Ban ISO (roles 0,1) full access
     Route::middleware(['role:0|1'])->group(function () {

@@ -33,7 +33,9 @@
                 request()->routeIs('admin.iso-directive-categories*') || 
                 request()->routeIs('admin.iso-system-categories*') || 
                 request()->routeIs('admin.internal-document-categories*') || 
-                request()->routeIs('admin.management-documents*'))
+                request()->routeIs('admin.management-documents*') || 
+                request()->routeIs('admin.notifications*')|| 
+                request()->routeIs('admin.new-processes*'))
             @include('partials.admin.sidebar')
         @endunless
 
