@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\ManagementDocumentController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\NewProcessController;
 use App\Http\Controllers\Admin\DownloadGuideController;
+use App\Http\Controllers\AuditController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -78,8 +79,16 @@ Route::middleware(['auth'])->name('admin.')->group(function () {
     
     Route::get('management-documents', [ManagementDocumentController::class, 'index'])->name('management-documents.index');
     Route::get('management-documents/category/{category}', [ManagementDocumentController::class, 'indexByCategory'])->name('management-documents.category');
-    
-    
+
+    // Audit routes - All authenticated users can access
+    Route::get('audit', [AuditController::class, 'index'])->name('audit.index');
+    Route::get('audit/summary', [AuditController::class, 'summary'])->name('audit.summary');
+    Route::get('audit/program', [AuditController::class, 'program'])->name('audit.program');
+    Route::get('audit/implementation', [AuditController::class, 'implementation'])->name('audit.implementation');
+    Route::get('audit/report', [AuditController::class, 'report'])->name('audit.report');
+    Route::get('audit/action', [AuditController::class, 'action'])->name('audit.action');
+
+
     // Notification Management - Admin & Ban ISO (roles 0,1) full access
     Route::middleware(['role:0|1'])->group(function () {
         Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');

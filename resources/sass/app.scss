@@ -14,6 +14,7 @@
 
 // Components
 @use 'components/mobile-overlay';
+@use 'components/breadcrumb';
 // @use 'components/buttons';
 // @use 'components/forms';
 
@@ -21,3 +22,8 @@
 @use 'pages/home';
 @use 'pages/auth';
 @use 'pages/admin';
+@use 'pages/summary';
+@use 'pages/program';
+@use 'pages/implementation';
+@use 'pages/report';
+@use 'pages/action';

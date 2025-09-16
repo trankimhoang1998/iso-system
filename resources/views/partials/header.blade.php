@@ -12,10 +12,43 @@
                         TRANG CHỦ
                     </a>
                 </li>
-                <li class="nav__item">
-                    <a href="/iso-directive-documents" class="nav__link {{ request()->is('iso-directive-documents*') ? 'nav__link--active' : '' }}">
+                <li class="nav__item nav__item--dropdown">
+                    <a href="javascript:void(0)" class="nav__link" data-dropdown="iso-directive-menu">
                         BAN CHỈ ĐẠO ISO
+                        <span class="nav__arrow">▼</span>
                     </a>
+                    <ul class="nav__dropdown" id="dropdown-iso-directive-menu">
+                        <li class="nav__dropdown-item">
+                            <a href="/iso-directive-documents" class="nav__dropdown-link">
+                                TÀI LIỆU
+                            </a>
+                        </li>
+                        <li class="nav__dropdown-item">
+                            <a href="/audit" class="nav__dropdown-link">
+                                ĐÁNH GIÁ NỘI BỘ
+                            </a>
+                        </li>
+                        <li class="nav__dropdown-item">
+                            <a href="#" class="nav__dropdown-link">
+                                XEM XÉT CỦA LÃNH ĐẠO
+                            </a>
+                        </li>
+                        <li class="nav__dropdown-item">
+                            <a href="#" class="nav__dropdown-link">
+                                KIỂM SOÁT THÔNG TIN VĂN BẢN
+                            </a>
+                        </li>
+                        <li class="nav__dropdown-item">
+                            <a href="#" class="nav__dropdown-link">
+                                KIỂM SOÁT SỰ KHÔNG PHÙ HỢP
+                            </a>
+                        </li>
+                        <li class="nav__dropdown-item">
+                            <a href="#" class="nav__dropdown-link">
+                                QUẢN LÝ RỦI RO VÀ CƠ HỘI
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav__item">
                     <a href="/iso-system-documents" class="nav__link {{ request()->is('iso-system-documents*') ? 'nav__link--active' : '' }}">
