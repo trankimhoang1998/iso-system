@@ -94,9 +94,10 @@ class ManagementDocumentController extends Controller
             $wordFileSize = $wordFile->getSize();
         }
 
-        // Get next display order
-        $maxOrder = ManagementDocument::max('display_order') ?? 0;
-        
+        // Push all existing documents down by incrementing their display_order
+        ManagementDocument::query()->increment('display_order');
+
+        // Create new document with display_order = 0 (top position)
         ManagementDocument::create([
             'issued_date' => $request->issued_date,
             'document_number' => $request->document_number,
@@ -113,7 +114,7 @@ class ManagementDocumentController extends Controller
             'word_file_type' => $wordFileType,
             'word_file_size' => $wordFileSize,
             'uploaded_by' => auth()->id(),
-            'display_order' => $maxOrder + 1,
+            'display_order' => 0,
         ]);
 
         return redirect()->route('admin.management-documents.index')

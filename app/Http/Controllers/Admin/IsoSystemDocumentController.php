@@ -190,9 +190,10 @@ class IsoSystemDocumentController extends Controller
             $wordFileSize = $wordFile->getSize();
         }
 
-        // Get next display order
-        $maxOrder = IsoSystemDocument::max('display_order') ?? 0;
-        
+        // Push all existing documents down by incrementing their display_order
+        IsoSystemDocument::query()->increment('display_order');
+
+        // Create new document with display_order = 0 (top position)
         $document = IsoSystemDocument::create([
             'category_id' => $request->category_id,
             'symbol' => $request->symbol,
@@ -210,7 +211,7 @@ class IsoSystemDocumentController extends Controller
             'word_file_type' => $wordFileType,
             'word_file_size' => $wordFileSize,
             'uploaded_by' => auth()->id(),
-            'display_order' => $maxOrder + 1,
+            'display_order' => 0,
         ]);
 
         // Attach departments to the document

@@ -141,51 +141,7 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 <script>
-@if(auth()->user()->role == 0)
-// Initialize Sortable for drag and drop
-Sortable.create(document.getElementById('new-processes-table'), {
-    handle: '.drag-handle',
-    animation: 150,
-    ghostClass: 'admin-table__row--dragging',
-    onEnd: function(evt) {
-        const rows = document.querySelectorAll('#new-processes-table .admin-table__row');
-        const items = [];
-        
-        rows.forEach((row, index) => {
-            if (row.dataset.id) {
-                items.push({
-                    id: parseInt(row.dataset.id),
-                    order: index
-                });
-            }
-        });
-        
-        // Send AJAX request to update order
-        fetch('/new-processes/reorder', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({
-                items: items
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                console.log('Order updated successfully');
-            }
-        })
-        .catch(error => {
-            console.error('Error updating order:', error);
-        });
-    }
-});
-@endif
-
 function openDeleteModal(id, title) {
     document.getElementById('deleteItemName').textContent = title;
     const deleteForm = document.getElementById('deleteForm');
@@ -205,5 +161,55 @@ window.addEventListener('click', function(e) {
         e.target.classList.remove('admin-modal--active');
     }
 });
+
+// Drag & Drop functionality for admin users only
+@if(auth()->user()->role == 0)
+// Initialize SortableJS
+document.addEventListener('DOMContentLoaded', function() {
+    const tableBody = document.querySelector('#new-processes-table');
+    if (tableBody) {
+        new Sortable(tableBody, {
+            handle: '.drag-handle',
+            animation: 150,
+            ghostClass: 'admin-table__row--dragging',
+            onEnd: function(evt) {
+                // Get all table rows and their IDs in new order
+                const rows = tableBody.querySelectorAll('.admin-table__row[data-id]');
+                const items = Array.from(rows).map((row, index) => ({
+                    id: parseInt(row.dataset.id),
+                    order: index
+                }));
+
+                // Send AJAX request to update order
+                fetch('/new-processes/reorder', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({ items: items })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Optional: Show success message
+                        console.log('Đã cập nhật thứ tự');
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi cập nhật thứ tự:', error);
+                    // Optionally revert the UI change
+                });
+            }
+        });
+    }
+});
+@endif
 </script>
+
+<!-- SortableJS CDN for drag & drop -->
+@if(auth()->user()->role == 0)
+<script src="{{ asset('vendor/sortablejs/js/Sortable.min.js') }}"></script>
+@endif
+
 @endsection

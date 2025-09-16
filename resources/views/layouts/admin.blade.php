@@ -8,10 +8,10 @@
     <title>@yield('title', auth()->user()->getRoleName() . ' - Hệ thống ISO')</title>
     
     <!-- Toastr CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="{{ asset('vendor/toastr/css/toastr.min.css') }}">
     
     <!-- Select2 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="{{ asset('vendor/select2/css/select2.min.css') }}" rel="stylesheet" />
     
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
@@ -51,11 +51,11 @@
     @include('partials.footer')
 
     <!-- jQuery and Toastr JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="{{ asset('vendor/jquery/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('vendor/toastr/js/toastr.min.js') }}"></script>
     
     <!-- Select2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="{{ asset('vendor/select2/js/select2.min.js') }}"></script>
     
     <script>
         // Configure Toastr

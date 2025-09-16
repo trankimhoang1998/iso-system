@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!-- SortableJS CDN for drag & drop -->
 @if(auth()->user()->role == 0)
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script src="{{ asset('vendor/sortablejs/js/Sortable.min.js') }}"></script>
 @endif
 
 @endsection

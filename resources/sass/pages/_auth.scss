@@ -39,21 +39,19 @@
     padding: 20px;
     position: relative;
     z-index: 1;
-    margin-top: 40px;
-        
+
     @include mobile {
         padding: 20px;
         gap: 30px;
-        margin-top: unset;
     }
 }
 
 // Modern Tech Header Section
 .auth-header-section {
     text-align: center;
-    margin-bottom: 2rem;
     width: 100%;
     max-width: 1400px;
+    margin-top: 100px;
     
     .auth-header-content {
         display: flex;
@@ -115,7 +113,8 @@
     gap: 3rem;
     width: 100%;
     max-width: 1400px;
-    
+    flex-grow: 1;
+
     @include mobile {
         flex-direction: column;
         gap: 2rem;
