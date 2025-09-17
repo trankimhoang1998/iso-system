@@ -281,28 +281,28 @@
         <div class="stats-grid">
             <div class="stats-card stats-card--small">
                 <div class="stats-card__content">
-                    <h4 class="stats-card__title">Tổng kế hoạch</h4>
+                    <h4 class="stats-card__title">TỔNG KẾ HOẠCH</h4>
                     <p class="stats-card__value">17</p>
                     <p class="stats-card__subtitle">Năm 2025</p>
                 </div>
             </div>
             <div class="stats-card stats-card--small">
                 <div class="stats-card__content">
-                    <h4 class="stats-card__title">Đã hoàn thành</h4>
+                    <h4 class="stats-card__title">ĐÃ HOÀN THÀNH</h4>
                     <p class="stats-card__value">8</p>
                     <p class="stats-card__subtitle">47.1%</p>
                 </div>
             </div>
             <div class="stats-card stats-card--small">
                 <div class="stats-card__content">
-                    <h4 class="stats-card__title">Đang thực hiện</h4>
+                    <h4 class="stats-card__title">ĐANG THỰC HIỆN</h4>
                     <p class="stats-card__value">5</p>
                     <p class="stats-card__subtitle">29.4%</p>
                 </div>
             </div>
             <div class="stats-card stats-card--small">
                 <div class="stats-card__content">
-                    <h4 class="stats-card__title">Chưa thực hiện</h4>
+                    <h4 class="stats-card__title">CHƯA THỰC HIỆN</h4>
                     <p class="stats-card__value">4</p>
                     <p class="stats-card__subtitle">23.5%</p>
                 </div>
