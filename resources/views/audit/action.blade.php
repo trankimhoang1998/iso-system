@@ -5,13 +5,13 @@
 @section('content')
 <div class="container audit-action">
     <div class="page-header">
-        <h1 class="page-header__title">HÀNH ĐỘNG KHẮC PHỤC</h1>
+        <h1 class="page-header__title">ĐÁNH GIÁ NỘI BỘ - TỔNG HỢP</h1>
         <div class="page-header__breadcrumb">
             <a href="{{ route('home') }}">Trang chủ</a>
             <span class="breadcrumb-separator">></span>
             <a href="{{ route('admin.audit.summary') }}">Đánh giá nội bộ</a>
             <span class="breadcrumb-separator">></span>
-            <span>Hành động</span>
+            <span>Tổng hợp</span>
         </div>
     </div>
 
@@ -26,7 +26,7 @@
                 </div>
                 <button type="button" class="btn btn-primary" data-modal-target="create-action-modal">
                     <span class="btn-icon">📋</span>
-                    Tạo hành động mới
+                    Tạo hành động khắc phục mới
                 </button>
             </div>
         </div>
@@ -310,8 +310,8 @@
             </button>
         </div>
 
-        <div class="modal-body">
-            <form method="POST" action="#" class="response-form" id="response-form">
+        <div class="action-modal-body">
+            <form method="POST" action="#" class="audit-form-modal" id="response-form">
                 @csrf
                 <input type="hidden" id="notification_id" name="notification_id">
 
@@ -397,18 +397,18 @@
 </div>
 
 <!-- Create Action Modal -->
-<div id="create-action-modal" class="modal">
-    <div class="modal-backdrop" data-modal-close="create-action-modal"></div>
-    <div class="modal-container">
-        <div class="modal-header">
-            <h3 class="modal-title">Tạo hành động khắc phục mới</h3>
-            <button type="button" class="modal-close" data-modal-close="create-action-modal">
+<div id="create-action-modal" class="program-modal">
+    <div class="program-modal-backdrop" data-modal-close="create-action-modal"></div>
+    <div class="program-modal-container">
+        <div class="program-modal-header">
+            <h3 class="program-modal-title">Tạo hành động khắc phục mới</h3>
+            <button type="button" class="program-modal-close" data-modal-close="create-action-modal">
                 <span>&times;</span>
             </button>
         </div>
 
-        <div class="modal-body">
-            <form method="POST" action="#" class="action-form" id="create-action-form">
+        <div class="program-modal-body">
+            <form method="POST" action="#" class="audit-form-modal" id="create-action-form">
                 @csrf
                 <div class="form-grid">
                     <div class="form-group form-group--full">
@@ -427,35 +427,47 @@
                         <label for="department" class="form-label">Bộ phận liên quan *</label>
                         <select id="department" name="department" class="form-select" required>
                             <option value="">Chọn bộ phận</option>
-                            <option value="phong-qlcl">Phòng QLCL</option>
-                            <option value="phong-khcn">Phòng KHCN</option>
                             <option value="phong-ky-thuat">Phòng Kỹ thuật</option>
+                            <option value="phong-khcn">Phòng KHCN</option>
                             <option value="phong-tai-chinh">Phòng Tài chính</option>
+                            <option value="phong-nhan-su">Phòng Nhân sự</option>
+                            <option value="phong-an-toan">Phòng An toàn</option>
+                            <option value="phong-qlcl">Phòng QLCL</option>
                             <option value="ban-giam-doc">Ban Giám đốc</option>
                         </select>
                     </div>
 
-                    <!-- Form fields for root cause, plan, responsible person, deadline, status as above -->
+                    <div class="form-group">
+                        <label for="action_type" class="form-label">Loại hành động *</label>
+                        <select id="action_type" name="action_type" class="form-select" required>
+                            <option value="">Chọn loại hành động</option>
+                            <option value="corrective">Khắc phục (Corrective Action)</option>
+                            <option value="preventive">Phòng ngừa (Preventive Action)</option>
+                            <option value="improvement">Cải tiến (Improvement)</option>
+                        </select>
+                    </div>
+
                     <div class="form-group form-group--full">
                         <label for="new_root_cause" class="form-label">Nguyên nhân gốc rễ (Root cause) *</label>
                         <textarea id="new_root_cause" name="root_cause" rows="4" class="form-textarea"
-                                  placeholder="Phân tích và mô tả nguyên nhân gốc rễ..." required></textarea>
+                                  placeholder="Phân tích và mô tả nguyên nhân gốc rễ dẫn đến vấn đề..." required></textarea>
                     </div>
 
                     <div class="form-group form-group--full">
                         <label for="new_corrective_plan" class="form-label">Kế hoạch khắc phục *</label>
                         <textarea id="new_corrective_plan" name="corrective_plan" rows="5" class="form-textarea"
-                                  placeholder="Mô tả chi tiết các bước thực hiện..." required></textarea>
+                                  placeholder="Mô tả chi tiết các bước thực hiện để khắc phục:&#10;1. Bước 1...&#10;2. Bước 2...&#10;3. Bước 3..." required></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="new_responsible_person" class="form-label">Người chịu trách nhiệm *</label>
                         <select id="new_responsible_person" name="responsible_person" class="form-select" required>
                             <option value="">Chọn người chịu trách nhiệm</option>
-                            <option value="nguyen-van-a">Nguyễn Văn A - Phòng QLCL</option>
-                            <option value="tran-thi-b">Trần Thị B - Phòng KHCN</option>
-                            <option value="le-van-c">Lê Văn C - Phòng Kỹ thuật</option>
-                            <option value="pham-van-d">Phạm Văn D - Phòng Tài chính</option>
+                            <option value="nguyen-van-a">Nguyễn Văn A</option>
+                            <option value="tran-thi-b">Trần Thị B</option>
+                            <option value="le-van-c">Lê Văn C</option>
+                            <option value="pham-van-d">Phạm Văn D</option>
+                            <option value="hoang-thi-e">Hoàng Thị E</option>
                         </select>
                     </div>
 
@@ -463,15 +475,37 @@
                         <label for="new_completion_deadline" class="form-label">Thời hạn hoàn thành *</label>
                         <input type="date" id="new_completion_deadline" name="completion_deadline" class="form-input" required>
                     </div>
+
+                    <div class="form-group">
+                        <label for="priority_level" class="form-label">Mức độ ưu tiên</label>
+                        <select id="priority_level" name="priority_level" class="form-select">
+                            <option value="low">Thấp</option>
+                            <option value="medium" selected>Trung bình</option>
+                            <option value="high">Cao</option>
+                            <option value="critical">Khẩn cấp</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group form-group--full">
+                        <label for="resources_needed" class="form-label">Tài nguyên cần thiết</label>
+                        <textarea id="resources_needed" name="resources_needed" rows="2" class="form-textarea"
+                                  placeholder="Mô tả tài nguyên, nguồn lực cần thiết để thực hiện hành động..."></textarea>
+                    </div>
+
+                    <div class="form-group form-group--full">
+                        <label for="action_notes" class="form-label">Ghi chú</label>
+                        <textarea id="action_notes" name="action_notes" rows="2" class="form-textarea"
+                                  placeholder="Ghi chú bổ sung"></textarea>
+                    </div>
                 </div>
             </form>
         </div>
 
-        <div class="modal-footer">
+        <div class="program-modal-footer">
             <button type="button" class="btn btn-outline" data-modal-close="create-action-modal">Hủy bỏ</button>
             <button type="submit" form="create-action-form" class="btn btn-primary">
                 <span class="btn-icon">📋</span>
-                Tạo hành động
+                Tạo hành động khắc phục
             </button>
         </div>
     </div>
@@ -486,7 +520,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const modal = document.getElementById(modalId);
 
             if (modal) {
-                modal.classList.add('modal--active');
+                // Check if it's program-modal or regular modal
+                if (modal.classList.contains('program-modal')) {
+                    modal.classList.add('program-modal--active');
+                } else {
+                    modal.classList.add('modal--active');
+                }
                 document.body.style.overflow = 'hidden';
 
                 // Handle notification response modal
@@ -515,7 +554,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const modalId = this.getAttribute('data-modal-close');
             const modal = document.getElementById(modalId);
             if (modal) {
-                modal.classList.remove('modal--active');
+                // Check if it's program-modal or regular modal
+                if (modal.classList.contains('program-modal')) {
+                    modal.classList.remove('program-modal--active');
+                } else {
+                    modal.classList.remove('modal--active');
+                }
                 document.body.style.overflow = '';
 
                 // Reset form
@@ -528,9 +572,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Close modal on escape key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
-            const activeModal = document.querySelector('.modal.modal--active');
+            const activeModal = document.querySelector('.modal.modal--active, .program-modal.program-modal--active');
             if (activeModal) {
-                activeModal.classList.remove('modal--active');
+                if (activeModal.classList.contains('program-modal')) {
+                    activeModal.classList.remove('program-modal--active');
+                } else {
+                    activeModal.classList.remove('modal--active');
+                }
                 document.body.style.overflow = '';
             }
         }

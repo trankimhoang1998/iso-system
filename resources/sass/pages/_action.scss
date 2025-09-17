@@ -9,51 +9,6 @@
     border: 1px solid #e2e8f0;
   }
 
-  .page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid #f1f5f9;
-
-    &__title {
-      font-size: 1.375rem;
-      font-weight: 700;
-      color: #1e293b;
-      margin: 0;
-    }
-
-    &__breadcrumb {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.875rem;
-      color: #64748b;
-
-      a {
-        color: #3b82f6;
-        text-decoration: none;
-        transition: color 0.2s ease;
-
-        &:hover {
-          color: #1d4ed8;
-          text-decoration: underline;
-        }
-      }
-
-      .breadcrumb-separator {
-        color: #94a3b8;
-      }
-    }
-
-    @media (max-width: 768px) {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1rem;
-    }
-  }
-
   .section__header {
     display: flex;
     justify-content: space-between;
@@ -712,6 +667,148 @@
   }
 }
 
+// Program Modal Styles (matching program modal pattern)
+.program-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+
+  &.program-modal--active {
+    opacity: 1;
+    visibility: visible;
+
+    .program-modal-container {
+      transform: translateY(0);
+    }
+  }
+
+  .program-modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    cursor: pointer;
+  }
+
+  .program-modal-container {
+    position: relative;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    max-width: 600px;
+    width: 90vw;
+    max-height: 90vh;
+    overflow: hidden;
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+    z-index: 1001;
+
+    @media (max-width: 768px) {
+      width: 95vw;
+      max-height: 95vh;
+      max-width: none;
+    }
+  }
+
+  .program-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 2px solid #f1f5f9;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+
+    @media (max-width: 640px) {
+      padding: 1rem 1.5rem;
+    }
+
+    .program-modal-title {
+      font-size: 1.375rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 0;
+
+      @media (max-width: 640px) {
+        font-size: 1.25rem;
+      }
+    }
+
+    .program-modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #64748b;
+      cursor: pointer;
+      padding: 0.25rem;
+      line-height: 1;
+      transition: all 0.2s ease;
+      border-radius: 4px;
+
+      &:hover {
+        color: #1e293b;
+        background: rgba(148, 163, 184, 0.1);
+      }
+
+      span {
+        display: block;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+
+  .program-modal-body {
+    padding: 2rem;
+    overflow-y: auto;
+    max-height: calc(90vh - 160px);
+
+    @media (max-width: 640px) {
+      padding: 1.5rem;
+      max-height: calc(95vh - 140px);
+    }
+
+    // Ensure proper spacing and visibility of form elements
+    .audit-form-modal {
+      width: 100%;
+
+      .form-grid {
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+
+  .program-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1rem 2rem;
+    border-top: 2px solid #f1f5f9;
+    background: #fafbfc;
+
+    @media (max-width: 640px) {
+      padding: 1rem 1.5rem;
+      flex-direction: column-reverse;
+      gap: 0.75rem;
+    }
+  }
+}
+
 // Modal Styles
 .modal {
   position: fixed;
@@ -807,7 +904,7 @@
     }
   }
 
-  .modal-body {
+  .action-modal-body {
     padding: 2rem;
     max-height: 60vh;
     overflow-y: auto;
@@ -817,16 +914,19 @@
     }
   }
 
-  .modal-footer {
-    padding: 1rem 2rem 2rem 2rem;
-    border-top: 1px solid #e2e8f0;
+  .modal-footer,
+  .action-modal-footer {
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
+    padding: 1.5rem 2rem;
+    border-top: 2px solid #f1f5f9;
+    background: #fafbfc;
 
     @media (max-width: 640px) {
-      padding: 1rem 1.5rem 1.5rem 1.5rem;
-      flex-direction: column;
+      padding: 1rem 1.5rem;
+      flex-direction: column-reverse;
+      gap: 0.75rem;
     }
   }
 }
@@ -1008,6 +1108,73 @@
   @media (max-width: 640px) {
     padding: 0.875rem 1.25rem;
     font-size: 0.8125rem;
+  }
+}
+
+// Modal form styles - Global scope for better CSS application
+.audit-form-modal {
+  .form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    &.form-group--full {
+      grid-column: unset; // Remove grid column for flex layout
+    }
+  }
+
+  .form-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .form-input,
+  .form-select,
+  .form-textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+    background: white;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    &::placeholder {
+      color: #9ca3af;
+    }
+  }
+
+  .form-select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    background-size: 1rem;
+    padding-right: 3rem;
+  }
+
+  .form-textarea {
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+    line-height: 1.5;
   }
 }
 

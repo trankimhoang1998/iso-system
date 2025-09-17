@@ -203,17 +203,17 @@
 </div>
 
 <!-- Create Plan Modal -->
-<div id="create-plan-modal" class="modal">
-    <div class="modal-backdrop" data-modal-close="create-plan-modal"></div>
-    <div class="modal-container">
-        <div class="modal-header">
-            <h3 class="modal-title">Tạo kế hoạch đánh giá mới</h3>
-            <button type="button" class="modal-close" data-modal-close="create-plan-modal">
+<div id="create-plan-modal" class="program-modal">
+    <div class="program-modal-backdrop" data-modal-close="create-plan-modal"></div>
+    <div class="program-modal-container">
+        <div class="program-modal-header">
+            <h3 class="program-modal-title">Tạo kế hoạch đánh giá mới</h3>
+            <button type="button" class="program-modal-close" data-modal-close="create-plan-modal">
                 <span>&times;</span>
             </button>
         </div>
 
-        <div class="modal-body">
+        <div class="program-modal-body">
             <form method="POST" action="#" class="audit-form-modal" id="create-plan-form">
                 @csrf
                 <div class="form-grid">
@@ -281,7 +281,7 @@
             </form>
         </div>
 
-        <div class="modal-footer">
+        <div class="program-modal-footer">
             <button type="button" class="btn btn-outline" data-modal-close="create-plan-modal">Hủy bỏ</button>
             <button type="submit" form="create-plan-form" class="btn btn-primary">
                 <span class="btn-icon">📋</span>
@@ -300,7 +300,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const modalId = this.getAttribute('data-modal-target');
             const modal = document.getElementById(modalId);
             if (modal) {
-                modal.classList.add('modal--active');
+                modal.classList.add('program-modal--active');
                 document.body.style.overflow = 'hidden';
             }
         });
@@ -312,7 +312,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const modalId = this.getAttribute('data-modal-close');
             const modal = document.getElementById(modalId);
             if (modal) {
-                modal.classList.remove('modal--active');
+                modal.classList.remove('program-modal--active');
                 document.body.style.overflow = '';
                 // Reset form
                 const form = modal.querySelector('form');
@@ -324,9 +324,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Close modal on escape key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
-            const activeModal = document.querySelector('.modal.modal--active');
+            const activeModal = document.querySelector('.program-modal.program-modal--active');
             if (activeModal) {
-                activeModal.classList.remove('modal--active');
+                activeModal.classList.remove('program-modal--active');
                 document.body.style.overflow = '';
             }
         }

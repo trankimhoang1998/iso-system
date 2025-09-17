@@ -29,9 +29,9 @@
                         <span class="btn-icon">📝</span>
                         Tải Word
                     </button>
-                    <button type="button" class="btn btn-primary" data-modal-target="generate-report-modal">
+                    <button type="button" class="btn btn-primary" data-modal-target="create-report-modal">
                         <span class="btn-icon">📊</span>
-                        Tạo báo cáo mới
+                        Tạo báo cáo đánh giá mới
                     </button>
                 </div>
             </div>
@@ -331,25 +331,45 @@
     </div>
 </div>
 
-<!-- Generate Report Modal -->
-<div id="generate-report-modal" class="modal">
-    <div class="modal-backdrop" data-modal-close="generate-report-modal"></div>
-    <div class="modal-container">
-        <div class="modal-header">
-            <h3 class="modal-title">Tạo báo cáo đánh giá mới</h3>
-            <button type="button" class="modal-close" data-modal-close="generate-report-modal">
+<!-- Create Report Modal -->
+<div id="create-report-modal" class="program-modal">
+    <div class="program-modal-backdrop" data-modal-close="create-report-modal"></div>
+    <div class="program-modal-container">
+        <div class="program-modal-header">
+            <h3 class="program-modal-title">Tạo báo cáo đánh giá mới</h3>
+            <button type="button" class="program-modal-close" data-modal-close="create-report-modal">
                 <span>&times;</span>
             </button>
         </div>
 
-        <div class="modal-body">
-            <form method="POST" action="#" class="report-form" id="generate-report-form">
+        <div class="program-modal-body">
+            <form method="POST" action="#" class="audit-form-modal" id="create-report-form">
                 @csrf
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="report_title" class="form-label">Tiêu đề báo cáo *</label>
                         <input type="text" id="report_title" name="report_title" class="form-input"
                                placeholder="Báo cáo đánh giá nội bộ Phòng KHCN - 12/2024" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="report_department" class="form-label">Bộ phận/Phạm vi *</label>
+                        <select id="report_department" name="report_department" class="form-select" required>
+                            <option value="">Chọn bộ phận</option>
+                            <option value="phong-ky-thuat">Phòng Kỹ thuật</option>
+                            <option value="phong-khcn">Phòng KHCN</option>
+                            <option value="phong-tai-chinh">Phòng Tài chính</option>
+                            <option value="phong-nhan-su">Phòng Nhân sự</option>
+                            <option value="phong-an-toan">Phòng An toàn</option>
+                            <option value="phong-qlcl">Phòng QLCL</option>
+                            <option value="ban-giam-doc">Ban Giám đốc</option>
+                            <option value="toan-cong-ty">Toàn công ty</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="report_date" class="form-label">Ngày báo cáo *</label>
+                        <input type="date" id="report_date" name="report_date" class="form-input" required>
                     </div>
 
                     <div class="form-group">
@@ -363,43 +383,45 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="departments" class="form-label">Bộ phận</label>
-                        <select id="departments" name="departments[]" class="form-select" multiple>
-                            <option value="phong-khcn">Phòng KHCN</option>
-                            <option value="phong-ky-thuat">Phòng Kỹ thuật</option>
-                            <option value="phong-nhan-su">Phòng Nhân sự</option>
-                            <option value="phong-tai-chinh">Phòng Tài chính</option>
+                        <label for="lead_auditor_report" class="form-label">Đánh giá viên chính *</label>
+                        <select id="lead_auditor_report" name="lead_auditor_report" class="form-select" required>
+                            <option value="">Chọn đánh giá viên</option>
+                            <option value="nguyen-van-a">Nguyễn Văn A</option>
+                            <option value="tran-thi-b">Trần Thị B</option>
+                            <option value="le-van-c">Lê Văn C</option>
+                            <option value="pham-van-d">Phạm Văn D</option>
+                            <option value="hoang-thi-e">Hoàng Thị E</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="include_sections" class="form-label">Các phần bao gồm</label>
-                        <div class="checkbox-group">
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="include_sections[]" value="summary" checked>
-                                <span class="checkbox-label">Tổng quan</span>
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="include_sections[]" value="detailed_results" checked>
-                                <span class="checkbox-label">Kết quả chi tiết</span>
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="include_sections[]" value="evidence" checked>
-                                <span class="checkbox-label">Bằng chứng</span>
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="include_sections[]" value="recommendations">
-                                <span class="checkbox-label">Khuyến nghị</span>
-                            </label>
-                        </div>
+                        <label for="standard" class="form-label">Tiêu chuẩn áp dụng</label>
+                        <select id="standard" name="standard" class="form-select">
+                            <option value="iso-9001">ISO 9001:2015</option>
+                            <option value="iso-14001">ISO 14001:2015</option>
+                            <option value="iso-45001">ISO 45001:2018</option>
+                            <option value="iso-27001">ISO 27001:2013</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group form-group--full">
+                        <label for="report_scope" class="form-label">Phạm vi báo cáo</label>
+                        <textarea id="report_scope" name="report_scope" rows="3" class="form-textarea"
+                                  placeholder="Mô tả chi tiết phạm vi và mục tiêu của báo cáo đánh giá"></textarea>
+                    </div>
+
+                    <div class="form-group form-group--full">
+                        <label for="report_notes" class="form-label">Ghi chú</label>
+                        <textarea id="report_notes" name="report_notes" rows="2" class="form-textarea"
+                                  placeholder="Ghi chú bổ sung cho báo cáo"></textarea>
                     </div>
                 </div>
             </form>
         </div>
 
-        <div class="modal-footer">
-            <button type="button" class="btn btn-outline" data-modal-close="generate-report-modal">Hủy bỏ</button>
-            <button type="submit" form="generate-report-form" class="btn btn-primary">
+        <div class="program-modal-footer">
+            <button type="button" class="btn btn-outline" data-modal-close="create-report-modal">Hủy bỏ</button>
+            <button type="submit" form="create-report-form" class="btn btn-primary">
                 <span class="btn-icon">📊</span>
                 Tạo báo cáo
             </button>
@@ -446,7 +468,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const modalId = this.getAttribute('data-modal-target');
             const modal = document.getElementById(modalId);
             if (modal) {
-                modal.classList.add('modal--active');
+                modal.classList.add('program-modal--active');
                 document.body.style.overflow = 'hidden';
             }
         });
@@ -457,10 +479,24 @@ document.addEventListener('DOMContentLoaded', function() {
             const modalId = this.getAttribute('data-modal-close');
             const modal = document.getElementById(modalId);
             if (modal) {
-                modal.classList.remove('modal--active');
+                modal.classList.remove('program-modal--active');
                 document.body.style.overflow = '';
+                // Reset form
+                const form = modal.querySelector('form');
+                if (form) form.reset();
             }
         });
+    });
+
+    // Close modal on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const activeModal = document.querySelector('.program-modal.program-modal--active');
+            if (activeModal) {
+                activeModal.classList.remove('program-modal--active');
+                document.body.style.overflow = '';
+            }
+        }
     });
 
     // Export functionality
