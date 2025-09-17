@@ -24,9 +24,9 @@
                     <div class="stats-card">
                         <div class="stats-card__icon">📊</div>
                         <div class="stats-card__content">
-                            <h3 class="stats-card__title">Tổng số cuộc đánh giá</h3>
-                            <p class="stats-card__value">12</p>
-                            <p class="stats-card__subtitle">Trong năm 2024</p>
+                            <h3 class="stats-card__title">Tổng số</h3>
+                            <p class="stats-card__value">14</p>
+                            <p class="stats-card__subtitle">Tính đến hết năm 2025</p>
                         </div>
                     </div>
 
@@ -34,8 +34,7 @@
                         <div class="stats-card__icon">✅</div>
                         <div class="stats-card__content">
                             <h3 class="stats-card__title">Đã hoàn thành</h3>
-                            <p class="stats-card__value">8</p>
-                            <p class="stats-card__subtitle">66.7% tiến độ</p>
+                            <p class="stats-card__value">12</p>
                         </div>
                     </div>
 
@@ -43,8 +42,8 @@
                         <div class="stats-card__icon">🔄</div>
                         <div class="stats-card__content">
                             <h3 class="stats-card__title">Đang thực hiện</h3>
-                            <p class="stats-card__value">3</p>
-                            <p class="stats-card__subtitle">25% tiến độ</p>
+                            <p class="stats-card__value">1</p>
+                            <p class="stats-card__subtitle">đạt 75%</p>
                         </div>
                     </div>
 
@@ -53,7 +52,6 @@
                         <div class="stats-card__content">
                             <h3 class="stats-card__title">Chưa bắt đầu</h3>
                             <p class="stats-card__value">1</p>
-                            <p class="stats-card__subtitle">8.3% tiến độ</p>
                         </div>
                     </div>
                 </div>
@@ -64,7 +62,7 @@
                 <!-- Pie Chart - Findings Distribution -->
                 <div class="chart-container">
                     <div class="chart-header">
-                        <h3>Phân bổ kết quả đánh giá</h3>
+                        <h3>Tổng hợp kết quả đánh giá</h3>
                     </div>
                     <div class="chart-wrapper">
                         <canvas id="findingsChart" class="pie-chart"></canvas>
@@ -105,7 +103,7 @@
                 <div class="audit-progress-list">
                     <div class="progress-item">
                         <div class="progress-header">
-                            <h4 class="progress-title">Đánh giá nội bộ Phòng Kỹ thuật</h4>
+                            <h4 class="progress-title">Đánh giá nội bộ Phòng Kế hoạch</h4>
                             <span class="progress-percentage">100%</span>
                         </div>
                         <div class="progress-bar">
@@ -113,8 +111,8 @@
                         </div>
                         <div class="progress-details">
                             <div class="progress-dates">
-                                <span>Bắt đầu: 15/11/2024</span>
-                                <span>Kết thúc: 20/11/2024</span>
+                                <span>Bắt đầu: 8h00 ngày 05/01/2025</span>
+                                <span>Kết thúc: 17h00 ngày 05/01/2025</span>
                             </div>
                             <span class="progress-status status--completed">Hoàn thành</span>
                         </div>
@@ -122,16 +120,16 @@
 
                     <div class="progress-item">
                         <div class="progress-header">
-                            <h4 class="progress-title">Đánh giá nội bộ Phòng KHCN</h4>
-                            <span class="progress-percentage">75%</span>
+                            <h4 class="progress-title">Đánh giá nội bộ Phòng KCS</h4>
+                            <span class="progress-percentage">85%</span>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress-fill progress-fill--in-progress" style="width: 75%"></div>
+                            <div class="progress-fill progress-fill--in-progress" style="width: 85%"></div>
                         </div>
                         <div class="progress-details">
                             <div class="progress-dates">
-                                <span>Bắt đầu: 25/11/2024</span>
-                                <span>Kết thúc: 30/11/2024</span>
+                                <span>Bắt đầu: 7h30 ngày 08/01/2025</span>
+                                <span>Kết thúc: 16h30 ngày 08/01/2025</span>
                             </div>
                             <span class="progress-status status--in-progress">Đang thực hiện</span>
                         </div>
@@ -140,15 +138,32 @@
                     <div class="progress-item">
                         <div class="progress-header">
                             <h4 class="progress-title">Đánh giá nội bộ Phòng Tài chính</h4>
-                            <span class="progress-percentage">30%</span>
+                            <span class="progress-percentage">100%</span>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress-fill progress-fill--in-progress" style="width: 30%"></div>
+                            <div class="progress-fill progress-fill--completed" style="width: 100%"></div>
                         </div>
                         <div class="progress-details">
                             <div class="progress-dates">
-                                <span>Bắt đầu: 01/12/2024</span>
-                                <span>Kết thúc: 05/12/2024</span>
+                                <span>Bắt đầu: 9h00 ngày 10/01/2025</span>
+                                <span>Kết thúc: 15h00 ngày 10/01/2025</span>
+                            </div>
+                            <span class="progress-status status--completed">Hoàn thành</span>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <h4 class="progress-title">Đánh giá nội bộ Phòng Cơ điện</h4>
+                            <span class="progress-percentage">60%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill progress-fill--in-progress" style="width: 60%"></div>
+                        </div>
+                        <div class="progress-details">
+                            <div class="progress-dates">
+                                <span>Bắt đầu: 8h00 ngày 12/01/2025</span>
+                                <span>Kết thúc: 17h00 ngày 12/01/2025</span>
                             </div>
                             <span class="progress-status status--in-progress">Đang thực hiện</span>
                         </div>
@@ -156,16 +171,50 @@
 
                     <div class="progress-item">
                         <div class="progress-header">
-                            <h4 class="progress-title">Đánh giá nội bộ Phòng Nhân sự</h4>
-                            <span class="progress-percentage">0%</span>
+                            <h4 class="progress-title">Đánh giá nội bộ Phòng Hành chính-Hậu cần</h4>
+                            <span class="progress-percentage">100%</span>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress-fill progress-fill--pending" style="width: 0%"></div>
+                            <div class="progress-fill progress-fill--completed" style="width: 100%"></div>
                         </div>
                         <div class="progress-details">
                             <div class="progress-dates">
-                                <span>Bắt đầu: 10/12/2024</span>
-                                <span>Kết thúc: 15/12/2024</span>
+                                <span>Bắt đầu: 7h00 ngày 15/01/2025</span>
+                                <span>Kết thúc: 16h00 ngày 15/01/2025</span>
+                            </div>
+                            <span class="progress-status status--completed">Hoàn thành</span>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <h4 class="progress-title">Đánh giá nội bộ Phòng Vật tư</h4>
+                            <span class="progress-percentage">40%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill progress-fill--in-progress" style="width: 40%"></div>
+                        </div>
+                        <div class="progress-details">
+                            <div class="progress-dates">
+                                <span>Bắt đầu: 8h30 ngày 18/01/2025</span>
+                                <span>Kết thúc: 16h30 ngày 18/01/2025</span>
+                            </div>
+                            <span class="progress-status status--in-progress">Đang thực hiện</span>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <h4 class="progress-title">Đánh giá nội bộ Ban Chính trị</h4>
+                            <span class="progress-percentage">20%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill progress-fill--pending" style="width: 20%"></div>
+                        </div>
+                        <div class="progress-details">
+                            <div class="progress-dates">
+                                <span>Bắt đầu: 9h00 ngày 20/01/2025</span>
+                                <span>Kết thúc: 15h00 ngày 20/01/2025</span>
                             </div>
                             <span class="progress-status status--pending">Chờ thực hiện</span>
                         </div>
@@ -173,7 +222,143 @@
 
                     <div class="progress-item">
                         <div class="progress-header">
-                            <h4 class="progress-title">Đánh giá nội bộ Phòng An toàn</h4>
+                            <h4 class="progress-title">Đánh giá nội bộ Phân xưởng 1</h4>
+                            <span class="progress-percentage">90%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill progress-fill--in-progress" style="width: 90%"></div>
+                        </div>
+                        <div class="progress-details">
+                            <div class="progress-dates">
+                                <span>Bắt đầu: 6h30 ngày 22/01/2025</span>
+                                <span>Kết thúc: 14h30 ngày 22/01/2025</span>
+                            </div>
+                            <span class="progress-status status--in-progress">Đang thực hiện</span>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <h4 class="progress-title">Đánh giá nội bộ Phân xưởng 2</h4>
+                            <span class="progress-percentage">75%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill progress-fill--in-progress" style="width: 75%"></div>
+                        </div>
+                        <div class="progress-details">
+                            <div class="progress-dates">
+                                <span>Bắt đầu: 7h00 ngày 25/01/2025</span>
+                                <span>Kết thúc: 15h00 ngày 25/01/2025</span>
+                            </div>
+                            <span class="progress-status status--in-progress">Đang thực hiện</span>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <h4 class="progress-title">Đánh giá nội bộ Phân xưởng 3</h4>
+                            <span class="progress-percentage">100%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill progress-fill--completed" style="width: 100%"></div>
+                        </div>
+                        <div class="progress-details">
+                            <div class="progress-dates">
+                                <span>Bắt đầu: 6h00 ngày 28/01/2025</span>
+                                <span>Kết thúc: 14h00 ngày 28/01/2025</span>
+                            </div>
+                            <span class="progress-status status--completed">Hoàn thành</span>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <h4 class="progress-title">Đánh giá nội bộ Phân xưởng 4</h4>
+                            <span class="progress-percentage">50%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill progress-fill--overdue" style="width: 50%"></div>
+                        </div>
+                        <div class="progress-details">
+                            <div class="progress-dates">
+                                <span>Bắt đầu: 7h30 ngày 30/01/2025</span>
+                                <span>Kết thúc: 15h30 ngày 30/01/2025</span>
+                            </div>
+                            <span class="progress-status status--overdue">Quá hạn</span>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <h4 class="progress-title">Đánh giá nội bộ Phân xưởng 5</h4>
+                            <span class="progress-percentage">30%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill progress-fill--pending" style="width: 30%"></div>
+                        </div>
+                        <div class="progress-details">
+                            <div class="progress-dates">
+                                <span>Bắt đầu: 8h00 ngày 02/02/2025</span>
+                                <span>Kết thúc: 16h00 ngày 02/02/2025</span>
+                            </div>
+                            <span class="progress-status status--pending">Chờ thực hiện</span>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <h4 class="progress-title">Đánh giá nội bộ Phân xưởng 6</h4>
+                            <span class="progress-percentage">80%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill progress-fill--in-progress" style="width: 80%"></div>
+                        </div>
+                        <div class="progress-details">
+                            <div class="progress-dates">
+                                <span>Bắt đầu: 6h30 ngày 05/02/2025</span>
+                                <span>Kết thúc: 14h30 ngày 05/02/2025</span>
+                            </div>
+                            <span class="progress-status status--in-progress">Đang thực hiện</span>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <h4 class="progress-title">Đánh giá nội bộ Phân xưởng 7</h4>
+                            <span class="progress-percentage">65%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill progress-fill--in-progress" style="width: 65%"></div>
+                        </div>
+                        <div class="progress-details">
+                            <div class="progress-dates">
+                                <span>Bắt đầu: 7h00 ngày 08/02/2025</span>
+                                <span>Kết thúc: 15h00 ngày 08/02/2025</span>
+                            </div>
+                            <span class="progress-status status--in-progress">Đang thực hiện</span>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <h4 class="progress-title">Đánh giá nội bộ Phân xưởng 8</h4>
+                            <span class="progress-percentage">100%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill progress-fill--completed" style="width: 100%"></div>
+                        </div>
+                        <div class="progress-details">
+                            <div class="progress-dates">
+                                <span>Bắt đầu: 6h00 ngày 10/02/2025</span>
+                                <span>Kết thúc: 14h00 ngày 10/02/2025</span>
+                            </div>
+                            <span class="progress-status status--completed">Hoàn thành</span>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <h4 class="progress-title">Đánh giá nội bộ Phân xưởng 9</h4>
                             <span class="progress-percentage">45%</span>
                         </div>
                         <div class="progress-bar">
@@ -181,10 +366,27 @@
                         </div>
                         <div class="progress-details">
                             <div class="progress-dates">
-                                <span>Bắt đầu: 20/11/2024</span>
-                                <span>Kết thúc: 25/11/2024</span>
+                                <span>Bắt đầu: 7h30 ngày 12/02/2025</span>
+                                <span>Kết thúc: 15h30 ngày 12/02/2025</span>
                             </div>
                             <span class="progress-status status--overdue">Quá hạn</span>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <h4 class="progress-title">Đánh giá nội bộ Trạm O</h4>
+                            <span class="progress-percentage">10%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill progress-fill--pending" style="width: 10%"></div>
+                        </div>
+                        <div class="progress-details">
+                            <div class="progress-dates">
+                                <span>Bắt đầu: 8h00 ngày 15/02/2025</span>
+                                <span>Kết thúc: 16h00 ngày 15/02/2025</span>
+                            </div>
+                            <span class="progress-status status--pending">Chờ thực hiện</span>
                         </div>
                     </div>
                 </div>
@@ -275,29 +477,29 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Bar Chart - Monthly Progress
+    // Bar Chart - Yearly Results
     const progressCtx = document.getElementById('progressChart').getContext('2d');
     const progressChart = new Chart(progressCtx, {
         type: 'bar',
         data: {
-            labels: ['Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+            labels: ['Năm 2022', 'Năm 2023', 'Năm 2024', 'Năm 2025'],
             datasets: [{
-                label: 'Hoàn thành',
-                data: [2, 3, 4, 2],
+                label: 'Phù hợp',
+                data: [15, 18, 22, 25],
                 backgroundColor: '#059669',
                 borderColor: '#059669',
                 borderWidth: 1
             }, {
-                label: 'Đang thực hiện',
-                data: [1, 1, 2, 3],
-                backgroundColor: '#3b82f6',
-                borderColor: '#3b82f6',
+                label: 'Không phù hợp',
+                data: [8, 6, 4, 3],
+                backgroundColor: '#dc2626',
+                borderColor: '#dc2626',
                 borderWidth: 1
             }, {
-                label: 'Chờ thực hiện',
-                data: [0, 1, 0, 1],
-                backgroundColor: '#f59e0b',
-                borderColor: '#f59e0b',
+                label: 'Cơ hội cải tiến',
+                data: [5, 7, 6, 8],
+                backgroundColor: '#3b82f6',
+                borderColor: '#3b82f6',
                 borderWidth: 1
             }]
         },

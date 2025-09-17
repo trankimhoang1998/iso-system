@@ -18,7 +18,7 @@
     <!-- Current Audit Session -->
     <div class="section">
         <div class="section__header">
-            <h2 class="section__title">Đánh giá Phòng KHCN - ISO 9001:2015</h2>
+            <h2 class="section__title">Đánh giá Phòng Kỹ Thuật - ISO 9001:2015</h2>
             <div class="section__meta">
                 <span class="meta-item">Ngày: 25/12/2024</span>
                 <span class="meta-item">Đánh giá viên: Nguyễn Văn A</span>
@@ -81,7 +81,7 @@
                 <div class="checklist-item">
                     <div class="checklist-item__header">
                         <span class="item-code">4.1</span>
-                        <span class="item-title">Hiểu rõ tổ chức và bối cảnh của nó</span>
+                        <!-- <span class="item-title">Hiểu rõ tổ chức và bối cảnh của nó</span> -->
                     </div>
                     <div class="checklist-item__content">
                         <div class="assessment-buttons">
@@ -111,7 +111,7 @@
                 <div class="checklist-item">
                     <div class="checklist-item__header">
                         <span class="item-code">4.2</span>
-                        <span class="item-title">Hiểu rõ nhu cầu và kỳ vọng của các bên liên quan</span>
+                        <!-- <span class="item-title">Hiểu rõ nhu cầu và kỳ vọng của các bên liên quan</span> -->
                     </div>
                     <div class="checklist-item__content">
                         <div class="assessment-buttons">
@@ -146,7 +146,7 @@
                 <div class="checklist-item">
                     <div class="checklist-item__header">
                         <span class="item-code">4.3</span>
-                        <span class="item-title">Xác định phạm vi của hệ thống quản lý chất lượng</span>
+                        <!-- <span class="item-title">Xác định phạm vi của hệ thống quản lý chất lượng</span> -->
                     </div>
                     <div class="checklist-item__content">
                         <div class="assessment-buttons">
@@ -186,7 +186,7 @@
                 <div class="checklist-item">
                     <div class="checklist-item__header">
                         <span class="item-code">5.1</span>
-                        <span class="item-title">Lãnh đạo và cam kết</span>
+                        <!-- <span class="item-title">Lãnh đạo và cam kết</span> -->
                     </div>
                     <div class="checklist-item__content">
                         <div class="assessment-buttons">
@@ -216,7 +216,7 @@
                 <div class="checklist-item">
                     <div class="checklist-item__header">
                         <span class="item-code">5.2</span>
-                        <span class="item-title">Chính sách chất lượng</span>
+                        <!-- <span class="item-title">Chính sách chất lượng</span> -->
                     </div>
                     <div class="checklist-item__content">
                         <div class="assessment-buttons">

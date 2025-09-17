@@ -46,15 +46,15 @@
                     <div class="overview-card__content">
                         <div class="info-row">
                             <span class="info-label">Bộ phận:</span>
-                            <span class="info-value">Phòng KHCN</span>
+                            <span class="info-value">Phòng Kỹ thuật</span>
                         </div>
                         <div class="info-row">
-                            <span class="info-label">Ngày đánh giá:</span>
-                            <span class="info-value">25/12/2024</span>
+                            <span class="info-label">Thời gian:</span>
+                            <span class="info-value">7h30 - 17h00 ngày 16/5/2025</span>
                         </div>
                         <div class="info-row">
-                            <span class="info-label">Đánh giá viên:</span>
-                            <span class="info-value">Nguyễn Văn A</span>
+                            <span class="info-label">Tổ đánh giá:</span>
+                            <span class="info-value">Đinh Quang Điềm; Tạ Hồng Đăng; Đỗ Văn Quân</span>
                         </div>
                         <div class="info-row">
                             <span class="info-label">Tiêu chuẩn:</span>

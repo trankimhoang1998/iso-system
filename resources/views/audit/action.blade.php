@@ -5,13 +5,13 @@
 @section('content')
 <div class="container audit-action">
     <div class="page-header">
-        <h1 class="page-header__title">ĐÁNH GIÁ NỘI BỘ - TỔNG HỢP</h1>
+        <h1 class="page-header__title">ĐÁNH GIÁ NỘI BỘ - HÀNH ĐỘNG</h1>
         <div class="page-header__breadcrumb">
             <a href="{{ route('home') }}">Trang chủ</a>
             <span class="breadcrumb-separator">></span>
             <a href="{{ route('admin.audit.summary') }}">Đánh giá nội bộ</a>
             <span class="breadcrumb-separator">></span>
-            <span>Tổng hợp</span>
+            <span>Hành động</span>
         </div>
     </div>
 
@@ -276,15 +276,15 @@
                     <div class="stats-card__content">
                         <div class="department-stats">
                             <div class="department-stat">
-                                <span class="department-name">Phòng QLCL</span>
+                                <span class="department-name">Phòng Kế hoạch</span>
                                 <span class="department-count">8 hành động</span>
                             </div>
                             <div class="department-stat">
-                                <span class="department-name">Phòng KHCN</span>
+                                <span class="department-name">Phòng KCS</span>
                                 <span class="department-count">6 hành động</span>
                             </div>
                             <div class="department-stat">
-                                <span class="department-name">Phòng Kỹ thuật</span>
+                                <span class="department-name">Phòng Tài chính</span>
                                 <span class="department-count">5 hành động</span>
                             </div>
                             <div class="department-stat">

@@ -19,10 +19,11 @@
     <!-- Current Plans -->
     <div class="section">
         <div class="section__header">
-            <h2 class="section__title">Kế hoạch đánh giá năm 2024</h2>
+            <h2 class="section__title">Kế hoạch đánh giá năm 2025</h2>
             <div class="section__actions">
                 <div class="section__filters">
                     <select class="form-select form-select--compact">
+                        <option value="2024">Năm 2025</option>
                         <option value="2024">Năm 2024</option>
                         <option value="2023">Năm 2023</option>
                     </select>
@@ -42,76 +43,15 @@
         </div>
 
         <div class="audit-timeline">
-            <!-- December 2024 -->
+            <!-- May 2025 -->
             <div class="timeline-month">
-                <h3 class="timeline-month__title">THÁNG 12/2024</h3>
+                <h3 class="timeline-month__title">12/5/2025</h3>
 
                 <div class="audit-cards">
                     <div class="audit-card">
                         <div class="audit-card__header">
-                            <h4 class="audit-card__title">Đánh giá nội bộ Phòng Nhân sự</h4>
+                            <h4 class="audit-card__title">Đánh giá nội bộ phòng Kỹ thuật</h4>
                             <span class="audit-card__status audit-card__status--planning">Kế hoạch</span>
-                        </div>
-                        <div class="audit-card__content">
-                            <div class="audit-card__info">
-                                <div class="info-item">
-                                    <strong>Bộ phận:</strong> Phòng Nhân sự
-                                </div>
-                                <div class="info-item">
-                                    <strong>Ngày thực hiện:</strong> 10/12/2024 - 15/12/2024
-                                </div>
-                                <div class="info-item">
-                                    <strong>Đánh giá viên:</strong> Trần Thị B
-                                </div>
-                                <div class="info-item">
-                                    <strong>Phạm vi:</strong> Quy trình tuyển dụng, đào tạo và đánh giá nhân viên
-                                </div>
-                            </div>
-                            <div class="audit-card__actions">
-                                <button class="btn btn-sm btn-outline">Sửa</button>
-                                <button class="btn btn-sm btn-primary">Bắt đầu</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="audit-card">
-                        <div class="audit-card__header">
-                            <h4 class="audit-card__title">Đánh giá nội bộ Phòng QLCL</h4>
-                            <span class="audit-card__status audit-card__status--planning">Kế hoạch</span>
-                        </div>
-                        <div class="audit-card__content">
-                            <div class="audit-card__info">
-                                <div class="info-item">
-                                    <strong>Bộ phận:</strong> Phòng Quản lý Chất lượng
-                                </div>
-                                <div class="info-item">
-                                    <strong>Ngày thực hiện:</strong> 20/12/2024 - 25/12/2024
-                                </div>
-                                <div class="info-item">
-                                    <strong>Đánh giá viên:</strong> Nguyễn Văn A
-                                </div>
-                                <div class="info-item">
-                                    <strong>Phạm vi:</strong> Hệ thống quản lý chất lượng ISO 9001
-                                </div>
-                            </div>
-                            <div class="audit-card__actions">
-                                <button class="btn btn-sm btn-outline">Sửa</button>
-                                <button class="btn btn-sm btn-primary">Bắt đầu</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- November 2024 -->
-            <div class="timeline-month">
-                <h3 class="timeline-month__title">THÁNG 11/2024</h3>
-
-                <div class="audit-cards">
-                    <div class="audit-card">
-                        <div class="audit-card__header">
-                            <h4 class="audit-card__title">Đánh giá nội bộ Phòng Kỹ thuật</h4>
-                            <span class="audit-card__status audit-card__status--completed">Hoàn thành</span>
                         </div>
                         <div class="audit-card__content">
                             <div class="audit-card__info">
@@ -119,45 +59,99 @@
                                     <strong>Bộ phận:</strong> Phòng Kỹ thuật
                                 </div>
                                 <div class="info-item">
-                                    <strong>Ngày thực hiện:</strong> 15/11/2024 - 20/11/2024
+                                    <strong>Thời gian:</strong> 7h30 - 17h00 ngày 16/5/2025
                                 </div>
                                 <div class="info-item">
-                                    <strong>Đánh giá viên:</strong> Lê Văn C
+                                    <strong>Tổ đánh giá:</strong> Đinh Quang Điềm; Tạ Hồng Đăng; Đỗ Văn Quân
                                 </div>
                                 <div class="info-item">
-                                    <strong>Kết quả:</strong> 3 phát hiện, 2 khuyến nghị cải tiến
+                                    <strong>Phạm vi:</strong> Quy trình BQBD trang thiết bị; Quy trình huấn luyện kỹ thuật...
                                 </div>
                             </div>
                             <div class="audit-card__actions">
-                                <button class="btn btn-sm btn-outline">Xem báo cáo</button>
-                                <button class="btn btn-sm btn-success">Đã hoàn thành</button>
+                                <button class="btn btn-sm btn-outline">Sửa</button>
+                                <button class="btn btn-sm btn-primary">Bắt đầu</button>
                             </div>
                         </div>
                     </div>
 
                     <div class="audit-card">
                         <div class="audit-card__header">
-                            <h4 class="audit-card__title">Đánh giá nội bộ Phòng KHCN</h4>
-                            <span class="audit-card__status audit-card__status--active">Đang thực hiện</span>
+                            <h4 class="audit-card__title">Đánh giá nội bộ phòng Kế hoạch</h4>
+                            <span class="audit-card__status audit-card__status--planning">Kế hoạch</span>
                         </div>
                         <div class="audit-card__content">
                             <div class="audit-card__info">
                                 <div class="info-item">
-                                    <strong>Bộ phận:</strong> Phòng Khoa học Công nghệ
+                                    <strong>Bộ phận:</strong> Phòng Kế hoạch
                                 </div>
                                 <div class="info-item">
-                                    <strong>Ngày thực hiện:</strong> 25/11/2024 - 30/11/2024
+                                    <strong>Thời gian:</strong> 7h30 - 17h00 ngày 15/5/2025
                                 </div>
                                 <div class="info-item">
-                                    <strong>Đánh giá viên:</strong> Phạm Văn D
+                                    <strong>Tổ đánh giá:</strong> Nguyễn Trung Kiên; Lại Hoàng Hà; Bùi Công Đoài
                                 </div>
                                 <div class="info-item">
-                                    <strong>Tiến độ:</strong> 75% - Đang thu thập dữ liệu
+                                    <strong>Phạm vi:</strong> Quy trình sản xuất kinh doanh; Quy trình thanh toán tiền lương...
                                 </div>
                             </div>
                             <div class="audit-card__actions">
-                                <button class="btn btn-sm btn-outline">Cập nhật</button>
-                                <button class="btn btn-sm btn-warning">Theo dõi</button>
+                                <button class="btn btn-sm btn-outline">Sửa</button>
+                                <button class="btn btn-sm btn-primary">Bắt đầu</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="audit-card">
+                        <div class="audit-card__header">
+                            <h4 class="audit-card__title">Đánh giá nội bộ phòng Vật tư</h4>
+                            <span class="audit-card__status audit-card__status--planning">Kế hoạch</span>
+                        </div>
+                        <div class="audit-card__content">
+                            <div class="audit-card__info">
+                                <div class="info-item">
+                                    <strong>Bộ phận:</strong> Phòng Vật tư
+                                </div>
+                                <div class="info-item">
+                                    <strong>Thời gian:</strong> 7h30 - 17h00 ngày 14/5/2025
+                                </div>
+                                <div class="info-item">
+                                    <strong>Tổ đánh giá:</strong> Nguyễn Văn Cường; Phạm Tiến Long; Trần Đức Tấn
+                                </div>
+                                <div class="info-item">
+                                    <strong>Phạm vi:</strong> Quy trình đảm bảo vật tư hàng hóa; Quy trình thanh toán chi thường xuyên...
+                                </div>
+                            </div>
+                            <div class="audit-card__actions">
+                                <button class="btn btn-sm btn-outline">Sửa</button>
+                                <button class="btn btn-sm btn-primary">Bắt đầu</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="audit-card">
+                        <div class="audit-card__header">
+                            <h4 class="audit-card__title">Đánh giá nội bộ Phân xưởng 1</h4>
+                            <span class="audit-card__status audit-card__status--planning">Kế hoạch</span>
+                        </div>
+                        <div class="audit-card__content">
+                            <div class="audit-card__info">
+                                <div class="info-item">
+                                    <strong>Bộ phận:</strong> Phân xưởng 1
+                                </div>
+                                <div class="info-item">
+                                    <strong>Thời gian:</strong> 7h30 - 17h00 ngày 13/5/2025
+                                </div>
+                                <div class="info-item">
+                                    <strong>Tổ đánh giá:</strong> Đinh Quang Điềm; Tạ Hồng Đăng; Đỗ Văn Quân
+                                </div>
+                                <div class="info-item">
+                                    <strong>Phạm vi:</strong> Quy trình sửa chữa TBKT; Quy trình thực hiện ngày kỹ thuật...
+                                </div>
+                            </div>
+                            <div class="audit-card__actions">
+                                <button class="btn btn-sm btn-outline">Sửa</button>
+                                <button class="btn btn-sm btn-primary">Bắt đầu</button>
                             </div>
                         </div>
                     </div>
@@ -173,29 +167,29 @@
             <div class="stats-card stats-card--small">
                 <div class="stats-card__content">
                     <h4 class="stats-card__title">Tổng kế hoạch</h4>
-                    <p class="stats-card__value">12</p>
-                    <p class="stats-card__subtitle">Năm 2024</p>
+                    <p class="stats-card__value">17</p>
+                    <p class="stats-card__subtitle">Năm 2025</p>
                 </div>
             </div>
             <div class="stats-card stats-card--small">
                 <div class="stats-card__content">
                     <h4 class="stats-card__title">Đã hoàn thành</h4>
                     <p class="stats-card__value">8</p>
-                    <p class="stats-card__subtitle">66.7%</p>
+                    <p class="stats-card__subtitle">47.1%</p>
                 </div>
             </div>
             <div class="stats-card stats-card--small">
                 <div class="stats-card__content">
                     <h4 class="stats-card__title">Đang thực hiện</h4>
-                    <p class="stats-card__value">3</p>
-                    <p class="stats-card__subtitle">25%</p>
+                    <p class="stats-card__value">5</p>
+                    <p class="stats-card__subtitle">29.4%</p>
                 </div>
             </div>
             <div class="stats-card stats-card--small">
                 <div class="stats-card__content">
-                    <h4 class="stats-card__title">Kế hoạch</h4>
-                    <p class="stats-card__value">1</p>
-                    <p class="stats-card__subtitle">8.3%</p>
+                    <h4 class="stats-card__title">Chưa thực hiện</h4>
+                    <p class="stats-card__value">4</p>
+                    <p class="stats-card__subtitle">23.5%</p>
                 </div>
             </div>
         </div>

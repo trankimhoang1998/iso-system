@@ -47,10 +47,40 @@
       gap: 1rem;
       align-items: center;
 
+      .form-select--compact {
+        padding: 0.5rem 2.5rem 0.5rem 0.75rem;
+        font-size: 0.8125rem;
+        min-width: 160px;
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+        background-position: right 0.75rem center;
+        background-repeat: no-repeat;
+        background-size: 1rem;
+        background-color: white;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+
+        &:focus {
+          outline: none;
+          border-color: #3b82f6;
+          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        &:hover {
+          border-color: #cbd5e1;
+        }
+      }
+
       @media (max-width: 640px) {
         flex-direction: column;
         gap: 0.5rem;
         align-items: flex-end;
+
+        .form-select--compact {
+          min-width: 140px;
+        }
       }
     }
 
