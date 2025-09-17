@@ -426,13 +426,11 @@
           .stats-card__title {
             font-size: 0.9rem;
             font-weight: 800;
-            color: #64748b;
             text-transform: uppercase;
             letter-spacing: 0.15em;
             margin: 0 0 1.25rem 0;
             line-height: 1.2;
             transition: all 0.4s ease;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
           }
 
           .stats-card__value {
@@ -446,7 +444,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
             @media (max-width: 640px) {
               font-size: 2.25rem;
@@ -455,7 +452,6 @@
 
           .stats-card__subtitle {
             font-size: 0.875rem;
-            color: #64748b;
             margin: 0;
             font-weight: 700;
             padding: 0.5rem 1rem;
@@ -480,83 +476,139 @@
           }
         }
 
-        // Different themed cards with unique animations
+        // Different themed cards with colors applied by default
         &:nth-child(1) {
+          border-color: rgba(5, 150, 105, 0.2);
+
           &::before {
             background: linear-gradient(90deg, #059669, #10b981, #34d399);
+            opacity: 1;
+          }
+
+          .stats-card__title {
+            color: #059669;
+          }
+
+          .stats-card__value {
+            color: #059669;
+            background: linear-gradient(135deg, #059669, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+          }
+
+          .stats-card__subtitle {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            color: #065f46;
           }
 
           &:hover {
-            border-color: rgba(5, 150, 105, 0.3);
+            border-color: rgba(5, 150, 105, 0.4);
 
             .stats-card__value {
-              color: #059669;
-              animation: pulse 1s ease infinite;
-            }
-
-            .stats-card__subtitle {
-              background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-              color: #065f46;
+              animation: bounce 0.6s ease;
             }
           }
         }
 
         &:nth-child(2) {
+          border-color: rgba(59, 130, 246, 0.2);
+
           &::before {
             background: linear-gradient(90deg, #3b82f6, #60a5fa, #93c5fd);
+            opacity: 1;
+          }
+
+          .stats-card__title {
+            color: #3b82f6;
+          }
+
+          .stats-card__value {
+            color: #3b82f6;
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+          }
+
+          .stats-card__subtitle {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            color: #1e40af;
           }
 
           &:hover {
-            border-color: rgba(59, 130, 246, 0.3);
+            border-color: rgba(59, 130, 246, 0.4);
 
             .stats-card__value {
-              color: #3b82f6;
-              animation: bounce 0.8s ease;
-            }
-
-            .stats-card__subtitle {
-              background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-              color: #1e40af;
+              animation: bounce 0.6s ease;
             }
           }
         }
 
         &:nth-child(3) {
+          border-color: rgba(245, 158, 11, 0.2);
+
           &::before {
             background: linear-gradient(90deg, #f59e0b, #fbbf24, #fcd34d);
+            opacity: 1;
+          }
+
+          .stats-card__title {
+            color: #f59e0b;
+          }
+
+          .stats-card__value {
+            color: #f59e0b;
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+          }
+
+          .stats-card__subtitle {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #92400e;
           }
 
           &:hover {
-            border-color: rgba(245, 158, 11, 0.3);
+            border-color: rgba(245, 158, 11, 0.4);
 
             .stats-card__value {
-              color: #f59e0b;
-              animation: pulse 1.2s ease infinite;
-            }
-
-            .stats-card__subtitle {
-              background: linear-gradient(135deg, #fef3c7, #fde68a);
-              color: #92400e;
+              animation: bounce 0.6s ease;
             }
           }
         }
 
         &:nth-child(4) {
+          border-color: rgba(239, 68, 68, 0.2);
+
           &::before {
             background: linear-gradient(90deg, #ef4444, #f87171, #fca5a5);
+            opacity: 1;
+          }
+
+          .stats-card__title {
+            color: #ef4444;
+          }
+
+          .stats-card__value {
+            color: #ef4444;
+            background: linear-gradient(135deg, #ef4444, #f87171);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+          }
+
+          .stats-card__subtitle {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #991b1b;
           }
 
           &:hover {
-            border-color: rgba(239, 68, 68, 0.3);
+            border-color: rgba(239, 68, 68, 0.4);
 
             .stats-card__value {
-              color: #ef4444;
-              animation: bounce 1s ease;
-            }
-
-            .stats-card__subtitle {
-              background: linear-gradient(135deg, #fee2e2, #fecaca);
-              color: #991b1b;
+              animation: bounce 0.6s ease;
             }
           }
         }
