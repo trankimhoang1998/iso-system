@@ -43,15 +43,15 @@
         </div>
 
         <div class="audit-timeline">
-            <!-- May 2025 -->
+            <!-- 14/5/2025 -->
             <div class="timeline-month">
-                <h3 class="timeline-month__title">12/5/2025</h3>
+                <h3 class="timeline-month__title">14/5/2025</h3>
 
                 <div class="audit-cards">
                     <div class="audit-card">
                         <div class="audit-card__header">
                             <h4 class="audit-card__title">Đánh giá nội bộ phòng Kỹ thuật</h4>
-                            <span class="audit-card__status audit-card__status--planning">Kế hoạch</span>
+                            <span class="audit-card__status audit-card__status--completed">Hoàn thành</span>
                         </div>
                         <div class="audit-card__content">
                             <div class="audit-card__info">
@@ -59,7 +59,7 @@
                                     <strong>Bộ phận:</strong> Phòng Kỹ thuật
                                 </div>
                                 <div class="info-item">
-                                    <strong>Thời gian:</strong> 7h30 - 17h00 ngày 16/5/2025
+                                    <strong>Thời gian:</strong> 07h30 - 17h00 ngày 14/5/2025
                                 </div>
                                 <div class="info-item">
                                     <strong>Tổ đánh giá:</strong> Đinh Quang Điềm; Tạ Hồng Đăng; Đỗ Văn Quân
@@ -78,7 +78,7 @@
                     <div class="audit-card">
                         <div class="audit-card__header">
                             <h4 class="audit-card__title">Đánh giá nội bộ phòng Kế hoạch</h4>
-                            <span class="audit-card__status audit-card__status--planning">Kế hoạch</span>
+                            <span class="audit-card__status audit-card__status--active">Đang thực hiện</span>
                         </div>
                         <div class="audit-card__content">
                             <div class="audit-card__info">
@@ -86,7 +86,7 @@
                                     <strong>Bộ phận:</strong> Phòng Kế hoạch
                                 </div>
                                 <div class="info-item">
-                                    <strong>Thời gian:</strong> 7h30 - 17h00 ngày 15/5/2025
+                                    <strong>Thời gian:</strong> 08h00 - 16h30 ngày 14/5/2025
                                 </div>
                                 <div class="info-item">
                                     <strong>Tổ đánh giá:</strong> Nguyễn Trung Kiên; Lại Hoàng Hà; Bùi Công Đoài
@@ -113,7 +113,7 @@
                                     <strong>Bộ phận:</strong> Phòng Vật tư
                                 </div>
                                 <div class="info-item">
-                                    <strong>Thời gian:</strong> 7h30 - 17h00 ngày 14/5/2025
+                                    <strong>Thời gian:</strong> 09h00 - 17h30 ngày 14/5/2025
                                 </div>
                                 <div class="info-item">
                                     <strong>Tổ đánh giá:</strong> Nguyễn Văn Cường; Phạm Tiến Long; Trần Đức Tấn
@@ -132,7 +132,7 @@
                     <div class="audit-card">
                         <div class="audit-card__header">
                             <h4 class="audit-card__title">Đánh giá nội bộ Phân xưởng 1</h4>
-                            <span class="audit-card__status audit-card__status--planning">Kế hoạch</span>
+                            <span class="audit-card__status audit-card__status--completed">Hoàn thành</span>
                         </div>
                         <div class="audit-card__content">
                             <div class="audit-card__info">
@@ -140,7 +140,122 @@
                                     <strong>Bộ phận:</strong> Phân xưởng 1
                                 </div>
                                 <div class="info-item">
-                                    <strong>Thời gian:</strong> 7h30 - 17h00 ngày 13/5/2025
+                                    <strong>Thời gian:</strong> 07h00 - 16h00 ngày 14/5/2025
+                                </div>
+                                <div class="info-item">
+                                    <strong>Tổ đánh giá:</strong> Đinh Quang Điềm; Tạ Hồng Đăng; Đỗ Văn Quân
+                                </div>
+                                <div class="info-item">
+                                    <strong>Phạm vi:</strong> Quy trình sửa chữa TBKT; Quy trình thực hiện ngày kỹ thuật...
+                                </div>
+                            </div>
+                            <div class="audit-card__actions">
+                                <button class="btn btn-sm btn-outline">Sửa</button>
+                                <button class="btn btn-sm btn-primary">Bắt đầu</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 15/5/2025 -->
+            <div class="timeline-month">
+                <h3 class="timeline-month__title">15/5/2025</h3>
+
+                <div class="audit-cards">
+                    <div class="audit-card">
+                        <div class="audit-card__header">
+                            <h4 class="audit-card__title">Đánh giá nội bộ phòng Kỹ thuật</h4>
+                            <span class="audit-card__status audit-card__status--active">Đang thực hiện</span>
+                        </div>
+                        <div class="audit-card__content">
+                            <div class="audit-card__info">
+                                <div class="info-item">
+                                    <strong>Bộ phận:</strong> Phòng Kỹ thuật
+                                </div>
+                                <div class="info-item">
+                                    <strong>Thời gian:</strong> 08h30 - 18h00 ngày 15/5/2025
+                                </div>
+                                <div class="info-item">
+                                    <strong>Tổ đánh giá:</strong> Đinh Quang Điềm; Tạ Hồng Đăng; Đỗ Văn Quân
+                                </div>
+                                <div class="info-item">
+                                    <strong>Phạm vi:</strong> Quy trình BQBD trang thiết bị; Quy trình huấn luyện kỹ thuật...
+                                </div>
+                            </div>
+                            <div class="audit-card__actions">
+                                <button class="btn btn-sm btn-outline">Sửa</button>
+                                <button class="btn btn-sm btn-primary">Bắt đầu</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="audit-card">
+                        <div class="audit-card__header">
+                            <h4 class="audit-card__title">Đánh giá nội bộ phòng Kế hoạch</h4>
+                            <span class="audit-card__status audit-card__status--planning">Kế hoạch</span>
+                        </div>
+                        <div class="audit-card__content">
+                            <div class="audit-card__info">
+                                <div class="info-item">
+                                    <strong>Bộ phận:</strong> Phòng Kế hoạch
+                                </div>
+                                <div class="info-item">
+                                    <strong>Thời gian:</strong> 09h00 - 17h30 ngày 15/5/2025
+                                </div>
+                                <div class="info-item">
+                                    <strong>Tổ đánh giá:</strong> Nguyễn Trung Kiên; Lại Hoàng Hà; Bùi Công Đoài
+                                </div>
+                                <div class="info-item">
+                                    <strong>Phạm vi:</strong> Quy trình sản xuất kinh doanh; Quy trình thanh toán tiền lương...
+                                </div>
+                            </div>
+                            <div class="audit-card__actions">
+                                <button class="btn btn-sm btn-outline">Sửa</button>
+                                <button class="btn btn-sm btn-primary">Bắt đầu</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="audit-card">
+                        <div class="audit-card__header">
+                            <h4 class="audit-card__title">Đánh giá nội bộ phòng Vật tư</h4>
+                            <span class="audit-card__status audit-card__status--completed">Hoàn thành</span>
+                        </div>
+                        <div class="audit-card__content">
+                            <div class="audit-card__info">
+                                <div class="info-item">
+                                    <strong>Bộ phận:</strong> Phòng Vật tư
+                                </div>
+                                <div class="info-item">
+                                    <strong>Thời gian:</strong> 10h00 - 18h30 ngày 15/5/2025
+                                </div>
+                                <div class="info-item">
+                                    <strong>Tổ đánh giá:</strong> Nguyễn Văn Cường; Phạm Tiến Long; Trần Đức Tấn
+                                </div>
+                                <div class="info-item">
+                                    <strong>Phạm vi:</strong> Quy trình đảm bảo vật tư hàng hóa; Quy trình thanh toán chi thường xuyên...
+                                </div>
+                            </div>
+                            <div class="audit-card__actions">
+                                <button class="btn btn-sm btn-outline">Sửa</button>
+                                <button class="btn btn-sm btn-primary">Bắt đầu</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="audit-card">
+                        <div class="audit-card__header">
+                            <h4 class="audit-card__title">Đánh giá nội bộ Phân xưởng 1</h4>
+                            <span class="audit-card__status audit-card__status--active">Đang thực hiện</span>
+                        </div>
+                        <div class="audit-card__content">
+                            <div class="audit-card__info">
+                                <div class="info-item">
+                                    <strong>Bộ phận:</strong> Phân xưởng 1
+                                </div>
+                                <div class="info-item">
+                                    <strong>Thời gian:</strong> 08h00 - 17h00 ngày 15/5/2025
                                 </div>
                                 <div class="info-item">
                                     <strong>Tổ đánh giá:</strong> Đinh Quang Điềm; Tạ Hồng Đăng; Đỗ Văn Quân
